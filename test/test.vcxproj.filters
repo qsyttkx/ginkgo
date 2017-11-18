@@ -13,19 +13,22 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\ginkgo">
+      <UniqueIdentifier>{95a93b46-8ca5-4926-88b3-15ccfb30d5db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\ginkgo\src\glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\ginkgo\src\stb_image.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ginkgo\src\glad.c">
+      <Filter>Source Files\ginkgo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ginkgo\src\stb_image.cpp">
+      <Filter>Source Files\ginkgo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
