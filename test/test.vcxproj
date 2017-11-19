@@ -98,14 +98,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ginkgo.lib;opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ginkgo.lib;opengl32.lib;glfw3dll.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(TargetDir)res
-xcopy /y /e $(ProjectDir)res $(TargetDir)\res</Command>
+xcopy /y /e $(ProjectDir)res $(TargetDir)res
+xcopy /y /e $(SolutionDir)ginkgo\bin\$(Configuration)\* $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,14 +137,15 @@ xcopy /y /e $(ProjectDir)res $(TargetDir)\res</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>ginkgo.lib;opengl32.lib;glfw3.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ginkgo.lib;opengl32.lib;glfw3dll.lib;assimp-vc140-mt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
     <PostBuildEvent>
       <Command>mkdir $(TargetDir)res
-xcopy /y /e $(ProjectDir)res $(TargetDir)\res</Command>
+xcopy /y /e $(ProjectDir)res $(TargetDir)res
+xcopy /y /e $(SolutionDir)ginkgo\bin\$(Configuration)\* $(TargetDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

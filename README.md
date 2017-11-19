@@ -32,7 +32,7 @@
 
 ## 附加信息
 
-目前用的第三方库有：glfw3, glad, assimp, glm, rapidjson
+目前用的第三方库有： glad, glm, rapidjson, stb, glfw3, assimp
 
 其它的貌似应该没了……
 

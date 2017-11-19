@@ -13,6 +13,7 @@ GameConfig Game::config;
 Scene* Game::currentScene = NULL;
 Scene* Game::nextScene = NULL;
 bool Game::releaseLastScene = true;
+int Game::FPS = 0;
 
 Game::Game(GameConfig config)
 {
@@ -107,25 +108,9 @@ int Game::run()
 			cout << "Scene[" << currentScene->name << "] is on stage." << endl;
 		}
 
-		// 可能的全屏切换，没写事件监听就先将就一下吧
-		if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
-		{
-			if (!fullscreenSwitched)
-			{
-				config.isFullScreen = !config.isFullScreen;
-				
-				glfwSetWindowMonitor(window,
-					config.isFullScreen ? glfwGetPrimaryMonitor() : NULL,
-					0, 0, config.width,config.height, 0);
-				// 如果是窗口化的化需要移动一下窗口，否则标题栏会看不见
-				if (config.isFullScreen == false)
-					glfwSetWindowPos(window, 100, 100);
-				fullscreenSwitched = true;
-			}
-		}
-		else {
-			fullscreenSwitched = false;
-		}
+		switchFullscreen();
+
+		countFPS();
     }
 
     glfwTerminate();
@@ -141,4 +126,50 @@ void Game::replaceScene(Scene* s, bool releaseLastScene)
 Scene* Game::getCurrentScene()
 {
     return currentScene;
+}
+
+void Game::switchFullscreen()
+{
+	// 可能的全屏切换，没写事件监听就先将就一下吧
+	if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+	{
+		if (!fullscreenSwitched)
+		{
+			config.isFullScreen = !config.isFullScreen;
+
+			glfwSetWindowMonitor(window,
+				config.isFullScreen ? glfwGetPrimaryMonitor() : NULL,
+				0, 0, config.width, config.height, 0);
+			// 如果是窗口化的化需要移动一下窗口，否则标题栏会看不见
+			if (config.isFullScreen == false)
+				glfwSetWindowPos(window, 100, 100);
+			fullscreenSwitched = true;
+		}
+	}
+	else {
+		fullscreenSwitched = false;
+	}
+}
+
+void Game::countFPS()
+{
+	static float t = 0;
+	static float lasttime = 0;
+	static int count = 0;
+
+	count++;
+	float time = (float)glfwGetTime();
+	t += time - lasttime;
+	lasttime = time;
+	if (t > 1.0f)
+	{
+		t -= 1.0f;
+		FPS = count;
+		count = 0;
+	}
+}
+
+int Game::getFPS()
+{
+	return FPS;
 }

@@ -1,5 +1,6 @@
 #include "game.h"
 #include <rapidjson/document.h>
+#include <sstream>
 
 using namespace rapidjson;
 using namespace std;
@@ -16,16 +17,16 @@ TestGame::TestGame(GameConfig c) :Game(c)
 TestScene::TestScene() :Scene()
 {
 	name = "scene";
-	// 把坐标原点移动到屏幕中心
-	position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
+	Node* root = new Node(this);
+	root->position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
 	backgroundColor = vec3(1.0f);
 	Texture welcomeImg("res/welcome.png");
-	welcome = new Sprite2D(welcomeImg, this);
+	welcome = new Sprite2D(welcomeImg, root);
 	welcome->name = "welcome";
-	welcome->position = vec3(0.0f, 0.0f, 1.0f);
+	welcome->position = vec3(0.0f, 0.0f, -1.0f);
 	welcome->shouldSort = true;
 	// node
-	node1 = new Node(this);
+	node1 = new Node(root);
 	node1->name = "node1";
 	node1->position = vec3(0.0f, 0.0f, 0.0f);
 	node1->shouldSort = true;
@@ -34,12 +35,19 @@ TestScene::TestScene() :Scene()
 	logo = new Sprite2D(logoImg, node1);
 	logo->name = "logo";
 	logo->scaling = vec3(1.5f);
+
+	// pointer
+	// 隐藏鼠标
+	glfwSetInputMode(Game::getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+	Texture pointerImg("res/pointer.png");
+	pointer = new Sprite2D(pointerImg, this);
+	pointer->position = vec3(0, 0, 1000);//设为1000为保证鼠标在最上方
+	t = 0;
 }
 
 void TestScene::update(float dt)
 {
 	Scene::update(dt);
-	static float t = 0;
 	node1->position = vec3(0.0f, 10.0f * sin(t*3.14f), 0.0f);
 	logo->rotation.z = -t*3.14f*0.1f;
 	t += dt;
@@ -59,6 +67,19 @@ void TestScene::update(float dt)
 	{
 		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
+
+	// 设置鼠标位置
+	double x, y;
+	glfwGetCursorPos(Game::getWindow(), &x, &y);
+	pointer->position.x = float(x);
+	pointer->position.y = (float)Game::getConfigurations().height - float(y);
+
+	// 在标题上添加FPS
+	stringstream ss;
+	string fps;
+	ss << Game::getFPS();
+	ss >> fps;
+	glfwSetWindowTitle(Game::getWindow(), (Game::getConfigurations().title + " [FPS: " + fps + "]").c_str());
 }
 
 
@@ -68,16 +89,18 @@ TestScene2::TestScene2() :Scene()
 	name = "scene2";
 	// 把坐标原点移动到屏幕中心
 	position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
-	backgroundColor = vec3(18,121,217)/255.0f;
+	backgroundColor = vec3(18, 121, 217) / 255.0f;
 	Texture logoImg("res/style-2.png");
 	logo = new Sprite2D(logoImg, this);
 	logo->name = "logo white";
+	t = 0;
+
+	glfwSetInputMode(Game::getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
 void TestScene2::update(float dt)
 {
 	Scene::update(dt);
-	static float t = 0;
 	logo->scaling = vec3(1.0f)*(0.8f + 0.2f*max(0.0f, sin(t*3.14f * 3.0f)));
 	t += dt;
 

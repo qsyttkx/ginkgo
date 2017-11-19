@@ -25,6 +25,7 @@ namespace ginkgo
 		static void replaceScene(Scene* s, bool releaseLastScene = true);
 		static Scene* getCurrentScene();
 		void init(GameConfig config);
+		static int getFPS();
 	private:
 		static GameConfig config;
 		// 把GLFWwindow设为全局变量，方便调用，但是这样一来我们的程序就只支持
@@ -37,6 +38,11 @@ namespace ginkgo
 
 		// 全屏切换，由于还没做事件管理所以先弄个临时变量用一下
 		bool fullscreenSwitched;
+		void switchFullscreen();
+
+		// FPS
+		void countFPS();
+		static int FPS;
 	};
 
 }
