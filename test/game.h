@@ -16,6 +16,14 @@ public:
 	virtual void update(float dt);
 };
 
+class TestScene2 :public Scene
+{
+public:
+	Sprite2D* logo;
+	TestScene2();
+	virtual void update(float dt);
+};
+
 class TestGame :public Game
 {
 public:

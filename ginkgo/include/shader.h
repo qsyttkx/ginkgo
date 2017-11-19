@@ -1,7 +1,8 @@
 #pragma once
+
+#include <macros.h>
 #include <string>
 #include <glm/glm.hpp>
-#include <macros.h>
 
 namespace ginkgo
 {

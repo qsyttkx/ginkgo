@@ -1,9 +1,12 @@
+#define EXPORT
+#include <macros.h>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/matrix_inverse.hpp>
 #include <GLFW/glfw3.h>
 
 #include <node.h>
+#include <scene.h>
 
 using namespace ginkgo;
 using namespace std;
@@ -24,6 +27,7 @@ Node::Node(Node* parent)
 	scaling = vec3(1.0f);
 	rotation = vec4(0.0f);
 	lastTime = (float)glfwGetTime();
+	shouldSort = false;
 }
 
 Node::~Node()
@@ -100,7 +104,7 @@ void Node::removedFromParent()
 	}
 }
 
-mat4 Node::getTransform()
+mat4 Node::getTransform() const
 {
 	mat4 transform;
 	transform = scale(transform, scaling);
@@ -112,30 +116,30 @@ mat4 Node::getTransform()
 	return transform;
 }
 
-vec3 Node::globalPosition()
+vec3 Node::globalPosition() const
 {
 	if (parent)
 		return parent->globalPosition() + position;
 	else
-		return vec3(0.0f);
+		return position;
 }
 
-vec3 Node::globalRotation()
+vec3 Node::globalRotation() const
 {
 	if (parent)
 		return parent->globalRotation() + rotation;
 	else
-		return vec3(0.0f);
+		return rotation;
 }
-vec3 Node::globalScaling()
+vec3 Node::globalScaling() const
 {
 	if (parent)
 		return parent->globalScaling()*scaling;
 	else
-		return vec3(1.0f);
+		return scaling;
 }
 
-mat4 Node::getGlobalTransform()
+mat4 Node::getGlobalTransform() const
 {
 	vec3 pscaling = parent ? parent->globalScaling() : vec3(1.0f);
 	vec3 protation = parent ? parent->globalRotation() : vec3(0.0f);
@@ -158,8 +162,9 @@ void Node::render()
 
 bool cmp(const Node* a, const Node*b)
 {
-	return a->position.z < b->position.z;
+	return (*a) < (*b);
 }
+
 void Node::renderHeader()
 {
 	// 默认我们使用最简单的着色器，只有贴图没有光照
@@ -183,4 +188,52 @@ void Node::renderChildren()
 	{
 		(*iter)->render();
 	}
+}
+
+vec3 Node::getPositionOfRootCamera() const
+{
+	if (((Scene*)this)->mainCamera)
+	{
+		return ((Scene*)this)->mainCamera->globalPosition();
+	}
+	else if (parent)
+	{
+		return parent->getPositionOfRootCamera();
+	}
+	else
+	{
+		return vec3(0);
+	}
+}
+
+bool Node::operator<(const Node& n) const
+{
+#ifdef GINKGO_SORT_BY_Z_INDEX
+	// 2D情况，那么我们直接按照其z值来决定层次关系
+	return this->position.z < n.position.z;
+#else
+	if (this->shouldSort && !n.shouldSort)
+	{
+		// 不用排序的小，优先渲染
+		return false;
+	}
+	else if (!this->shouldSort && n.shouldSort)
+	{
+		return true;
+	}
+	else if (!this->shouldSort && !n.shouldSort)
+	{
+		// 对于都不用排序的我们不管大小
+		return false;
+	}
+	else
+	{
+		//对于都要排序的，我们需要计算距离，离相机越近的越大
+		vec3 cameraPos = this->getPositionOfRootCamera();
+		float lengthThis = length(this->globalPosition() - cameraPos);
+		float lengthn = length(n.globalPosition() - cameraPos);
+		return lengthThis > lengthn;
+	}
+#endif // GINKGO_SORT_BY_Z_INDEX
+
 }

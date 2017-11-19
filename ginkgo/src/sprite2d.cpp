@@ -1,3 +1,5 @@
+#define EXPORT
+#include <macros.h>
 #include <sprite2d.h>
 
 using namespace ginkgo;

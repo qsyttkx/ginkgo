@@ -1,3 +1,5 @@
+#define EXPORT
+#include <macros.h>
 #include <ginkgo.h>
 #include <stb_image.h>
 #include <iostream>
@@ -9,6 +11,8 @@ using namespace ginkgo;
 GLFWwindow* Game::window = NULL;
 GameConfig Game::config;
 Scene* Game::currentScene = NULL;
+Scene* Game::nextScene = NULL;
+bool Game::releaseLastScene = true;
 
 Game::Game(GameConfig config)
 {
@@ -48,7 +52,8 @@ void Game::init(GameConfig config)
         glfwSwapInterval(1);
     }
 
-    currentScene = NULL;
+	currentScene = NULL;
+	nextScene = NULL;
 
     // 初始化内建着色器
     Shader::buildBuiltinShaders();
@@ -93,7 +98,16 @@ int Game::run()
 		// glfw处理事件
 		glfwPollEvents();
 		
-		// 可能的全屏切换
+		// 如果已经有下一个场景，则把下一个场景切换过来
+		if (nextScene)
+		{
+			if (releaseLastScene)delete(currentScene);
+			currentScene = nextScene;
+			nextScene = NULL;
+			cout << "Scene[" << currentScene->name << "] is on stage." << endl;
+		}
+
+		// 可能的全屏切换，没写事件监听就先将就一下吧
 		if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
 		{
 			if (!fullscreenSwitched)
@@ -118,9 +132,10 @@ int Game::run()
     return 0;
 }
 
-void Game::setCurrentScene(Scene* s)
+void Game::replaceScene(Scene* s, bool releaseLastScene)
 {
-    currentScene = s;
+	Game::releaseLastScene = releaseLastScene;
+    nextScene = s;
 }
 
 Scene* Game::getCurrentScene()

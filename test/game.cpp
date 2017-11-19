@@ -3,40 +3,99 @@
 
 using namespace rapidjson;
 using namespace std;
+using namespace glm;
 
+
+TestGame::TestGame(GameConfig c) :Game(c)
+{
+	TestScene* scene = new TestScene();
+	this->replaceScene(scene);
+}
+
+// 场景1
 TestScene::TestScene() :Scene()
 {
 	name = "scene";
-	backgroundColor = glm::vec3(1.0f);
+	// 把坐标原点移动到屏幕中心
+	position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
+	backgroundColor = vec3(1.0f);
 	Texture welcomeImg("res/welcome.png");
 	welcome = new Sprite2D(welcomeImg, this);
 	welcome->name = "welcome";
-	welcome->position = glm::vec3(0.0f, -100.0f, 2.0f);
-	welcome->scaling = glm::vec3(0.5f);
+	welcome->position = vec3(0.0f, 0.0f, 1.0f);
+	welcome->shouldSort = true;
 	// node
 	node1 = new Node(this);
 	node1->name = "node1";
-	node1->position = glm::vec3(0.0f, 100.0f, 1.0f);
+	node1->position = vec3(0.0f, 0.0f, 0.0f);
+	node1->shouldSort = true;
 	// sprite
 	Texture logoImg("res/logo.png");
 	logo = new Sprite2D(logoImg, node1);
 	logo->name = "logo";
-	logo->scaling = glm::vec3(0.5f);
+	logo->scaling = vec3(1.5f);
 }
+
 void TestScene::update(float dt)
 {
 	Scene::update(dt);
 	static float t = 0;
-	node1->position = glm::vec3(0.0f, 100.0f + 10.0f * glm::sin(t*3.14f), 1.0f);
+	node1->position = vec3(0.0f, 10.0f * sin(t*3.14f), 0.0f);
 	logo->rotation.z = -t*3.14f*0.1f;
 	t += dt;
 
 	GLFWwindow* window = Game::getWindow();
+
+	static bool statusR = GLFW_RELEASE;
+	// 按r切换场景，上升沿触发
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
+	{
+		TestScene2* scene2 = new TestScene2();
+		Game::replaceScene(scene2);
+	}
+	statusR = glfwGetKey(window, GLFW_KEY_R);
+	// 按esc退出
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
 }
-TestGame::TestGame(GameConfig c) :Game(c)
+
+
+// 场景2
+TestScene2::TestScene2() :Scene()
 {
-	TestScene* scene = new TestScene();
-	this->setCurrentScene(scene);
+	name = "scene2";
+	// 把坐标原点移动到屏幕中心
+	position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
+	backgroundColor = vec3(18,121,217)/255.0f;
+	Texture logoImg("res/style-2.png");
+	logo = new Sprite2D(logoImg, this);
+	logo->name = "logo white";
+}
+
+void TestScene2::update(float dt)
+{
+	Scene::update(dt);
+	static float t = 0;
+	logo->scaling = vec3(1.0f)*(0.8f + 0.2f*max(0.0f, sin(t*3.14f * 3.0f)));
+	t += dt;
+
+	GLFWwindow* window = Game::getWindow();
+
+	static bool statusR = GLFW_RELEASE;
+	// 按r切换场景，上升沿触发
+	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
+	{
+		TestScene* scene = new TestScene();
+		Game::replaceScene(scene);
+	}
+	statusR = glfwGetKey(window, GLFW_KEY_R);
+	// 按esc退出
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
 }
 
 

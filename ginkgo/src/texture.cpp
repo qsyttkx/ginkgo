@@ -1,6 +1,13 @@
+#define EXPORT
+#include <macros.h>
 #include <texture.h>
 
 using namespace ginkgo;
+
+Texture::Texture()
+{
+	// 啥也不做的空贴图
+}
 
 Texture::Texture(std::string path)
 {

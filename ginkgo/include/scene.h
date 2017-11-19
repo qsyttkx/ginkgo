@@ -1,5 +1,6 @@
 #pragma once
 
+#include <macros.h>
 #include <node.h>
 #include <camera.h>
 

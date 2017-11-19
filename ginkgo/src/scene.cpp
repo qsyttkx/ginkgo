@@ -1,3 +1,5 @@
+#define EXPORT
+#include <macros.h>
 #include <scene.h>
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -14,7 +16,6 @@ Scene::Scene()
 
     // 启用一些OpenGL的功能
     glEnable(GL_BLEND);
-    glEnable(GL_DEPTH_TEST);
 
     // 设置默认的混合函数
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

@@ -1,3 +1,5 @@
+#define EXPORT
+#include <macros.h>
 #include <camera.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <ginkgo.h>
@@ -13,10 +15,10 @@ Camera::Camera(vec3 position, vec3 worldUp, float yaw, float pitch) :Node()
 	this->pitch = pitch;
 	updateCameraVectors();
 
-	float halfwidth = Game::getConfigurations().width*0.5f;
-	float halfheight = Game::getConfigurations().height*0.5f;
 	// 默认创建一个正交的投影阵
-	projectionMatrix = ortho(-halfwidth, halfwidth, -halfheight, halfheight, 0.1f, 5000.0f);
+	float width = (float)Game::getConfigurations().width;
+	float height = (float)Game::getConfigurations().height;
+	projectionMatrix = ortho(0.0f, width, 0.0f, height, 0.1f, 5000.0f);
 	//projectionMatrix = perspective(radians(45.0f), 640.0f / 480.0f, 0.1f, 1000.0f);
 }
 

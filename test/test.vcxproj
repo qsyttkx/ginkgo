@@ -164,8 +164,6 @@ xcopy /y /e $(ProjectDir)res $(TargetDir)\res</Command>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\ginkgo\src\glad.c" />
-    <ClCompile Include="..\ginkgo\src\stb_image.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>

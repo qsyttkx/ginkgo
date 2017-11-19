@@ -1,12 +1,13 @@
 #pragma once
 
+#include <macros.h>
 #include <string>
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <stb_image.h>
-#include <macros.h>
+#include <node.h>
 
 namespace ginkgo
 {
@@ -22,7 +23,8 @@ namespace ginkgo
         int width, height;
         // 格式
         GLenum format;
-        Texture() {}// 空的贴图
+		// 空的贴图
+		Texture();
         // 加载一张贴图
         Texture(std::string path);
         // 用颜色生成一张贴图，颜色分量是float型的

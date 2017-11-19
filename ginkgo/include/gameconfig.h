@@ -1,7 +1,7 @@
 #pragma once
 
-#include <string>
 #include <macros.h>
+#include <string>
 
 // сно╥еДжц
 struct DLL GameConfig

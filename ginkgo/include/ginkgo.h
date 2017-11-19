@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 /*包含ginkgo的头文件*/
+#include <macros.h>
 #include <scene.h>
 #include <gameconfig.h>
 #include <sprite2d.h>
@@ -20,7 +21,8 @@ namespace ginkgo
 		int run();
 		static GameConfig getConfigurations();
 		static GLFWwindow* getWindow();
-		void setCurrentScene(Scene* s);
+		// 切换场景(Scene待切换的场景，bool是否释放上一个场景)
+		static void replaceScene(Scene* s, bool releaseLastScene = true);
 		static Scene* getCurrentScene();
 		void init(GameConfig config);
 	private:
@@ -30,6 +32,8 @@ namespace ginkgo
 		// 写法运行多窗口也是会崩溃的=_=!）
 		static GLFWwindow* window;
 		static Scene* currentScene;
+		static Scene* nextScene;
+		static bool releaseLastScene;
 
 		// 全屏切换，由于还没做事件管理所以先弄个临时变量用一下
 		bool fullscreenSwitched;
