@@ -28,3 +28,12 @@
 ![](https://qsyttkx.github.io/ginkgo_vs.png)
 
 ![](https://qsyttkx.github.io/ginkgo_test.png)
+
+
+## 附加信息
+
+目前用的第三方库有：glfw3, glad, assimp, glm, rapidjson
+
+其它的貌似应该没了……
+
+另外github上上传的预编译的lib是VC140的，所以需要用Visual Studio 2015
