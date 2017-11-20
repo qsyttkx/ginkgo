@@ -10,6 +10,7 @@
 #include <scene.h>
 #include <gameconfig.h>
 #include <sprite2d.h>
+#include <text.h>
 
 namespace ginkgo
 {

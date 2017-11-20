@@ -28,6 +28,8 @@ namespace ginkgo
         // 加载一张贴图
         Texture(std::string path);
         // 用颜色生成一张贴图，颜色分量是float型的
-        Texture(glm::vec3 color);
+        Texture(glm::vec4 color);
+		// 从GPU中释放贴图资源
+		void release();
     };
 }

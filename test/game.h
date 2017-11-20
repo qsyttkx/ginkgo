@@ -11,7 +11,7 @@ class TestScene :public Scene
 public:
 	Sprite2D* logo;
 	Sprite2D* welcome;
-	Sprite2D* pointer;
+	Node* pointer;
 	Node* node1;
 	TestScene();
 	virtual void update(float dt);

@@ -39,9 +39,11 @@ TestScene::TestScene() :Scene()
 	// pointer
 	// 隐藏鼠标
 	glfwSetInputMode(Game::getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-	Texture pointerImg("res/pointer.png");
-	pointer = new Sprite2D(pointerImg, this);
+	pointer = new Node(this);
 	pointer->position = vec3(0, 0, 1000);//设为1000为保证鼠标在最上方
+	Texture pointerImg("res/pointer.png");
+	auto pointerSprite = new Sprite2D(pointerImg, pointer);
+	pointerSprite->position = vec3(13.0f, -12.0f, 0.0f);
 	t = 0;
 }
 
@@ -54,7 +56,7 @@ void TestScene::update(float dt)
 
 	GLFWwindow* window = Game::getWindow();
 
-	static bool statusR = GLFW_RELEASE;
+	static int statusR = GLFW_RELEASE;
 	// 按r切换场景，上升沿触发
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
 	{
@@ -71,8 +73,10 @@ void TestScene::update(float dt)
 	// 设置鼠标位置
 	double x, y;
 	glfwGetCursorPos(Game::getWindow(), &x, &y);
-	pointer->position.x = float(x);
-	pointer->position.y = (float)Game::getConfigurations().height - float(y);
+	auto config = Game::getConfigurations();
+	float px = float(x), py = (float)config.height - float(y);
+	pointer->position.x = 0 > px ? 0 : (config.width < px ? config.width : px);
+	pointer->position.y = 0 > py ? 0 : (config.height < py ? config.height : py);
 
 	// 在标题上添加FPS
 	stringstream ss;
@@ -106,7 +110,7 @@ void TestScene2::update(float dt)
 
 	GLFWwindow* window = Game::getWindow();
 
-	static bool statusR = GLFW_RELEASE;
+	static int statusR = GLFW_RELEASE;
 	// 按r切换场景，上升沿触发
 	if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
 	{

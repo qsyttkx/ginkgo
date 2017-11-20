@@ -1,12 +1,15 @@
 #define EXPORT
 #include <macros.h>
 #include <texture.h>
+#include <iostream>
 
 using namespace ginkgo;
+using namespace std;
 
 Texture::Texture()
 {
 	// 啥也不做的空贴图
+	id = 0;
 }
 
 Texture::Texture(std::string path)
@@ -41,15 +44,16 @@ Texture::Texture(std::string path)
 }
 
 // 用颜色生成一张贴图，颜色分量是float型的
-Texture::Texture(glm::vec3 color)
+Texture::Texture(glm::vec4 color)
 {
     glGenTextures(1, &id);
     width = height = 1;
-    format = GL_RGB;
-    unsigned char data[3];
-    data[0] = (unsigned char)(255 * color.r);
-    data[1] = (unsigned char)(255 * color.g);
-    data[2] = (unsigned char)(255 * color.b);
+    format = GL_RGBA;
+    unsigned char data[4];
+	data[0] = (unsigned char)(255 * color.r);
+	data[1] = (unsigned char)(255 * color.g);
+	data[2] = (unsigned char)(255 * color.b);
+	data[3] = (unsigned char)(255 * color.a);
     glBindTexture(GL_TEXTURE_2D, id);
     glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
 
@@ -57,4 +61,13 @@ Texture::Texture(glm::vec3 color)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+}
+
+void Texture::release()
+{
+	if (id)
+	{
+		glDeleteTextures(1, &id);
+	}
+	cout << "Texture[" << id << "] has been released." << endl;
 }

@@ -164,6 +164,9 @@
     <ClInclude Include="include\scene.h" />
     <ClInclude Include="include\shader.h" />
     <ClInclude Include="include\sprite2d.h" />
+    <ClInclude Include="include\stb_image.h" />
+    <ClInclude Include="include\stb_truetype.h" />
+    <ClInclude Include="include\text.h" />
     <ClInclude Include="include\texture.h" />
   </ItemGroup>
   <ItemGroup>
@@ -174,7 +177,8 @@
     <ClCompile Include="src\scene.cpp" />
     <ClCompile Include="src\shader.cpp" />
     <ClCompile Include="src\sprite2d.cpp" />
-    <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\stb.cpp" />
+    <ClCompile Include="src\text.cpp" />
     <ClCompile Include="src\texture.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
