@@ -12,7 +12,8 @@ namespace ginkgo
 	class DLL Sprite2D :public Node
 	{
 	public:
-		Sprite2D(Texture img, Node* parent = NULL);
+		Sprite2D(Node* parent, Texture img);
+		virtual ~Sprite2D();
 		virtual void render();
 	private:
 		Texture img;

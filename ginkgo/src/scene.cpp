@@ -21,11 +21,16 @@ Scene::Scene()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+Scene::~Scene()
+{
+	//...
+}
+
 void Scene::render()
 {
-	mainCamera->updateCameraVectors();
-	renderHeader();
+    renderHeader();
 
+	mainCamera->updateCameraVectors();
 	glViewport(0, 0, Game::getConfigurations().width, Game::getConfigurations().height);
 
     // 默认我们使用最简单的着色器，只有贴图没有光照

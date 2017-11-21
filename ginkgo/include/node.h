@@ -12,9 +12,10 @@ namespace ginkgo
 	class DLL Node
 	{
 	public:
-		//Node();
+        /// <summary>构造函数</summary>
+        /// <param name="parent">此节点的父节点，若为</param>
 		Node(Node* parent = NULL);
-		~Node();
+		virtual ~Node();
 		// 设置父节点
 		void setParent(Node* p);
 		// 获取父节点
@@ -32,16 +33,17 @@ namespace ginkgo
 		glm::vec3 position;
 		glm::vec3 rotation;
 		glm::vec3 scaling;
-		glm::mat4 getTransform() const;
-		glm::vec3 globalPosition() const;
-		glm::vec3 globalRotation() const;
-		glm::vec3 globalScaling() const;
-		glm::mat4 getGlobalTransform() const;
+		glm::mat4 getTransform();
+		glm::vec3 globalPosition();
+		glm::vec3 globalRotation();
+        //这个貌似有点问题，先禁用了。。。你说如果我在父节点先旋转了个45度，然后再把它y方向伸缩为0.5，那它就是斜着扁的啊，这个怎么用scaling表示。。。
+		//glm::vec3 globalScaling();
+		glm::mat4 getGlobalTransform();
 		// 渲染改节点
 		// 在重写的render方法中，需要在开头调用renderHeader()以设置着色器和当前节点的模型矩阵，
 		// 而在结尾部分需要调用renderChildren()方法以递归渲染其子节点。
 		virtual void render();
-		// 设置着色器和当前节点的模型矩阵，调用调度器
+		// 设置着色器和当前节点的模型矩阵，调用调度器，刷新transform
 		virtual void renderHeader();
 		// 递归渲染其子节点
 		virtual void renderChildren();
@@ -61,6 +63,9 @@ namespace ginkgo
 		void addChild(Node* c);
 		Node* parent;
 	private:
+        glm::mat4 transform;
+        glm::mat4 parentsGlobalTransform;
+        glm::mat4 globalTransform;
 		// 子节点集合
 		std::list<Node*> children;
 		// 上一帧时间。用来记录两帧之间的时间间隔

@@ -1,8 +1,9 @@
 {
-    "title": "Ginkgo Test",
-    "width": 1280,
-    "height": 720,
+    "title": "Ginkgo TTF Test",
+    "width": 800,
+    "height": 450,
     "isFullScreen": false,
     "isVSyncEnabled": true,
-    "hideConsole":false
+    "hideConsole":true,
+    "msg":"Welcome to Ginkgo! ª∂”≠ π”√Ginkgo£°"
 }

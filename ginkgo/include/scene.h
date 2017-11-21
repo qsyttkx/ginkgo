@@ -10,6 +10,7 @@ namespace ginkgo
     {
     public:
         Scene();
+		virtual ~Scene();
         Camera* mainCamera;
         virtual void render();
         glm::vec3 backgroundColor;

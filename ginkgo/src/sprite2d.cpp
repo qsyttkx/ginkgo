@@ -5,7 +5,7 @@
 using namespace ginkgo;
 using namespace glm;
 
-Sprite2D::Sprite2D(Texture img, Node* p) :Node(p)
+Sprite2D::Sprite2D(Node* p, Texture img) :Node(p)
 {
 	this->img = img;
 	vec2 halfsize(img.width*0.5f, img.height*0.5f);
@@ -34,15 +34,17 @@ Sprite2D::Sprite2D(Texture img, Node* p) :Node(p)
 	glBindVertexArray(0);
 }
 
+Sprite2D::~Sprite2D()
+{
+	glDeleteBuffers(1, &VBO);
+	glDeleteVertexArrays(1, &VAO);
+}
+
 void Sprite2D::render()
 {
-	renderHeader();
-
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, img.id);
 	Shader::basicDiffuse.setInt("texture_diffuse1", 0);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-
-	renderChildren();
 }

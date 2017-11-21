@@ -102,7 +102,7 @@ int Game::run()
 		// 如果已经有下一个场景，则把下一个场景切换过来
 		if (nextScene)
 		{
-			if (releaseLastScene)delete(currentScene);
+			if (releaseLastScene && currentScene)delete(currentScene);
 			currentScene = nextScene;
 			nextScene = NULL;
 			cout << "Scene[" << currentScene->name << "] is on stage." << endl;
