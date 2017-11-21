@@ -6,7 +6,7 @@
 
 再有就是17年5月参加一个图标设计的投稿结果音讯全无蛮惨的，如今这个图标终于还是有了它的用武之地。
 
-``官方网站：`` https://ginkgo.qsyttkx.me/
+吹嘘网站： https://qsyttkx.github.io/ginkgo/
 
 ## 目前的进度：
 
