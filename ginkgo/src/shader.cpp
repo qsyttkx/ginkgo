@@ -8,7 +8,7 @@
 using namespace std;
 using namespace ginkgo;
 
-Shader Shader::basicDiffuse;
+Shader Shader::basicDiffuse("basicDiffuse");
 
 Shader::Shader(const char* vsPath, const char* fsPath)
 {
@@ -38,9 +38,9 @@ Shader::Shader(const char* vsPath, const char* fsPath)
     glDeleteShader(fs);
 }
 
-Shader::~Shader()
+void Shader::release()
 {
-    //if (id)glDeleteProgram(id);
+    if (id)glDeleteProgram(id);
 }
 
 unsigned int Shader::getID()
@@ -130,18 +130,12 @@ void Shader::setVec4(const char* name, glm::vec4 value) const
     glUniform4f(glGetUniformLocation(id, name), value.x, value.y, value.z, value.w);
 }
 
-// 内建着色器
-void Shader::buildBuiltinShaders()
-{
-    basicDiffuse = Shader("basicDiffuse");
-}
-
-Shader::Shader(string type)
+Shader::Shader(string name)
 {
     const char* vsCode;
     const char* fsCode;
 
-    if (type == "basicDiffuse")
+    if (name == "basicDiffuse")
     {
         vsCode = vs_basicDiffuse;
         fsCode = fs_basicDiffuse;
@@ -162,7 +156,7 @@ Shader::Shader(string type)
     if (!success)
     {
         glGetProgramInfoLog(id, 512, NULL, log);
-        cout << "Shader[" << type << "]链接错误:" << endl << log << endl;
+        cout << "Shader[" << name << "]链接错误:" << endl << log << endl;
     }
     // 释放
     glDeleteShader(vs);

@@ -106,8 +106,9 @@ void TTFCharacter::loadFont(const char* filePath)
     // 读取文件
     if (fopen_s(&fp, filePath, "rb"))
     {
-        cout << "找不到字体文件[" << filePath << "]" << endl;
+        cout << "找不到字体文件[" << filePath << "]";
 #ifdef WIN32
+        cout << "，被替换为arialbd.ttf"<< endl;
         fopen_s(&fp, "C:/Windows/Fonts/arialbd.ttf", "rb");
 #else
         return;
@@ -117,11 +118,8 @@ void TTFCharacter::loadFont(const char* filePath)
     fclose(fp);
     // 调整分配的空间为文件大小
     buffer = (unsigned char*)realloc(buffer, bSize);
-
     // 初始化字体
     stbtt_InitFont(&font, buffer, stbtt_GetFontOffsetForIndex(buffer, 0));
-    font.userdata = (void*)filePath;
-
     // 把这个字体添加到缓存中
     loadedFonts.insert(make_pair(string(filePath), font));
 }
@@ -254,14 +252,4 @@ wstring Text::getText()
 vec2 Text::getSize()
 {
     return containSize;
-}
-
-void Text::render()
-{
-    // 加入到子节点中了，不用再渲染一次
-    // 渲染所有的文字
-    //for (auto iter = characters.begin(); iter != characters.end(); iter++)
-    //{
-    //    (*iter)->render();
-    //}
 }

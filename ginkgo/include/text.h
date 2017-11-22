@@ -10,21 +10,21 @@
 
 namespace ginkgo
 {
+    /// <summary>文本配置</summary>
 	struct DLL TextConfig
 	{
-		// 字号
+        /// <summary>字号</summary>
 		float size;
-		// 字体颜色
+        /// <summary>字体颜色</summary>
 		glm::vec4 color;
-		// 字体文件路径，如果为NULL则使用已加载的第一个字体
+        /// <summary>字体文件路径</summary>
 		std::string font;
-		// 一行最多能有多宽（用来换行），如果为0则不限制
+        /// <summary>一行最多能有多宽（用来换行），如果为0则不限制</summary>
 		float lineWidth;
-		// 行距
+        /// <summary>行距</summary>
 		float rowSpacing;
-		// 列距
+        /// <summary>列距</summary>
 		float colSpacing;
-
         /// <summary>构造一个新的文本配置</summary>
         /// <param name="size">字体大小</param>
         /// <param name="color">字体颜色</param>
@@ -43,50 +43,79 @@ namespace ginkgo
 		}
 	};
 
+    /// <summary>TTF字符</summary>
 	class DLL TTFCharacter :public Node
 	{
 	public:
-		// 构造一个TTF字符
+        /// <summary>构造一个TTF字符</summary>
+        /// <param name="parent">父节点</param>
+        /// <param name="charcode">字形码</param>
+        /// <param name="fontSize">字体大小</param>
+        /// <param name="color">颜色</param>
+        /// <param name="font">字体名</param>
 		TTFCharacter(Node* parent, wchar_t charcode, float fontSize, glm::vec4 color, std::string font);
-		// 析构时释放GPU资源
+        /// <summary>析构时释放GPU资源</summary>
 		virtual ~TTFCharacter();
-		// 加载一个字体文件
+        /// <summary>加载一个字体文件</summary>
+        /// <param name="filePath">字体文件路径</param>
 		static void loadFont(const char* filePath);
-		// 释放一个字体文件
+        /// <summary>释放一个字体文件</summary>
+        /// <param name="filePath">字体文件路径</param>
 		static void releaseFont(const char* filePath);
+        /// <summary>渲染</summary>
 		virtual void render();
+        /// <summary>宽，高，横偏移量，纵偏移量</summary>
         int width, height, xoff, yoff;
 	protected:
-		// 缓存的字体文件
+        /// <summary>缓存的字体文件</summary>
 		static std::map<std::string, stbtt_fontinfo> loadedFonts;
-		// 字符贴图的id
+        /// <summary>字符贴图的id</summary>
 		GLuint id;
+        /// <summary>顶点数组、缓冲对象</summary>
 		GLuint VAO, VBO;
-        // 字符
+        /// <summary>字符码</summary>
         wchar_t code;
 	};
 
 	class DLL Text :public Node
 	{
 	public:
-		// 宽字符串->字符串(非线程安全)
+        /// <summary>宽字符串->字符串(非线程安全)</summary>
+        /// <param name="ws">待转换的宽字符串</param>
+        /// <returns>返回字符串</returns>
 		static	std::string ws2s(const std::wstring& ws);
-		// 字符串->宽字符串(非线程安全)
+        /// <summary>字符串->宽字符串(非线程安全)</summary>
+        /// <param name="s">待转换的字符串</param>
+        /// <returns>返回宽字符串</returns>
 		static std::wstring s2ws(const std::string& s);
-
-		// 构造一个文本（父节点, 文本内容，字体名，）
+        /// <summary>构造一个文本</summary>
+        /// <param name="text">文本内容</param>
+        /// <param name="config">文本配置</param>
 		Text(Node* parent, std::wstring text = L"", TextConfig config = TextConfig());
+        /// <summary>设置文本内容（不建议短时间反复调用此方法，会影响效率）</summary>
+        /// <param name="text">文本内容</param>
 		void setText(std::wstring text);
+        /// <summary>设置文本内容（不建议短时间反复调用此方法，会影响效率）</summary>
+        /// <param name="text">文本内容</param>
+        /// <param name="config">文本配置</param>
 		void setText(std::wstring text, TextConfig config);
+        /// <summary>设置文本配置（不建议短时间反复调用此方法，会影响效率）</summary>
+        /// <param name="config">文本配置</param>
 		void setTextConfig(TextConfig config);
+        /// <summary>文本内容</summary>
 		std::wstring getText();
+        /// <summary>获取文本占据的大小</summary>
         glm::vec2 getSize();
-        virtual void render();
 	protected:
+        /// <summary>字符list</summary>
 		std::list<TTFCharacter*> characters;
+        /// <summary>宽字符文本</summary>
 		std::wstring text;
+        /// <summary>文本配置</summary>
 		TextConfig config;
+        /// <summary>更新字符（在重设文本内容或者配置后会调用此方法）</summary>
 		void updateCharacters();
+        /// <summary>文本占据的大小</summary>
         glm::vec2 containSize;
 	};
 }

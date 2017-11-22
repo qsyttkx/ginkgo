@@ -8,6 +8,7 @@ using namespace glm;
 Sprite2D::Sprite2D(Node* p, Texture img) :Node(p)
 {
 	this->img = img;
+    textureID = img.id;
 	vec2 halfsize(img.width*0.5f, img.height*0.5f);
 	float vertices[] =
 	{	// 这样设置顶点位置可以使得锚点在图片中心
@@ -44,7 +45,7 @@ void Sprite2D::render()
 {
 	glBindVertexArray(VAO);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, img.id);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	Shader::basicDiffuse.setInt("texture_diffuse1", 0);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

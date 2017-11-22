@@ -7,12 +7,12 @@
 using namespace ginkgo;
 using namespace glm;
 
-Camera::Camera(vec3 position, vec3 worldUp, float yaw, float pitch) :Node()
+Camera::Camera(Node* parent, vec3 position, vec3 worldUp, float yaw, float pitch) :Node(parent)
 {
 	this->position = position;
 	this->worldUp = worldUp;
-	this->yaw = yaw;
-	this->pitch = pitch;
+	this->rotation.y = yaw;
+	this->rotation.x = pitch;
 	updateCameraVectors();
 
 	// 默认创建一个正交的投影阵
@@ -36,9 +36,9 @@ void Camera::updateCameraVectors()
 {
 	// 计算新的前向向量
 	glm::vec3 front;
-	front.x = cos(glm::radians(yaw))*cos(glm::radians(pitch));
-	front.y = sin(glm::radians(pitch));
-	front.z = sin(glm::radians(yaw))*cos(glm::radians(pitch));
+	front.x = cos(glm::radians(rotation.y))*cos(glm::radians(rotation.x));
+	front.y = sin(glm::radians(rotation.x));
+	front.z = sin(glm::radians(rotation.y))*cos(glm::radians(rotation.x));
 	this->front = glm::normalize(front);
 	// 计算右和上方向的向量
 	right = glm::normalize(glm::cross(this->front, worldUp));

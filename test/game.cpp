@@ -6,7 +6,6 @@ using namespace rapidjson;
 using namespace std;
 using namespace glm;
 
-
 string TestScene::msg;
 TestGame::TestGame(GameConfig c) :Game(c)
 {
@@ -201,7 +200,7 @@ GameConfig readConfiguration(const char* path)
     if (d["hideConsole"].GetBool())
     {
         HWND hwnd;
-        hwnd = FindWindow(L"ConsoleWindowClass", NULL);//处理顶级窗口的类名和窗口名称匹配指定的字符串,不搜索子窗口。  
+        hwnd = FindWindow("ConsoleWindowClass", NULL);//处理顶级窗口的类名和窗口名称匹配指定的字符串,不搜索子窗口。  
         if (hwnd)
         {
             ShowWindow(hwnd, SW_HIDE);//设置指定窗口的显示状态  

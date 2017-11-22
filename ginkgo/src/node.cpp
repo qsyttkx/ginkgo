@@ -13,13 +13,6 @@ using namespace ginkgo;
 using namespace std;
 using namespace glm;
 
-//Node::Node()
-//{
-//	parent = NULL;
-//	init();
-//	
-//}
-
 Node::Node(Node* parent)
 {
     this->setParent(parent);
@@ -128,12 +121,12 @@ vec3 Node::globalPosition()
     return vec3(gpos.x, gpos.y, gpos.z);
 }
 
-// 有疑问，不知道对不对啊。。
-vec3 Node::globalRotation()
-{
-    vec3 protation = parent ? parent->rotation : vec3(0);
-    return protation + rotation;
-}
+// 未完成，这个是错的有问题。应该还是要从globaltransform中计算出rotation
+//vec3 Node::globalRotation()
+//{
+//    vec3 protation = parent ? parent->rotation : vec3(0);
+//    return protation + rotation;
+//}
 
 // 未完成，有问题
 //vec3 Node::globalScaling()
@@ -209,7 +202,7 @@ vec3 Node::getPositionOfRootCamera() const
 bool Node::operator<(const Node& n) const
 {
 #ifdef GINKGO_SORT_BY_Z_INDEX
-    // 2D情况，那么我们直接按照其z值来决定层次关系
+    // 2D情况，那么我们直接按照其z值来决定层次关系（摄像机在z值高的地方）
     return this->position.z < n.position.z;
 #else
     if (this->shouldSort && !n.shouldSort)

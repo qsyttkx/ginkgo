@@ -17,19 +17,14 @@ int Game::FPS = 0;
 
 Game::Game(GameConfig config)
 {
-    init(config);
-}
-
-void Game::init(GameConfig config)
-{
-	this->config = config;
+    this->config = config;
     // 初始化glfw, 使用OpenGL 3.x版本，core profile
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);//禁止调整窗口大小
-	
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);//禁止调整窗口大小
+
     GLFWmonitor* monitor = config.isFullScreen ? glfwGetPrimaryMonitor() : NULL;
     window = glfwCreateWindow(config.width, config.height, config.title.c_str(), monitor, NULL);
     if (window == NULL)
@@ -53,14 +48,10 @@ void Game::init(GameConfig config)
         glfwSwapInterval(1);
     }
 
-	currentScene = NULL;
-	nextScene = NULL;
-
-    // 初始化内建着色器
-    Shader::buildBuiltinShaders();
+    currentScene = NULL;
+    nextScene = NULL;
 
     cout << "初始化完毕!" << endl;
-    return;
 }
 
 Game::~Game()
@@ -131,7 +122,9 @@ Scene* Game::getCurrentScene()
 void Game::switchFullscreen()
 {
 	// 可能的全屏切换，没写事件监听就先将就一下吧
-	if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS && glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
+    // 回车不分大小键盘，alt只监听左边的
+	if ((glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS|| glfwGetKey(window, GLFW_KEY_KP_ENTER) == GLFW_PRESS)
+        && glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
 	{
 		if (!fullscreenSwitched)
 		{
