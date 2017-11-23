@@ -1,4 +1,4 @@
-#include "game.h"
+ï»¿#include "game.h"
 #include <rapidjson/document.h>
 #include <sstream>
 
@@ -14,15 +14,16 @@ TestGame::TestGame(GameConfig c) :Game(c)
     this->replaceScene(scene);
 }
 
-// ³¡¾°1
+// åœºæ™¯1
 TestScene::TestScene() :Scene()
 {
     name = "scene";
     root = new Node(this);
     root->position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
     backgroundColor = vec3(1.0f);
-    TextConfig c(24, vec4(0.2f, 0.2f, 0.2f, 1), "res/·½ÕıÊéËÎ¼òÌå.ttf",0.0f,2.0f,4.0f);
-    welcome = new Text(root, Text::s2ws(msg), c);
+    TextConfig c(24, vec4(0.2f, 0.2f, 0.2f, 1), "res/æ–¹æ­£ä¹¦å®‹ç®€ä½“.ttf", 0.0f, 2.0f, 4.0f);
+    //welcome = new Text(root, Text::s2ws(msg), c);
+    welcome = new Text(root, L"", c);
     welcome->name = "welcome";
     welcome->position = vec3(-welcome->getSize().x*0.5f, welcome->getSize().y*0.5f + Game::getConfigurations().height*0.25f, 1.0f);
     // node
@@ -38,10 +39,10 @@ TestScene::TestScene() :Scene()
     logo->scaling = vec3(0.8f);
 
     // pointer
-    // Òş²ØÊó±ê
+    // éšè—é¼ æ ‡
     glfwSetInputMode(Game::getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     pointer = new Node(this);
-    pointer->position = vec3(0, 0, 1000);//ÉèÎª1000Îª±£Ö¤Êó±êÔÚ×îÉÏ·½
+    pointer->position = vec3(0, 0, 1000);//è®¾ä¸º1000ä¸ºä¿è¯é¼ æ ‡åœ¨æœ€ä¸Šæ–¹
     pointerImg = Texture("res/pointer.png");
     auto pointerSprite = new Sprite2D(pointer, pointerImg);
     pointerSprite->position = vec3(13.0f, -12.0f, 0.0f);
@@ -60,24 +61,24 @@ void TestScene::update(float dt)
     logo->rotation.z = -t*3.14f*0.3f;
     //root->rotation.z = -t*3.14f*0.1f;
     t += dt;
-	welcome->opacity = 0.5f + 0.5f*sin(t*3.14f);
+    welcome->opacity = 0.5f + 0.5f*sin(t*3.14f);
     GLFWwindow* window = Game::getWindow();
 
     static int statusR = GLFW_RELEASE;
-    // °´rÇĞ»»³¡¾°£¬ÉÏÉıÑØ´¥·¢
+    // æŒ‰råˆ‡æ¢åœºæ™¯ï¼Œä¸Šå‡æ²¿è§¦å‘
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
     {
         TestScene2* scene2 = new TestScene2();
         Game::replaceScene(scene2);
     }
     statusR = glfwGetKey(window, GLFW_KEY_R);
-    // °´escÍË³ö
+    // æŒ‰escé€€å‡º
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
-    // ÉèÖÃÊó±êÎ»ÖÃ
+    // è®¾ç½®é¼ æ ‡ä½ç½®
     double x, y;
     glfwGetCursorPos(Game::getWindow(), &x, &y);
     auto config = Game::getConfigurations();
@@ -85,7 +86,7 @@ void TestScene::update(float dt)
     pointer->position.x = 0 > px ? 0 : (config.width < px ? config.width : px);
     pointer->position.y = 0 > py ? 0 : (config.height < py ? config.height : py);
 
-    // ÔÚ±êÌâÉÏÌí¼ÓFPS
+    // åœ¨æ ‡é¢˜ä¸Šæ·»åŠ FPS
     stringstream ss;
     string fps;
     ss << Game::getFPS();
@@ -94,12 +95,12 @@ void TestScene::update(float dt)
 }
 
 
-// ³¡¾°2
+// åœºæ™¯2
 
 TestScene2::TestScene2() :Scene()
 {
     name = "scene2";
-    // °Ñ×ø±êÔ­µãÒÆ¶¯µ½ÆÁÄ»ÖĞĞÄ
+    // æŠŠåæ ‡åŸç‚¹ç§»åŠ¨åˆ°å±å¹•ä¸­å¿ƒ
     position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
     //backgroundColor = vec3(18, 121, 217) / 255.0f;
     backgroundColor = vec3(0.1f);
@@ -108,7 +109,7 @@ TestScene2::TestScene2() :Scene()
     logo->name = "logo white";
     logo->position.y = Game::getConfigurations().height*0.16f;
 
-    TextConfig c(24, vec4(1, 1, 1, 1), "res/·½ÕıÊéËÎ¼òÌå.ttf");
+    TextConfig c(24, vec4(1, 1, 1, 1), "res/æ–¹æ­£ä¹¦å®‹ç®€ä½“.ttf");
     text = new Text(this, L"Ginkgo: Hello TrueType Font!", c);
     text->name = "text";
     text->position = vec3(-text->getSize().x*0.5f, text->getSize().y*0.5f - Game::getConfigurations().height*0.16f, 1.0f);
@@ -129,39 +130,39 @@ void TestScene2::update(float dt)
     t += dt;
 
     GLFWwindow* window = Game::getWindow();
-    
-    // Ë¢ĞÂText
-    wstring content = L"Ginkgo: Hello TrueType Font!";
-    static unsigned int count = 0;
-    float space = 2.0f / 3.0f;
-    timer1 += dt;
 
-    if (timer1 > space)
-    {
-        count += 1;
-        if (count > content.length())
-        {
-            count = 0;
-        }
-        wstring wstr = content.substr(0, count);
-        text->setText(wstr);
-        timer1 -= space;
-    }
-    
+    // åˆ·æ–°Text
+    //wstring content = L"Ginkgo: Hello TrueType Font!";
+    //static unsigned int count = 0;
+    //float space = 2.0f / 3.0f;
+    //timer1 += dt;
+
+    //if (timer1 > space)
+    //{
+    //    count += 1;
+    //    if (count > content.length())
+    //    {
+    //        count = 0;
+    //    }
+    //    wstring wstr = content.substr(0, count);
+    //    text->setText(wstr);
+    //    timer1 -= space;
+    //}
+
     static int statusR = GLFW_RELEASE;
-    // °´rÇĞ»»³¡¾°£¬ÉÏÉıÑØ´¥·¢
+    // æŒ‰råˆ‡æ¢åœºæ™¯ï¼Œä¸Šå‡æ²¿è§¦å‘
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
     {
         TestScene* scene = new TestScene();
         Game::replaceScene(scene);
     }
     statusR = glfwGetKey(window, GLFW_KEY_R);
-    // °´escÍË³ö
+    // æŒ‰escé€€å‡º
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
-    // ÔÚ±êÌâÉÏÌí¼ÓFPS
+    // åœ¨æ ‡é¢˜ä¸Šæ·»åŠ FPS
     stringstream ss;
     string fps;
     ss << Game::getFPS();
@@ -175,20 +176,20 @@ GameConfig readConfiguration(const char* path)
     GameConfig config;
     FILE* fp;
     std::string code = "";
-    // ´ò¿ªÎÄ¼ş
+    // æ‰“å¼€æ–‡ä»¶
     if (fopen_s(&fp, path, "r"))
     {
-        cout << "Shader[" << path << "]¶ÁÈ¡´íÎó" << endl;
+        cout << "Shader[" << path << "]è¯»å–é”™è¯¯" << endl;
         return config;
     }
-    // ¶ÁÈ¡ÄÚÈİ
+    // è¯»å–å†…å®¹
     char buff[512];
     while (fgets(buff, 512, fp))
     {
         code.append(buff);
     }
     fclose(fp);
-    // ½âÎö
+    // è§£æ
     Document d;
     d.Parse(code.c_str());
     config.title = d["title"].GetString();
@@ -200,10 +201,10 @@ GameConfig readConfiguration(const char* path)
     if (d["hideConsole"].GetBool())
     {
         HWND hwnd;
-        hwnd = FindWindow("ConsoleWindowClass", NULL);//´¦Àí¶¥¼¶´°¿ÚµÄÀàÃûºÍ´°¿ÚÃû³ÆÆ¥ÅäÖ¸¶¨µÄ×Ö·û´®,²»ËÑË÷×Ó´°¿Ú¡£  
+        hwnd = FindWindow("ConsoleWindowClass", NULL);//å¤„ç†é¡¶çº§çª—å£çš„ç±»åå’Œçª—å£åç§°åŒ¹é…æŒ‡å®šçš„å­—ç¬¦ä¸²,ä¸æœç´¢å­çª—å£ã€‚  
         if (hwnd)
         {
-            ShowWindow(hwnd, SW_HIDE);//ÉèÖÃÖ¸¶¨´°¿ÚµÄÏÔÊ¾×´Ì¬  
+            ShowWindow(hwnd, SW_HIDE);//è®¾ç½®æŒ‡å®šçª—å£çš„æ˜¾ç¤ºçŠ¶æ€  
         }
     }
 

@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <macros.h>
 #include <string>
@@ -13,25 +13,25 @@ namespace ginkgo
 {
     struct DLL Texture
     {
-        /// <summary>ÌùÍ¼ÔÚOpenGLÖĞµÄID</summary>
+        /// <summary>è´´å›¾åœ¨OpenGLä¸­çš„ID</summary>
         GLuint id;
-        /// <summary>ÌùÍ¼ÀàĞÍ£¨Âş·´Éä°¡¾µÃæ·´Éä°¡É¶µÄ£©</summary>
+        /// <summary>è´´å›¾ç±»å‹ï¼ˆæ¼«åå°„å•Šé•œé¢åå°„å•Šå•¥çš„ï¼‰</summary>
         std::string type;
-        /// <summary>ÌùÍ¼ÎÄ¼şÂ·¾¶£¨¿ÉÒÔÓÃÀ´¶Ô±ÈÊÇ²»ÊÇÖØ¸´¼ÓÔØÁËÌùÍ¼£©</summary>
+        /// <summary>è´´å›¾æ–‡ä»¶è·¯å¾„ï¼ˆå¯ä»¥ç”¨æ¥å¯¹æ¯”æ˜¯ä¸æ˜¯é‡å¤åŠ è½½äº†è´´å›¾ï¼‰</summary>
         std::string path;
-        /// <summary>³ß´ç</summary>
+        /// <summary>å°ºå¯¸</summary>
         int width, height;
-        /// <summary>¸ñÊ½</summary>
+        /// <summary>æ ¼å¼</summary>
         GLenum format;
-        /// <summary>¿ÕµÄÌùÍ¼</summary>
+        /// <summary>ç©ºçš„è´´å›¾</summary>
 		Texture();
-        /// <summary>¼ÓÔØÒ»ÕÅÌùÍ¼</summary>
-        /// <param name="path">Í¼Æ¬×ÊÔ´Â·¾¶</param>
+        /// <summary>åŠ è½½ä¸€å¼ è´´å›¾</summary>
+        /// <param name="path">å›¾ç‰‡èµ„æºè·¯å¾„</param>
         Texture(std::string path);
-        /// <summary>ÓÃÑÕÉ«Éú³ÉÒ»ÕÅÌùÍ¼£¬ÑÕÉ«·ÖÁ¿ÊÇfloatĞÍµÄ</summary>
-        /// <param name="color">ÑÕÉ«Öµ£¬ÈçºìÉ«vec4(1.0f,0.0f,0.0f,1.0f)</param>
+        /// <summary>ç”¨é¢œè‰²ç”Ÿæˆä¸€å¼ è´´å›¾ï¼Œé¢œè‰²åˆ†é‡æ˜¯floatå‹çš„</summary>
+        /// <param name="color">é¢œè‰²å€¼ï¼Œå¦‚çº¢è‰²vec4(1.0f,0.0f,0.0f,1.0f)</param>
         Texture(glm::vec4 color);
-        /// <summary>´ÓGPUÖĞÊÍ·ÅÌùÍ¼×ÊÔ´</summary>
+        /// <summary>ä»GPUä¸­é‡Šæ”¾è´´å›¾èµ„æº</summary>
 		void release();
     };
 }

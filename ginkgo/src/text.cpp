@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <text.h>
 #include <locale.h>  
@@ -14,19 +14,19 @@ TTFCharacter::TTFCharacter(Node* parent, wchar_t charcode, float fontSize, glm::
 {
     id = 0;
     code = charcode;
-    // »ñÈ¡Õâ¸ö×ÖÌå
+    // è·å–è¿™ä¸ªå­—ä½“
     auto iter = loadedFonts.find(font);
     if (iter == loadedFonts.end())
     {
-        // Èç¹ûÃ»ÓĞ»º´æÕâ¸ö×ÖÌåÔòÏÖÔÚÔØÈëÒ»ÏÂ
+        // å¦‚æœæ²¡æœ‰ç¼“å­˜è¿™ä¸ªå­—ä½“åˆ™ç°åœ¨è½½å…¥ä¸€ä¸‹
         loadFont(font.c_str());
         iter = loadedFonts.find(font);
     }
     stbtt_fontinfo fontinfo = (*iter).second;
 
-    // »ñÈ¡×ÖĞÎµÄ»º³å
+    // è·å–å­—å½¢çš„ç¼“å†²
     unsigned char* bitmap = stbtt_GetCodepointBitmap(&fontinfo, 0, stbtt_ScaleForPixelHeight(&fontinfo, fontSize), charcode, &width, &height, &xoff, &yoff);
-    // Éú³ÉÌùÍ¼ÄÚÈİ£¨³¤x¿íx4(RGBA)£©,¶ÔÁËOpenGLÒª·´×ªyÖá
+    // ç”Ÿæˆè´´å›¾å†…å®¹ï¼ˆé•¿xå®½x4(RGBA)ï¼‰,å¯¹äº†OpenGLè¦åè½¬yè½´
     unsigned char* data = (unsigned char*)malloc(width*height * 4);
     int i, j;
     for (j = 0; j < height; ++j) {
@@ -39,13 +39,13 @@ TTFCharacter::TTFCharacter(Node* parent, wchar_t charcode, float fontSize, glm::
         }
     }
 
-    // Èç¹û»ñÈ¡µ½µÄwidthÊÇ0£¬ÄÇÃ´¿ÉÄÜÊÇÓöµ½ÁË·ÇµÈ¿í×ÖÌåµÄ¿Õ¸ñ
+    // å¦‚æœè·å–åˆ°çš„widthæ˜¯0ï¼Œé‚£ä¹ˆå¯èƒ½æ˜¯é‡åˆ°äº†éç­‰å®½å­—ä½“çš„ç©ºæ ¼
     if (width != 0)
     {
         glGenTextures(1, &id);
         glBindTexture(GL_TEXTURE_2D, id);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);//Éú³Émipmap
+        glGenerateMipmap(GL_TEXTURE_2D);//ç”Ÿæˆmipmap
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -54,7 +54,7 @@ TTFCharacter::TTFCharacter(Node* parent, wchar_t charcode, float fontSize, glm::
     }
     else
     {
-        // ¿Õ¸ñ¿ÕÎ»×ÖºÅµÄÒ»°ë
+        // ç©ºæ ¼ç©ºä½å­—å·çš„ä¸€åŠ
         width = (int)(fontSize / 2.0f);
     }
 
@@ -62,8 +62,8 @@ TTFCharacter::TTFCharacter(Node* parent, wchar_t charcode, float fontSize, glm::
 
 
     float vertices[] =
-    {	// ÕâÑùÉèÖÃ¶¥µãÎ»ÖÃ¿ÉÒÔÊ¹µÃÃªµãÔÚ×ÖµÄ×óÉÏ½Ç
-        // ¶¥µãÎ»ÖÃ		      				    ÎÆÀí×ø±ê
+    {	// è¿™æ ·è®¾ç½®é¡¶ç‚¹ä½ç½®å¯ä»¥ä½¿å¾—é”šç‚¹åœ¨å­—çš„å·¦ä¸Šè§’
+        // é¡¶ç‚¹ä½ç½®		      				    çº¹ç†åæ ‡
                 0.0f,           0.0f,  0.0f,    0.0f, 1.0f,
                 0.0f, -(float)height,  0.0f,    0.0f, 0.0f,
         (float)width, -(float)height,  0.0f,    1.0f, 0.0f,
@@ -72,7 +72,7 @@ TTFCharacter::TTFCharacter(Node* parent, wchar_t charcode, float fontSize, glm::
         (float)width, -(float)height,  0.0f,    1.0f, 0.0f,
         (float)width,           0.0f,  0.0f,    1.0f, 1.0f
     };
-    // Éú³ÉVAO, VBO
+    // ç”ŸæˆVAO, VBO
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
     glBindVertexArray(VAO);
@@ -90,25 +90,24 @@ TTFCharacter::~TTFCharacter()
     if (id)
     {
         glDeleteTextures(1, &id);
+        glDeleteBuffers(1, &VBO);
+        glDeleteVertexArrays(1, &VAO);
     }
-
-    glDeleteBuffers(1, &VBO);
-    glDeleteVertexArrays(1, &VAO);
 }
 
-// ¼ÓÔØÒ»¸öTTF×ÖÌåÎÄ¼şµ½ÄÚ´æÖĞ
+// åŠ è½½ä¸€ä¸ªTTFå­—ä½“æ–‡ä»¶åˆ°å†…å­˜ä¸­
 void TTFCharacter::loadFont(const char* filePath)
 {
     stbtt_fontinfo font;
     FILE* fp;
-    // ÏÈ·ÖÅä¸ö32MBµÄ¿Õ¼ä
+    // å…ˆåˆ†é…ä¸ª32MBçš„ç©ºé—´
     unsigned char* buffer = (unsigned char*)malloc(1 << 25);
-    // ¶ÁÈ¡ÎÄ¼ş
+    // è¯»å–æ–‡ä»¶
     if (fopen_s(&fp, filePath, "rb"))
     {
-        cout << "ÕÒ²»µ½×ÖÌåÎÄ¼ş[" << filePath << "]";
+        cout << "æ‰¾ä¸åˆ°å­—ä½“æ–‡ä»¶[" << filePath << "]";
 #ifdef WIN32
-        cout << "£¬±»Ìæ»»Îªarialbd.ttf"<< endl;
+        cout << "ï¼Œè¢«æ›¿æ¢ä¸ºarialbd.ttf"<< endl;
         fopen_s(&fp, "C:/Windows/Fonts/arialbd.ttf", "rb");
 #else
         return;
@@ -116,11 +115,11 @@ void TTFCharacter::loadFont(const char* filePath)
     };
     size_t bSize = fread(buffer, 1, 1 << 25, fp);
     fclose(fp);
-    // µ÷Õû·ÖÅäµÄ¿Õ¼äÎªÎÄ¼ş´óĞ¡
+    // è°ƒæ•´åˆ†é…çš„ç©ºé—´ä¸ºæ–‡ä»¶å¤§å°
     buffer = (unsigned char*)realloc(buffer, bSize);
-    // ³õÊ¼»¯×ÖÌå
+    // åˆå§‹åŒ–å­—ä½“
     stbtt_InitFont(&font, buffer, stbtt_GetFontOffsetForIndex(buffer, 0));
-    // °ÑÕâ¸ö×ÖÌåÌí¼Óµ½»º´æÖĞ
+    // æŠŠè¿™ä¸ªå­—ä½“æ·»åŠ åˆ°ç¼“å­˜ä¸­
     loadedFonts.insert(make_pair(string(filePath), font));
 }
 
@@ -129,7 +128,7 @@ void TTFCharacter::releaseFont(const char* filePath)
     auto iter = loadedFonts.find(filePath);
     if (iter != loadedFonts.end())
     {
-        // ÊÍ·ÅÄÚ´æ
+        // é‡Šæ”¾å†…å­˜
         free((*iter).second.data);
         loadedFonts.erase(iter);
     }
@@ -186,7 +185,7 @@ wstring Text::s2ws(const string& s)
 Text::Text(Node* parent, std::wstring text, TextConfig config) :Node(parent)
 {
     setText(text, config);
-    // Õâ¸öÎÄ±¾¿Ï¶¨ÊÇÓĞ²¿·ÖÎÆÀíÊÇÍ¸Ã÷µÄÀ²£¬ËùÒÔÄ¬ÈÏËûÒª½øĞĞÊÖ¶¯ÅÅĞò°É
+    // è¿™ä¸ªæ–‡æœ¬è‚¯å®šæ˜¯æœ‰éƒ¨åˆ†çº¹ç†æ˜¯é€æ˜çš„å•¦ï¼Œæ‰€ä»¥é»˜è®¤ä»–è¦è¿›è¡Œæ‰‹åŠ¨æ’åºå§
     this->shouldSort = true;
 }
 
@@ -211,19 +210,19 @@ void Text::setTextConfig(TextConfig config)
 
 void Text::updateCharacters()
 {
-    // Çå³ıËùÓĞµÄÎÄ×Ö
+    // æ¸…é™¤æ‰€æœ‰çš„æ–‡å­—
     auto iter = characters.begin();
     for (auto i = characters.begin(); i != characters.end();)
     {
         TTFCharacter* child = *i;
-        // °²È«µÄÉ¾³ı³ÉÔ±£¬c++11Ö§³Öerase·½·¨·µ»Ø±»É¾³ıµÄÏÂÒ»¸ö½Úµã
+        // å®‰å…¨çš„åˆ é™¤æˆå‘˜ï¼Œc++11æ”¯æŒeraseæ–¹æ³•è¿”å›è¢«åˆ é™¤çš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
         i = characters.erase(i);
-        child->removedFromParent();//Õâ¸ö²Ù×÷Ö»»á¶Ï¾øÆä¸¸×Ó¹ØÏµ¶ø²»ÊÍ·ÅÄÚ´æ
+        child->removedFromParent();//è¿™ä¸ªæ“ä½œåªä¼šæ–­ç»å…¶çˆ¶å­å…³ç³»è€Œä¸é‡Šæ”¾å†…å­˜
         delete(child);
     }
 
-    // ½Ó¿ÚÒÑ¾­Ö±½Ó¸ÄÎªÓÃ¿í×Ö·û
-    //// ¶à×Ö½Ú×ªÎª¿í×Ö·û£¨²ÅÄÜÕıÈ·»ñÈ¡µ½¶ÔÓ¦µÄ×ÖĞÎ£©
+    // æ¥å£å·²ç»ç›´æ¥æ”¹ä¸ºç”¨å®½å­—ç¬¦
+    //// å¤šå­—èŠ‚è½¬ä¸ºå®½å­—ç¬¦ï¼ˆæ‰èƒ½æ­£ç¡®è·å–åˆ°å¯¹åº”çš„å­—å½¢ï¼‰
     //wstring wtext = s2ws(text);
     float x = 0, y = 0;
     for (unsigned int i = 0; i < text.length(); i++)
@@ -232,9 +231,9 @@ void Text::updateCharacters()
         c->position.x = x;
         c->position.y = y - (float)(c->yoff);
         characters.push_back(c);
-        // ÏòÓÒÒÆ¶¯ÏÂÒ»¸ö×Ö
+        // å‘å³ç§»åŠ¨ä¸‹ä¸€ä¸ªå­—
         x = x + c->width + c->xoff + config.colSpacing;
-        // »»ĞĞ
+        // æ¢è¡Œ
         if (config.lineWidth > 0 && config.lineWidth < x)
         {
             x = 0.0f;

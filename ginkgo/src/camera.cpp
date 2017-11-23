@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <camera.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,7 +15,7 @@ Camera::Camera(Node* parent, vec3 position, vec3 worldUp, float yaw, float pitch
 	this->rotation.x = pitch;
 	updateCameraVectors();
 
-	// Ä¬ÈÏ´´½¨Ò»¸öÕý½»µÄÍ¶Ó°Õó
+	// é»˜è®¤åˆ›å»ºä¸€ä¸ªæ­£äº¤çš„æŠ•å½±é˜µ
 	float width = (float)Game::getConfigurations().width;
 	float height = (float)Game::getConfigurations().height;
 	projectionMatrix = ortho(0.0f, width, 0.0f, height, 0.1f, Game::getConfigurations().height / 0.414f + 1000.0f);
@@ -34,13 +34,13 @@ vec3 Camera::getFront()
 
 void Camera::updateCameraVectors()
 {
-	// ¼ÆËãÐÂµÄÇ°ÏòÏòÁ¿
+	// è®¡ç®—æ–°çš„å‰å‘å‘é‡
 	glm::vec3 front;
 	front.x = cos(glm::radians(rotation.y))*cos(glm::radians(rotation.x));
 	front.y = sin(glm::radians(rotation.x));
 	front.z = sin(glm::radians(rotation.y))*cos(glm::radians(rotation.x));
 	this->front = glm::normalize(front);
-	// ¼ÆËãÓÒºÍÉÏ·½ÏòµÄÏòÁ¿
+	// è®¡ç®—å³å’Œä¸Šæ–¹å‘çš„å‘é‡
 	right = glm::normalize(glm::cross(this->front, worldUp));
 	up = glm::normalize(glm::cross(right, this->front));
 }

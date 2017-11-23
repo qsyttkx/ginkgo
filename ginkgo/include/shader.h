@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <macros.h>
 #include <string>
@@ -6,64 +6,64 @@
 
 namespace ginkgo
 {
-    /// <summary>×ÅÉ«Æ÷</summary>
+    /// <summary>ç€è‰²å™¨</summary>
     class DLL Shader
     {
     public:
-		/// <summary>¿ÕµÄ×ÅÉ«Æ÷£¬ÓÉÓÚ¼¸¸öÄÚ½¨µÄ×ÅÉ«Æ÷ÊÇ¾²Ì¬±äÁ¿£¬µ«ÊÇ±àÒëĞèÒªµÈµ½³õÊ¼»¯Íê±ÏËùÒÔÏÈµ÷ÓÃÕâ¸ö¿ÕµÄ¹¹½¨º¯Êı</summary>
+		/// <summary>ç©ºçš„ç€è‰²å™¨ï¼Œç”±äºå‡ ä¸ªå†…å»ºçš„ç€è‰²å™¨æ˜¯é™æ€å˜é‡ï¼Œä½†æ˜¯ç¼–è¯‘éœ€è¦ç­‰åˆ°åˆå§‹åŒ–å®Œæ¯•æ‰€ä»¥å…ˆè°ƒç”¨è¿™ä¸ªç©ºçš„æ„å»ºå‡½æ•°</summary>
 		Shader() {}
-		/// <summary>ÊµÀı»¯ÄÚ½¨×ÅÉ«Æ÷</summary>
-        /// <param name="vsPath">¶¥µã×ÅÉ«³ÌĞòÎÄ¼şµÄÂ·¾¶</param>
-        /// <param name="fsPath">Æ¬¶Î×ÅÉ«³ÌĞòÎÄ¼şµÄÂ·¾¶</param>
+		/// <summary>å®ä¾‹åŒ–å†…å»ºç€è‰²å™¨</summary>
+        /// <param name="vsPath">é¡¶ç‚¹ç€è‰²ç¨‹åºæ–‡ä»¶çš„è·¯å¾„</param>
+        /// <param name="fsPath">ç‰‡æ®µç€è‰²ç¨‹åºæ–‡ä»¶çš„è·¯å¾„</param>
         Shader(const char* vsPath, const char* fsPath);
-        /// <summary>Ê¹ÓÃ¸Ã×ÅÉ«Æ÷</summary>
+        /// <summary>ä½¿ç”¨è¯¥ç€è‰²å™¨</summary>
         void use();
-        /// <summary>´ÓGPUÊÍ·Å¸Ã×ÅÉ«Æ÷µÄ×ÊÔ´</summary>
+        /// <summary>ä»GPUé‡Šæ”¾è¯¥ç€è‰²å™¨çš„èµ„æº</summary>
         void release();
-        /// <summary>ÉèÖÃboolĞÍ(ÆäÊµÊÇint)uniform</summary>
-        /// <param name="name">uniformÃû</param>
-        /// <param name="value">uniformÖµ</param>
+        /// <summary>è®¾ç½®boolå‹(å…¶å®æ˜¯int)uniform</summary>
+        /// <param name="name">uniformå</param>
+        /// <param name="value">uniformå€¼</param>
         void setBool(const char* name, bool value) const;
-        /// <summary>ÉèÖÃintĞÍuniform</summary>
-        /// <param name="name">uniformÃû</param>
-        /// <param name="value">uniformÖµ</param>
+        /// <summary>è®¾ç½®intå‹uniform</summary>
+        /// <param name="name">uniformå</param>
+        /// <param name="value">uniformå€¼</param>
         void setInt(const char* name, int value) const;
-        /// <summary>ÉèÖÃfloatĞÍuniform</summary>
-        /// <param name="name">uniformÃû</param>
-        /// <param name="value">uniformÖµ</param>
+        /// <summary>è®¾ç½®floatå‹uniform</summary>
+        /// <param name="name">uniformå</param>
+        /// <param name="value">uniformå€¼</param>
         void setFloat(const char* name, float value) const;
-        /// <summary>ÉèÖÃMat4ĞÍuniform</summary>
-        /// <param name="name">uniformÃû</param>
-        /// <param name="value">uniformÖµ</param>
+        /// <summary>è®¾ç½®Mat4å‹uniform</summary>
+        /// <param name="name">uniformå</param>
+        /// <param name="value">uniformå€¼</param>
         void setMat4(const char* name, glm::mat4 matrix) const;
-        /// <summary>ÉèÖÃvec2ĞÍuniform</summary>
-        /// <param name="name">uniformÃû</param>
-        /// <param name="value">uniformÖµ</param>
+        /// <summary>è®¾ç½®vec2å‹uniform</summary>
+        /// <param name="name">uniformå</param>
+        /// <param name="value">uniformå€¼</param>
         void setVec2(const char* name, glm::vec2 value) const;
-        /// <summary>ÉèÖÃvec3ĞÍuniform</summary>
-        /// <param name="name">uniformÃû</param>
-        /// <param name="value">uniformÖµ</param>
+        /// <summary>è®¾ç½®vec3å‹uniform</summary>
+        /// <param name="name">uniformå</param>
+        /// <param name="value">uniformå€¼</param>
         void setVec3(const char* name, glm::vec3 value) const;
-        /// <summary>ÉèÖÃvec4ĞÍuniform</summary>
-        /// <param name="name">uniformÃû</param>
-        /// <param name="value">uniformÖµ</param>
+        /// <summary>è®¾ç½®vec4å‹uniform</summary>
+        /// <param name="name">uniformå</param>
+        /// <param name="value">uniformå€¼</param>
         void setVec4(const char* name, glm::vec4 value) const;
-        /// <summary>»ñÈ¡×ÅÉ«Æ÷µÄID</summary>
+        /// <summary>è·å–ç€è‰²å™¨çš„ID</summary>
         unsigned int getID();
-		/// <summary>±àÒëÄÚ½¨×ÅÉ«Æ÷</summary>
+		/// <summary>ç¼–è¯‘å†…å»ºç€è‰²å™¨</summary>
 		static void buildBuiltinShaders();
-        /// ÒÔÏÂÊÇÒ»Ğ©ÄÚ½¨µÄ»ù±¾×ÅÉ«Æ÷
-        /// <summary>»ù´¡×ÅÉ«Æ÷£¬Ö»ÓĞÒ»¸öÎÆÀíÌùÍ¼£¬Ã»ÓĞ¹âÕÕ</summary>
+        /// ä»¥ä¸‹æ˜¯ä¸€äº›å†…å»ºçš„åŸºæœ¬ç€è‰²å™¨
+        /// <summary>åŸºç¡€ç€è‰²å™¨ï¼Œåªæœ‰ä¸€ä¸ªçº¹ç†è´´å›¾ï¼Œæ²¡æœ‰å…‰ç…§</summary>
         static Shader basicDiffuse;
     private:
-		/// <summary>ÊµÀı»¯ÄÚ½¨×ÅÉ«Æ÷</summary>
-		/// <param name="name">ÄÚ½¨×ÅÉ«Æ÷µÄÃû×Ö</param>
+		/// <summary>å®ä¾‹åŒ–å†…å»ºç€è‰²å™¨</summary>
+		/// <param name="name">å†…å»ºç€è‰²å™¨çš„åå­—</param>
 		Shader(std::string name);
-        /// <summary>×ÅÉ«Æ÷³ÌĞòÔÚopenglÖĞµÄid</summary>
+        /// <summary>ç€è‰²å™¨ç¨‹åºåœ¨openglä¸­çš„id</summary>
         unsigned int id;
-        /// <summary>¶ÁÈ¡´úÂëÎÄ¼şÄÚÈİ</summary>
+        /// <summary>è¯»å–ä»£ç æ–‡ä»¶å†…å®¹</summary>
         std::string readCode(const char* path);
-        /// <summary>±àÒë×ÅÉ«Æ÷</summary>
+        /// <summary>ç¼–è¯‘ç€è‰²å™¨</summary>
         unsigned int compileShader(const char* code, unsigned int shaderType);
     };
 
@@ -73,7 +73,7 @@ namespace ginkgo
         "layout(location = 0) in vec3 aPos;\n"
         "layout(location = 1) in vec2 aTexCoords;\n"
         "out vec2 TexCoords;\n"
-        "// Ä£ĞÍÊÓÍ¼Í¶Ó°¾ØÕó\n"
+        "// æ¨¡å‹è§†å›¾æŠ•å½±çŸ©é˜µ\n"
         "uniform mat4 model;\n"
         "uniform mat4 view;\n"
         "uniform mat4 projection;\n"
@@ -87,7 +87,7 @@ namespace ginkgo
         "out vec4 FragColor;\n"
         "in  vec2 TexCoords;\n"
         "uniform float node_opacity;\n"
-        "// ½ÓÊÜÒ»¸öÂş·´ÉäÌùÍ¼\n"
+        "// æ¥å—ä¸€ä¸ªæ¼«åå°„è´´å›¾\n"
         "uniform sampler2D texture_diffuse1;\n"
         "void main()\n"
         "{\n"

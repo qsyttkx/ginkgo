@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <macros.h>
 #include <map>
 #include <list>
@@ -9,16 +9,16 @@ namespace ginkgo
 {
     struct Animation;
 
-    // ¶¯»­¿ØÖÆÆ÷£¬½²µÀÀíÓ¦¸ÃÊÇÃ¿¸öspriteÓĞÒ»¸ö¶¯»­¿ØÖÆÆ÷
+    // åŠ¨ç”»æ§åˆ¶å™¨ï¼Œè®²é“ç†åº”è¯¥æ˜¯æ¯ä¸ªspriteæœ‰ä¸€ä¸ªåŠ¨ç”»æ§åˆ¶å™¨
     class DLL Animator {
     public:
-        // ¹¹Ôìº¯Êı
+        // æ„é€ å‡½æ•°
         Animator();
-        // ¼¤»î¡¢Í£Ö¹¶¯»­
+        // æ¿€æ´»ã€åœæ­¢åŠ¨ç”»
         void setActive(bool isActive);
-        // ¸üĞÂ¶¯»­×´Ì¬
+        // æ›´æ–°åŠ¨ç”»çŠ¶æ€
         void update(float dt);
-        // Ìæ»»µ±Ç°¶¯»­
+        // æ›¿æ¢å½“å‰åŠ¨ç”»
         void replaceAnimation(Animation anim);
     protected:
         std::string currentAnimation;
@@ -26,7 +26,7 @@ namespace ginkgo
         bool isActive;
     };
 
-    // Í¨ÓÃ¶¯»­Æ¬¶Î£¬ÒâË¼¾ÍÊÇ²»ÅÉÉúµÄ»°É¶Ò²×ö²»ÁË
+    // é€šç”¨åŠ¨ç”»ç‰‡æ®µï¼Œæ„æ€å°±æ˜¯ä¸æ´¾ç”Ÿçš„è¯å•¥ä¹Ÿåšä¸äº†
     struct DLL Animation {
         Animation(std::string name);
         std::string name;
@@ -36,12 +36,12 @@ namespace ginkgo
         std::list<std::function<void(float, Animator)>> calls;
     };
     
-    // ÖğÖ¡¶¯»­Æ¬¶Î
+    // é€å¸§åŠ¨ç”»ç‰‡æ®µ
     class DLL AnimationFrameByFrame :public Animation
     {
     public:
         AnimationFrameByFrame(std::string name);
-        // ÖğÖ¡¶¯»­µÄÖ¡
+        // é€å¸§åŠ¨ç”»çš„å¸§
         class Frame
         {
             Texture img;

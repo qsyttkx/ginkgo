@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <macros.h>
 #include <glad/glad.h>
@@ -9,24 +9,24 @@
 
 namespace ginkgo
 {
-    /// <summary>2D¾«Áé£¬¼Ì³Ğ×ÔNode£¬ÆäÊµ¾ÍÊÇ¾ØĞÎµÄÄ£ĞÍ¶øÒÑ</summary>
+    /// <summary>2Dç²¾çµï¼Œç»§æ‰¿è‡ªNodeï¼Œå…¶å®å°±æ˜¯çŸ©å½¢çš„æ¨¡å‹è€Œå·²</summary>
 	class DLL Sprite2D :public Node
 	{
 	public:
-        /// <summary>¹¹½¨Ò»¸ö2D¾«Áé</summary>
-        /// <param name="parent">¸¸½Úµã</param>
-        /// <param name="img">ÎÆÀí</param>
+        /// <summary>æ„å»ºä¸€ä¸ª2Dç²¾çµ</summary>
+        /// <param name="parent">çˆ¶èŠ‚ç‚¹</param>
+        /// <param name="img">çº¹ç†</param>
 		Sprite2D(Node* parent, Texture img);
-        /// <summary>Îö¹¹</summary>
+        /// <summary>ææ„</summary>
 		virtual ~Sprite2D();
-        /// <summary>äÖÈ¾</summary>
+        /// <summary>æ¸²æŸ“</summary>
 		virtual void render();
-        /// <summary>µ±Ç°ÎÆÀíID£¨¿ÉÄÜ»á±»animatorÌæ»»£©</summary>
+        /// <summary>å½“å‰çº¹ç†IDï¼ˆå¯èƒ½ä¼šè¢«animatoræ›¿æ¢ï¼‰</summary>
         GLuint textureID;
 	private:
-        /// <summary>ÎÆÀí</summary>
+        /// <summary>çº¹ç†</summary>
 		Texture img;
-        /// <summary>¶¥µãÊı×é¡¢»º³å¶ÔÏó</summary>
+        /// <summary>é¡¶ç‚¹æ•°ç»„ã€ç¼“å†²å¯¹è±¡</summary>
 		GLuint VAO, VBO;
 	};
 }

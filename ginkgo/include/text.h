@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <macros.h>
 #include <string>
@@ -10,28 +10,28 @@
 
 namespace ginkgo
 {
-    /// <summary>ÎÄ±¾ÅäÖÃ</summary>
+    /// <summary>æ–‡æœ¬é…ç½®</summary>
 	struct DLL TextConfig
 	{
-        /// <summary>×ÖºÅ</summary>
+        /// <summary>å­—å·</summary>
 		float size;
-        /// <summary>×ÖÌåÑÕÉ«</summary>
+        /// <summary>å­—ä½“é¢œè‰²</summary>
 		glm::vec4 color;
-        /// <summary>×ÖÌåÎÄ¼þÂ·¾¶</summary>
+        /// <summary>å­—ä½“æ–‡ä»¶è·¯å¾„</summary>
 		std::string font;
-        /// <summary>Ò»ÐÐ×î¶àÄÜÓÐ¶à¿í£¨ÓÃÀ´»»ÐÐ£©£¬Èç¹ûÎª0Ôò²»ÏÞÖÆ</summary>
+        /// <summary>ä¸€è¡Œæœ€å¤šèƒ½æœ‰å¤šå®½ï¼ˆç”¨æ¥æ¢è¡Œï¼‰ï¼Œå¦‚æžœä¸º0åˆ™ä¸é™åˆ¶</summary>
 		float lineWidth;
-        /// <summary>ÐÐ¾à</summary>
+        /// <summary>è¡Œè·</summary>
 		float rowSpacing;
-        /// <summary>ÁÐ¾à</summary>
+        /// <summary>åˆ—è·</summary>
 		float colSpacing;
-        /// <summary>¹¹ÔìÒ»¸öÐÂµÄÎÄ±¾ÅäÖÃ</summary>
-        /// <param name="size">×ÖÌå´óÐ¡</param>
-        /// <param name="color">×ÖÌåÑÕÉ«</param>
-        /// <param name="font">×ÖÌåÎÄ¼þÂ·¾¶</param>
-        /// <param name="lineWidth">ÐÐ¿í£¬±íÊ¾Ò»ÐÐ×î¶àÄÜÓÐ¶à¿í£¨ÓÃÀ´»»ÐÐ£©£¬Èç¹ûÎª0Ôò²»ÏÞÖÆ</param>
-        /// <param name="rowSpacing">ÐÐ¾à</param>
-        /// <param name="colSpacing">ÁÐ¾à</param>
+        /// <summary>æž„é€ ä¸€ä¸ªæ–°çš„æ–‡æœ¬é…ç½®</summary>
+        /// <param name="size">å­—ä½“å¤§å°</param>
+        /// <param name="color">å­—ä½“é¢œè‰²</param>
+        /// <param name="font">å­—ä½“æ–‡ä»¶è·¯å¾„</param>
+        /// <param name="lineWidth">è¡Œå®½ï¼Œè¡¨ç¤ºä¸€è¡Œæœ€å¤šèƒ½æœ‰å¤šå®½ï¼ˆç”¨æ¥æ¢è¡Œï¼‰ï¼Œå¦‚æžœä¸º0åˆ™ä¸é™åˆ¶</param>
+        /// <param name="rowSpacing">è¡Œè·</param>
+        /// <param name="colSpacing">åˆ—è·</param>
 		TextConfig(float size = 32, glm::vec4 color = glm::vec4(0, 0, 0, 1), std::string font = "", float lineWidth = 0, float rowSpacing = 2.0f, float colSpacing = 2.0f)
 		{
 			this->size = size;
@@ -43,79 +43,79 @@ namespace ginkgo
 		}
 	};
 
-    /// <summary>TTF×Ö·û</summary>
+    /// <summary>TTFå­—ç¬¦</summary>
 	class DLL TTFCharacter :public Node
 	{
 	public:
-        /// <summary>¹¹ÔìÒ»¸öTTF×Ö·û</summary>
-        /// <param name="parent">¸¸½Úµã</param>
-        /// <param name="charcode">×ÖÐÎÂë</param>
-        /// <param name="fontSize">×ÖÌå´óÐ¡</param>
-        /// <param name="color">ÑÕÉ«</param>
-        /// <param name="font">×ÖÌåÃû</param>
+        /// <summary>æž„é€ ä¸€ä¸ªTTFå­—ç¬¦</summary>
+        /// <param name="parent">çˆ¶èŠ‚ç‚¹</param>
+        /// <param name="charcode">å­—å½¢ç </param>
+        /// <param name="fontSize">å­—ä½“å¤§å°</param>
+        /// <param name="color">é¢œè‰²</param>
+        /// <param name="font">å­—ä½“å</param>
 		TTFCharacter(Node* parent, wchar_t charcode, float fontSize, glm::vec4 color, std::string font);
-        /// <summary>Îö¹¹Ê±ÊÍ·ÅGPU×ÊÔ´</summary>
+        /// <summary>æžæž„æ—¶é‡Šæ”¾GPUèµ„æº</summary>
 		virtual ~TTFCharacter();
-        /// <summary>¼ÓÔØÒ»¸ö×ÖÌåÎÄ¼þ</summary>
-        /// <param name="filePath">×ÖÌåÎÄ¼þÂ·¾¶</param>
+        /// <summary>åŠ è½½ä¸€ä¸ªå­—ä½“æ–‡ä»¶</summary>
+        /// <param name="filePath">å­—ä½“æ–‡ä»¶è·¯å¾„</param>
 		static void loadFont(const char* filePath);
-        /// <summary>ÊÍ·ÅÒ»¸ö×ÖÌåÎÄ¼þ</summary>
-        /// <param name="filePath">×ÖÌåÎÄ¼þÂ·¾¶</param>
+        /// <summary>é‡Šæ”¾ä¸€ä¸ªå­—ä½“æ–‡ä»¶</summary>
+        /// <param name="filePath">å­—ä½“æ–‡ä»¶è·¯å¾„</param>
 		static void releaseFont(const char* filePath);
-        /// <summary>äÖÈ¾</summary>
+        /// <summary>æ¸²æŸ“</summary>
 		virtual void render();
-        /// <summary>¿í£¬¸ß£¬ºáÆ«ÒÆÁ¿£¬×ÝÆ«ÒÆÁ¿</summary>
+        /// <summary>å®½ï¼Œé«˜ï¼Œæ¨ªåç§»é‡ï¼Œçºµåç§»é‡</summary>
         int width, height, xoff, yoff;
 	protected:
-        /// <summary>»º´æµÄ×ÖÌåÎÄ¼þ</summary>
+        /// <summary>ç¼“å­˜çš„å­—ä½“æ–‡ä»¶</summary>
 		static std::map<std::string, stbtt_fontinfo> loadedFonts;
-        /// <summary>×Ö·ûÌùÍ¼µÄid</summary>
+        /// <summary>å­—ç¬¦è´´å›¾çš„id</summary>
 		GLuint id;
-        /// <summary>¶¥µãÊý×é¡¢»º³å¶ÔÏó</summary>
+        /// <summary>é¡¶ç‚¹æ•°ç»„ã€ç¼“å†²å¯¹è±¡</summary>
 		GLuint VAO, VBO;
-        /// <summary>×Ö·ûÂë</summary>
+        /// <summary>å­—ç¬¦ç </summary>
         wchar_t code;
 	};
 
 	class DLL Text :public Node
 	{
 	public:
-        /// <summary>¿í×Ö·û´®->×Ö·û´®(·ÇÏß³Ì°²È«)</summary>
-        /// <param name="ws">´ý×ª»»µÄ¿í×Ö·û´®</param>
-        /// <returns>·µ»Ø×Ö·û´®</returns>
+        /// <summary>å®½å­—ç¬¦ä¸²->å­—ç¬¦ä¸²(éžçº¿ç¨‹å®‰å…¨)</summary>
+        /// <param name="ws">å¾…è½¬æ¢çš„å®½å­—ç¬¦ä¸²</param>
+        /// <returns>è¿”å›žå­—ç¬¦ä¸²</returns>
 		static	std::string ws2s(const std::wstring& ws);
-        /// <summary>×Ö·û´®->¿í×Ö·û´®(·ÇÏß³Ì°²È«)</summary>
-        /// <param name="s">´ý×ª»»µÄ×Ö·û´®</param>
-        /// <returns>·µ»Ø¿í×Ö·û´®</returns>
+        /// <summary>å­—ç¬¦ä¸²->å®½å­—ç¬¦ä¸²(éžçº¿ç¨‹å®‰å…¨)</summary>
+        /// <param name="s">å¾…è½¬æ¢çš„å­—ç¬¦ä¸²</param>
+        /// <returns>è¿”å›žå®½å­—ç¬¦ä¸²</returns>
 		static std::wstring s2ws(const std::string& s);
-        /// <summary>¹¹ÔìÒ»¸öÎÄ±¾</summary>
-        /// <param name="text">ÎÄ±¾ÄÚÈÝ</param>
-        /// <param name="config">ÎÄ±¾ÅäÖÃ</param>
+        /// <summary>æž„é€ ä¸€ä¸ªæ–‡æœ¬</summary>
+        /// <param name="text">æ–‡æœ¬å†…å®¹</param>
+        /// <param name="config">æ–‡æœ¬é…ç½®</param>
 		Text(Node* parent, std::wstring text = L"", TextConfig config = TextConfig());
-        /// <summary>ÉèÖÃÎÄ±¾ÄÚÈÝ£¨²»½¨Òé¶ÌÊ±¼ä·´¸´µ÷ÓÃ´Ë·½·¨£¬»áÓ°ÏìÐ§ÂÊ£©</summary>
-        /// <param name="text">ÎÄ±¾ÄÚÈÝ</param>
+        /// <summary>è®¾ç½®æ–‡æœ¬å†…å®¹ï¼ˆä¸å»ºè®®çŸ­æ—¶é—´åå¤è°ƒç”¨æ­¤æ–¹æ³•ï¼Œä¼šå½±å“æ•ˆçŽ‡ï¼‰</summary>
+        /// <param name="text">æ–‡æœ¬å†…å®¹</param>
 		void setText(std::wstring text);
-        /// <summary>ÉèÖÃÎÄ±¾ÄÚÈÝ£¨²»½¨Òé¶ÌÊ±¼ä·´¸´µ÷ÓÃ´Ë·½·¨£¬»áÓ°ÏìÐ§ÂÊ£©</summary>
-        /// <param name="text">ÎÄ±¾ÄÚÈÝ</param>
-        /// <param name="config">ÎÄ±¾ÅäÖÃ</param>
+        /// <summary>è®¾ç½®æ–‡æœ¬å†…å®¹ï¼ˆä¸å»ºè®®çŸ­æ—¶é—´åå¤è°ƒç”¨æ­¤æ–¹æ³•ï¼Œä¼šå½±å“æ•ˆçŽ‡ï¼‰</summary>
+        /// <param name="text">æ–‡æœ¬å†…å®¹</param>
+        /// <param name="config">æ–‡æœ¬é…ç½®</param>
 		void setText(std::wstring text, TextConfig config);
-        /// <summary>ÉèÖÃÎÄ±¾ÅäÖÃ£¨²»½¨Òé¶ÌÊ±¼ä·´¸´µ÷ÓÃ´Ë·½·¨£¬»áÓ°ÏìÐ§ÂÊ£©</summary>
-        /// <param name="config">ÎÄ±¾ÅäÖÃ</param>
+        /// <summary>è®¾ç½®æ–‡æœ¬é…ç½®ï¼ˆä¸å»ºè®®çŸ­æ—¶é—´åå¤è°ƒç”¨æ­¤æ–¹æ³•ï¼Œä¼šå½±å“æ•ˆçŽ‡ï¼‰</summary>
+        /// <param name="config">æ–‡æœ¬é…ç½®</param>
 		void setTextConfig(TextConfig config);
-        /// <summary>ÎÄ±¾ÄÚÈÝ</summary>
+        /// <summary>æ–‡æœ¬å†…å®¹</summary>
 		std::wstring getText();
-        /// <summary>»ñÈ¡ÎÄ±¾Õ¼¾ÝµÄ´óÐ¡</summary>
+        /// <summary>èŽ·å–æ–‡æœ¬å æ®çš„å¤§å°</summary>
         glm::vec2 getSize();
 	protected:
-        /// <summary>×Ö·ûlist</summary>
+        /// <summary>å­—ç¬¦list</summary>
 		std::list<TTFCharacter*> characters;
-        /// <summary>¿í×Ö·ûÎÄ±¾</summary>
+        /// <summary>å®½å­—ç¬¦æ–‡æœ¬</summary>
 		std::wstring text;
-        /// <summary>ÎÄ±¾ÅäÖÃ</summary>
+        /// <summary>æ–‡æœ¬é…ç½®</summary>
 		TextConfig config;
-        /// <summary>¸üÐÂ×Ö·û£¨ÔÚÖØÉèÎÄ±¾ÄÚÈÝ»òÕßÅäÖÃºó»áµ÷ÓÃ´Ë·½·¨£©</summary>
+        /// <summary>æ›´æ–°å­—ç¬¦ï¼ˆåœ¨é‡è®¾æ–‡æœ¬å†…å®¹æˆ–è€…é…ç½®åŽä¼šè°ƒç”¨æ­¤æ–¹æ³•ï¼‰</summary>
 		void updateCharacters();
-        /// <summary>ÎÄ±¾Õ¼¾ÝµÄ´óÐ¡</summary>
+        /// <summary>æ–‡æœ¬å æ®çš„å¤§å°</summary>
         glm::vec2 containSize;
 	};
 }

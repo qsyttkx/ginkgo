@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 
 #include <macros.h>
 #include <node.h>
@@ -6,20 +6,20 @@
 
 namespace ginkgo
 {
-    /// <summary>³¡¾°</summary>
-    /// <para>Ò»¸öÓÎÏ·³¡¾°£¬Ò²×÷ÎªÆä³¡¾°ÄÚÈİµÄ¸ù½Úµã</para>
+    /// <summary>åœºæ™¯</summary>
+    /// <para>ä¸€ä¸ªæ¸¸æˆåœºæ™¯ï¼Œä¹Ÿä½œä¸ºå…¶åœºæ™¯å†…å®¹çš„æ ¹èŠ‚ç‚¹</para>
     class DLL Scene :public Node
     {
     public:
-        /// <summary>¹¹ÔìÒ»¸ö³¡¾°</summary>
+        /// <summary>æ„é€ ä¸€ä¸ªåœºæ™¯</summary>
         Scene();
-        /// <summary>Îö¹¹³¡¾°</summary>
-		virtual ~Scene();
-        /// <summary>Ö÷ÉãÏñ»ú</summary>
+        /// <summary>ææ„åœºæ™¯</summary>
+        virtual ~Scene() {}
+        /// <summary>ä¸»æ‘„åƒæœº</summary>
         Camera* mainCamera;
-        /// <summary>äÖÈ¾</summary>
+        /// <summary>æ¸²æŸ“</summary>
         virtual void render();
-        /// <summary>±³¾°ÑÕÉ«£¨glClearColor£©</summary>
+        /// <summary>èƒŒæ™¯é¢œè‰²ï¼ˆglClearColorï¼‰</summary>
         glm::vec3 backgroundColor;
     };
 }

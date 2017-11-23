@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <sprite2d.h>
 
@@ -11,8 +11,8 @@ Sprite2D::Sprite2D(Node* p, Texture img) :Node(p)
     textureID = img.id;
 	vec2 halfsize(img.width*0.5f, img.height*0.5f);
 	float vertices[] =
-	{	// ÕâÑùÉèÖÃ¶¥µãÎ»ÖÃ¿ÉÒÔÊ¹µÃÃªµãÔÚÍ¼Æ¬ÖĞĞÄ
-		// ¶¥µãÎ»ÖÃ						   ÎÆÀí×ø±ê
+	{	// è¿™æ ·è®¾ç½®é¡¶ç‚¹ä½ç½®å¯ä»¥ä½¿å¾—é”šç‚¹åœ¨å›¾ç‰‡ä¸­å¿ƒ
+		// é¡¶ç‚¹ä½ç½®						   çº¹ç†åæ ‡
 		-halfsize.x,  halfsize.y, 0.0f,    0.0f, 1.0f,
 		-halfsize.x, -halfsize.y, 0.0f,    0.0f, 0.0f,
 		halfsize.x, -halfsize.y,  0.0f,    1.0f, 0.0f,
@@ -22,7 +22,7 @@ Sprite2D::Sprite2D(Node* p, Texture img) :Node(p)
 		halfsize.x,  halfsize.y,  0.0f,    1.0f, 1.0f
 	};
 
-	// Éú³ÉVAO, VBO
+	// ç”ŸæˆVAO, VBO
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 	glBindVertexArray(VAO);

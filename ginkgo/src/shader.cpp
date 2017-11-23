@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <shader.h>
 #include <glad/glad.h>
@@ -12,15 +12,15 @@ Shader Shader::basicDiffuse;
 
 Shader::Shader(const char* vsPath, const char* fsPath)
 {
-    // ¶ÁÈ¡´úÂë
+    // è¯»å–ä»£ç 
     std::string vsCode = readCode(vsPath);
     std::string fsCode = readCode(fsPath);
 
-    // ±àÒë
+    // ç¼–è¯‘
     unsigned int vs = compileShader(vsCode.c_str(), GL_VERTEX_SHADER);
     unsigned int fs = compileShader(fsCode.c_str(), GL_FRAGMENT_SHADER);
 
-    // Á´½Ó
+    // é“¾æ¥
     int success;
     char log[512];
     id = glCreateProgram();
@@ -31,9 +31,9 @@ Shader::Shader(const char* vsPath, const char* fsPath)
     if (!success)
     {
         glGetProgramInfoLog(id, 512, NULL, log);
-        cout << "Shader[" << fsPath << "]Á´½Ó´íÎó:" << endl << log << endl;
+        cout << "Shader[" << fsPath << "]é“¾æ¥é”™è¯¯:" << endl << log << endl;
     }
-    // ÊÍ·Å
+    // é‡Šæ”¾
     glDeleteShader(vs);
     glDeleteShader(fs);
 }
@@ -53,13 +53,13 @@ std::string Shader::readCode(const char* path)
     FILE* fp;
     std::string code = "";
 
-    // ´ò¿ªÎÄ¼ş
+    // æ‰“å¼€æ–‡ä»¶
     if (fopen_s(&fp, path, "r"))
     {
-        cout << "Shader[" << path << "]¶ÁÈ¡´íÎó" << endl;
+        cout << "Shader[" << path << "]è¯»å–é”™è¯¯" << endl;
         return code;
     }
-    // ¶ÁÈ¡ÄÚÈİ
+    // è¯»å–å†…å®¹
     char buff[512];
     while (fgets(buff, 512, fp))
     {
@@ -81,7 +81,7 @@ unsigned int Shader::compileShader(const char* code, unsigned int shaderType)
     if (!success)
     {
         glGetShaderInfoLog(shader, 512, NULL, log);
-        cout << "Shader[" << shaderType << "]±àÒë´íÎó:" << endl << log << endl;
+        cout << "Shader[" << shaderType << "]ç¼–è¯‘é”™è¯¯:" << endl << log << endl;
         return 0;
     }
     return shader;
@@ -112,19 +112,19 @@ void Shader::setMat4(const char* name, glm::mat4 matrix) const
     glUniformMatrix4fv(glGetUniformLocation(id, name), 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-///<summary>ÉèÖÃVec2ĞÍUniformÖµ</summary>
+///<summary>è®¾ç½®Vec2å‹Uniformå€¼</summary>
 void Shader::setVec2(const char* name, glm::vec2 value) const
 {
     glUniform2f(glGetUniformLocation(id, name), value.x, value.y);
 }
 
-///<summary>ÉèÖÃVec3ĞÍUniformÖµ</summary>
+///<summary>è®¾ç½®Vec3å‹Uniformå€¼</summary>
 void Shader::setVec3(const char* name, glm::vec3 value) const
 {
     glUniform3f(glGetUniformLocation(id, name), value.x, value.y, value.z);
 }
 
-///<summary>ÉèÖÃVec4ĞÍUniformÖµ</summary>
+///<summary>è®¾ç½®Vec4å‹Uniformå€¼</summary>
 void Shader::setVec4(const char* name, glm::vec4 value) const
 {
     glUniform4f(glGetUniformLocation(id, name), value.x, value.y, value.z, value.w);
@@ -146,11 +146,11 @@ Shader::Shader(string name)
         fsCode = fs_basicDiffuse;
     }
 
-    // ±àÒë
+    // ç¼–è¯‘
     unsigned int vs = compileShader(vsCode, GL_VERTEX_SHADER);
     unsigned int fs = compileShader(fsCode, GL_FRAGMENT_SHADER);
 
-    // Á´½Ó
+    // é“¾æ¥
     int success;
     char log[512];
     id = glCreateProgram();
@@ -161,9 +161,9 @@ Shader::Shader(string name)
     if (!success)
     {
         glGetProgramInfoLog(id, 512, NULL, log);
-        cout << "Shader[" << name << "]Á´½Ó´íÎó:" << endl << log << endl;
+        cout << "Shader[" << name << "]é“¾æ¥é”™è¯¯:" << endl << log << endl;
     }
-    // ÊÍ·Å
+    // é‡Šæ”¾
     glDeleteShader(vs);
     glDeleteShader(fs);
 }

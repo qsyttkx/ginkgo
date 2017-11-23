@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <scene.h>
 #include <glad/glad.h>
@@ -11,19 +11,14 @@ using namespace glm;
 Scene::Scene()
 {
     mainCamera = new Camera(this, vec3(0, 0, Game::getConfigurations().height / 0.414f));
-    // ÉèÖÃ±³¾°É«
+    // è®¾ç½®èƒŒæ™¯è‰²
     backgroundColor = vec3(0.0f);
 
-    // ÆôÓÃÒ»Ð©OpenGLµÄ¹¦ÄÜ
+    // å¯ç”¨ä¸€äº›OpenGLçš„åŠŸèƒ½
     glEnable(GL_BLEND);
 
-    // ÉèÖÃÄ¬ÈÏµÄ»ìºÏº¯Êý
+    // è®¾ç½®é»˜è®¤çš„æ··åˆå‡½æ•°
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-Scene::~Scene()
-{
-    //...
 }
 
 void Scene::render()
@@ -33,11 +28,11 @@ void Scene::render()
     mainCamera->updateCameraVectors();
     glViewport(0, 0, Game::getConfigurations().width, Game::getConfigurations().height);
 
-    // Ä¬ÈÏÎÒÃÇÊ¹ÓÃ×î¼òµ¥µÄ×ÅÉ«Æ÷£¬Ö»ÓÐÌùÍ¼Ã»ÓÐ¹âÕÕ
+    // é»˜è®¤æˆ‘ä»¬ä½¿ç”¨æœ€ç®€å•çš„ç€è‰²å™¨ï¼Œåªæœ‰è´´å›¾æ²¡æœ‰å…‰ç…§
     Shader shader = Shader::basicDiffuse;
     //shader.use();
 
-    // Çå³ý»º³åÇø
+    // æ¸…é™¤ç¼“å†²åŒº
     glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     mat4 projection = mainCamera->projectionMatrix;

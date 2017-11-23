@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <ginkgo.h>
 #include <stb_image.h>
@@ -18,43 +18,43 @@ int Game::FPS = 0;
 Game::Game(GameConfig config)
 {
     this->config = config;
-    // ³õÊ¼»¯glfw, Ê¹ÓÃOpenGL 3.x°æ±¾£¬core profile
+    // åˆå§‹åŒ–glfw, ä½¿ç”¨OpenGL 3.xç‰ˆæœ¬ï¼Œcore profile
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);//½ûÖ¹µ÷Õû´°¿Ú´óĞ¡
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);//ç¦æ­¢è°ƒæ•´çª—å£å¤§å°
 
     GLFWmonitor* monitor = config.isFullScreen ? glfwGetPrimaryMonitor() : NULL;
     window = glfwCreateWindow(config.width, config.height, config.title.c_str(), monitor, NULL);
     if (window == NULL)
     {
-        cout << "´´½¨GLFW´°¿ÚÊ§°Ü" << endl;
+        cout << "åˆ›å»ºGLFWçª—å£å¤±è´¥" << endl;
         glfwTerminate();
         return;
     }
-    // ÒÔ´Ë´°¿ÚÎªµ±Ç°ÉÏÏÂÎÄ
+    // ä»¥æ­¤çª—å£ä¸ºå½“å‰ä¸Šä¸‹æ–‡
     glfwMakeContextCurrent(window);
-    // ³õÊ¼»¯glad
+    // åˆå§‹åŒ–glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        cout << "³õÊ¼»¯GLADÊ§°Ü" << endl;
+        cout << "åˆå§‹åŒ–GLADå¤±è´¥" << endl;
         return;
     }
 
-    // ¸ù¾İÅäÖÃ¿ªÆô´¹Ö±Í¬²½
+    // æ ¹æ®é…ç½®å¼€å¯å‚ç›´åŒæ­¥
     if (config.isVSyncEnabled)
     {
         glfwSwapInterval(1);
     }
 
-	// ±àÒëÄÚ½¨µÄ×ÅÉ«Æ÷
+	// ç¼–è¯‘å†…å»ºçš„ç€è‰²å™¨
 	Shader::buildBuiltinShaders();
 
     currentScene = NULL;
     nextScene = NULL;
 
-    cout << "³õÊ¼»¯Íê±Ï!" << endl;
+    cout << "åˆå§‹åŒ–å®Œæ¯•!" << endl;
 }
 
 Game::~Game()
@@ -64,7 +64,7 @@ Game::~Game()
         delete(currentScene);
     }
     glfwTerminate();
-    cout << config.title << " ÒÑÍ£Ö¹" << endl;
+    cout << config.title << " å·²åœæ­¢" << endl;
 }
 
 GameConfig Game::getConfigurations()
@@ -79,21 +79,21 @@ GLFWwindow* Game::getWindow()
 
 int Game::run()
 {
-    cout << config.title << " ÕıÔÚÔËĞĞ" << endl;
-    // äÖÈ¾Ñ­»·
+    cout << config.title << " æ­£åœ¨è¿è¡Œ" << endl;
+    // æ¸²æŸ“å¾ªç¯
     while (!glfwWindowShouldClose(window))
     {
-        // äÖÈ¾³¡¾°
+        // æ¸²æŸ“åœºæ™¯
         if (currentScene)
         {
             currentScene->render();
         }
-        // ½»»»»º³åÇø
+        // äº¤æ¢ç¼“å†²åŒº
         glfwSwapBuffers(window);
-		// glfw´¦ÀíÊÂ¼ş
+		// glfwå¤„ç†äº‹ä»¶
 		glfwPollEvents();
 		
-		// Èç¹ûÒÑ¾­ÓĞÏÂÒ»¸ö³¡¾°£¬Ôò°ÑÏÂÒ»¸ö³¡¾°ÇĞ»»¹ıÀ´
+		// å¦‚æœå·²ç»æœ‰ä¸‹ä¸€ä¸ªåœºæ™¯ï¼Œåˆ™æŠŠä¸‹ä¸€ä¸ªåœºæ™¯åˆ‡æ¢è¿‡æ¥
 		if (nextScene)
 		{
 			if (releaseLastScene && currentScene)delete(currentScene);
@@ -107,7 +107,6 @@ int Game::run()
 		countFPS();
     }
 
-    glfwTerminate();
     return 0;
 }
 
@@ -124,8 +123,8 @@ Scene* Game::getCurrentScene()
 
 void Game::switchFullscreen()
 {
-	// ¿ÉÄÜµÄÈ«ÆÁÇĞ»»£¬Ã»Ğ´ÊÂ¼ş¼àÌı¾ÍÏÈ½«¾ÍÒ»ÏÂ°É
-    // »Ø³µ²»·Ö´óĞ¡¼üÅÌ£¬altÖ»¼àÌı×ó±ßµÄ
+	// å¯èƒ½çš„å…¨å±åˆ‡æ¢ï¼Œæ²¡å†™äº‹ä»¶ç›‘å¬å°±å…ˆå°†å°±ä¸€ä¸‹å§
+    // å›è½¦ä¸åˆ†å¤§å°é”®ç›˜ï¼Œaltåªç›‘å¬å·¦è¾¹çš„
 	if ((glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS|| glfwGetKey(window, GLFW_KEY_KP_ENTER) == GLFW_PRESS)
         && glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
 	{
@@ -136,7 +135,7 @@ void Game::switchFullscreen()
 			glfwSetWindowMonitor(window,
 				config.isFullScreen ? glfwGetPrimaryMonitor() : NULL,
 				0, 0, config.width, config.height, 0);
-			// Èç¹ûÊÇ´°¿Ú»¯µÄ»¯ĞèÒªÒÆ¶¯Ò»ÏÂ´°¿Ú£¬·ñÔò±êÌâÀ¸»á¿´²»¼û
+			// å¦‚æœæ˜¯çª—å£åŒ–çš„åŒ–éœ€è¦ç§»åŠ¨ä¸€ä¸‹çª—å£ï¼Œå¦åˆ™æ ‡é¢˜æ ä¼šçœ‹ä¸è§
 			if (config.isFullScreen == false)
 				glfwSetWindowPos(window, 100, 100);
 			fullscreenSwitched = true;

@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <iostream>
 #include <glm/gtc/matrix_transform.hpp>
@@ -28,11 +28,11 @@ Node::Node(Node* parent)
 
 Node::~Node()
 {
-    // ÊÍ·ÅËùÓĞµÄ×Ó½Úµã
+    // é‡Šæ”¾æ‰€æœ‰çš„å­èŠ‚ç‚¹
     removeAllChildren(true);
-    // ´Ó¸¸½ÚµãµÄ×Ó½ÚµãÖĞÒÆ³ı
+    // ä»çˆ¶èŠ‚ç‚¹çš„å­èŠ‚ç‚¹ä¸­ç§»é™¤
     removedFromParent();
-    // ´òÓ¡ÊÍ·ÅÏûÏ¢
+    // æ‰“å°é‡Šæ”¾æ¶ˆæ¯
     if (name.length() == 0)
         cout << "[0x" << hex << this << "] has been released." << endl;
     else
@@ -41,7 +41,7 @@ Node::~Node()
 
 void Node::addChild(Node* c)
 {
-    // ²åÈë×Ó½Úµã
+    // æ’å…¥å­èŠ‚ç‚¹
     children.push_back(c);
 }
 
@@ -87,7 +87,7 @@ void Node::removeAllChildren(bool releaseChildren)
         for (list<Node*>::iterator i = children.begin(); i != children.end();)
         {
             Node* child = *i;
-            // °²È«µÄÉ¾³ı³ÉÔ±£¬c++11Ö§³Öerase·½·¨·µ»Ø±»É¾³ıµÄÏÂÒ»¸ö½Úµã
+            // å®‰å…¨çš„åˆ é™¤æˆå‘˜ï¼Œc++11æ”¯æŒeraseæ–¹æ³•è¿”å›è¢«åˆ é™¤çš„ä¸‹ä¸€ä¸ªèŠ‚ç‚¹
             i = children.erase(i);
             delete(child);
         }
@@ -128,14 +128,14 @@ vec3 Node::globalPosition()
     return vec3(gpos.x, gpos.y, gpos.z);
 }
 
-// Î´Íê³É£¬Õâ¸öÊÇ´íµÄÓĞÎÊÌâ¡£Ó¦¸Ã»¹ÊÇÒª´ÓglobaltransformÖĞ¼ÆËã³örotation
+// æœªå®Œæˆï¼Œè¿™ä¸ªæ˜¯é”™çš„æœ‰é—®é¢˜ã€‚åº”è¯¥è¿˜æ˜¯è¦ä»globaltransformä¸­è®¡ç®—å‡ºrotation
 //vec3 Node::globalRotation()
 //{
 //    vec3 protation = parent ? parent->rotation : vec3(0);
 //    return protation + rotation;
 //}
 
-// Î´Íê³É£¬ÓĞÎÊÌâ
+// æœªå®Œæˆï¼Œæœ‰é—®é¢˜
 //vec3 Node::globalScaling()
 //{
 //    return vec3(0);
@@ -152,46 +152,46 @@ bool cmp(const Node* a, const Node*b)
 
 void Node::renderHeader()
 {
-    // µ÷ÓÃµ÷¶ÈÆ÷
+    // è°ƒç”¨è°ƒåº¦å™¨
     float time = (float)glfwGetTime();
     update(time - lastTime);
     lastTime = time;
 
-	// ºÏ³ÉOpacity
+	// åˆæˆOpacity
 	parentsOpacity = parent ? parent->getGlobalOpacity() : 1.0f;
 	globalOpacity = parentsOpacity * opacity;
 
-    // ¸üĞÂtransform
+    // æ›´æ–°transform
     mat4 translationM = translate(mat4(), position);
-    // Å·À­½ÇĞÎÊ½µÄĞı×ª£¬ÎÒÃÇ°´x->y->zµÄË³ĞòÀ´Ğı×ª°É
+    // æ¬§æ‹‰è§’å½¢å¼çš„æ—‹è½¬ï¼Œæˆ‘ä»¬æŒ‰x->y->zçš„é¡ºåºæ¥æ—‹è½¬å§
     mat4 rotationM = eulerAngleXYZ(rotation.x, rotation.y, rotation.z);
     mat4 scalingM = scale(mat4(), scaling);
     transform = translationM*rotationM*scalingM;
 
-    // ¸üĞÂparent's global transform
+    // æ›´æ–°parent's global transform
     parentsGlobalTransform = parent ? parent->getGlobalTransform() : mat4();
 
-    // ¸üĞÂglobal transform
+    // æ›´æ–°global transform
     globalTransform = parentsGlobalTransform * transform;
 
-    // Ä¬ÈÏÎÒÃÇÊ¹ÓÃ×î¼òµ¥µÄ×ÅÉ«Æ÷£¬Ö»ÓĞÌùÍ¼Ã»ÓĞ¹âÕÕ
+    // é»˜è®¤æˆ‘ä»¬ä½¿ç”¨æœ€ç®€å•çš„ç€è‰²å™¨ï¼Œåªæœ‰è´´å›¾æ²¡æœ‰å…‰ç…§
     Shader::basicDiffuse.use();
-    // ÉèÖÃmodel¾ØÕó
+    // è®¾ç½®modelçŸ©é˜µ
     mat4 model = globalTransform;
 	Shader::basicDiffuse.setMat4("model", model);
-	// ÉèÖÃÍ¸Ã÷¶È
+	// è®¾ç½®é€æ˜åº¦
 	Shader::basicDiffuse.setFloat("node_opacity", globalOpacity);
-    // ¸øchildren°´zÖµÅÅĞò
+    // ç»™childrenæŒ‰zå€¼æ’åº
     children.sort(cmp);
 }
 
 void Node::renderChildren()
 {
-    // ±éÀúäÖÈ¾×Ó½Úµã
+    // éå†æ¸²æŸ“å­èŠ‚ç‚¹
     for (auto iter = children.begin(); iter != children.end(); iter++)
     {
-		// Èç¹û´Ë×Ó½Úµã²»¿É¼ûÔò²»äÖÈ¾Ëü
-		if ((*iter)->isEnabled = false)continue;
+		// å¦‚æœæ­¤å­èŠ‚ç‚¹ä¸å¯è§åˆ™ä¸æ¸²æŸ“å®ƒ
+		if ((*iter)->isEnabled == false)continue;
         (*iter)->renderHeader();
         (*iter)->render();
         (*iter)->renderChildren();
@@ -217,12 +217,12 @@ vec3 Node::getPositionOfRootCamera() const
 bool Node::operator<(const Node& n) const
 {
 #ifdef GINKGO_SORT_BY_Z_INDEX
-    // 2DÇé¿ö£¬ÄÇÃ´ÎÒÃÇÖ±½Ó°´ÕÕÆäzÖµÀ´¾ö¶¨²ã´Î¹ØÏµ£¨ÉãÏñ»úÔÚzÖµ¸ßµÄµØ·½£©
+    // 2Dæƒ…å†µï¼Œé‚£ä¹ˆæˆ‘ä»¬ç›´æ¥æŒ‰ç…§å…¶zå€¼æ¥å†³å®šå±‚æ¬¡å…³ç³»ï¼ˆæ‘„åƒæœºåœ¨zå€¼é«˜çš„åœ°æ–¹ï¼‰
     return this->position.z < n.position.z;
 #else
     if (this->shouldSort && !n.shouldSort)
     {
-        // ²»ÓÃÅÅĞòµÄĞ¡£¬ÓÅÏÈäÖÈ¾
+        // ä¸ç”¨æ’åºçš„å°ï¼Œä¼˜å…ˆæ¸²æŸ“
         return false;
     }
     else if (!this->shouldSort && n.shouldSort)
@@ -231,12 +231,12 @@ bool Node::operator<(const Node& n) const
     }
     else if (!this->shouldSort && !n.shouldSort)
     {
-        // ¶ÔÓÚ¶¼²»ÓÃÅÅĞòµÄÎÒÃÇ²»¹Ü´óĞ¡
+        // å¯¹äºéƒ½ä¸ç”¨æ’åºçš„æˆ‘ä»¬ä¸ç®¡å¤§å°
         return false;
     }
     else
     {
-        //¶ÔÓÚ¶¼ÒªÅÅĞòµÄ£¬ÎÒÃÇĞèÒª¼ÆËã¾àÀë£¬ÀëÏà»úÔ½½üµÄÔ½´ó
+        //å¯¹äºéƒ½è¦æ’åºçš„ï¼Œæˆ‘ä»¬éœ€è¦è®¡ç®—è·ç¦»ï¼Œç¦»ç›¸æœºè¶Šè¿‘çš„è¶Šå¤§
         vec3 cameraPos = this->getPositionOfRootCamera();
         float lengthThis = length(this->globalPosition() - cameraPos);
         float lengthn = length(n.globalPosition() - cameraPos);

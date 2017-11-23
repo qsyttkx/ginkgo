@@ -1,4 +1,4 @@
-#define EXPORT
+ï»¿#define EXPORT
 #include <macros.h>
 #include <texture.h>
 #include <iostream>
@@ -8,14 +8,14 @@ using namespace std;
 
 Texture::Texture()
 {
-	// É¶Ò²²»×öµÄ¿ÕÌùÍ¼
+	// å•¥ä¹Ÿä¸åšçš„ç©ºè´´å›¾
 	id = 0;
 }
 
 Texture::Texture(std::string path)
 {
     glGenTextures(1, &id);
-    // ÓÉÓÚOpenGL¶ÁÈ¡ÎÆÀíµÄ·½Ïò²»Ò»ÑùÎÒÃÇĞèÒªÔÚ¼ÓÔØÊ±·´×ªËùÓĞÎÆÀí
+    // ç”±äºOpenGLè¯»å–çº¹ç†çš„æ–¹å‘ä¸ä¸€æ ·æˆ‘ä»¬éœ€è¦åœ¨åŠ è½½æ—¶åè½¬æ‰€æœ‰çº¹ç†
     stbi_set_flip_vertically_on_load(true);
 
     int nrComponents;
@@ -28,7 +28,7 @@ Texture::Texture(std::string path)
 
         glBindTexture(GL_TEXTURE_2D, id);
         glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);//Éú³Émipmap
+        glGenerateMipmap(GL_TEXTURE_2D);//ç”Ÿæˆmipmap
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -39,11 +39,11 @@ Texture::Texture(std::string path)
     }
     else
     {
-        std::cout << "¼ÓÔØÎÆÀíÊ§°Ü(" << path << ")" << std::endl;
+        std::cout << "åŠ è½½çº¹ç†å¤±è´¥(" << path << ")" << std::endl;
     }
 }
 
-// ÓÃÑÕÉ«Éú³ÉÒ»ÕÅÌùÍ¼£¬ÑÕÉ«·ÖÁ¿ÊÇfloatĞÍµÄ
+// ç”¨é¢œè‰²ç”Ÿæˆä¸€å¼ è´´å›¾ï¼Œé¢œè‰²åˆ†é‡æ˜¯floatå‹çš„
 Texture::Texture(glm::vec4 color)
 {
     glGenTextures(1, &id);
