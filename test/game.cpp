@@ -24,7 +24,7 @@ TestScene::TestScene() :Scene()
     TextConfig c(24, vec4(0.2f, 0.2f, 0.2f, 1), "res/方正书宋简体.ttf",0.0f,2.0f,4.0f);
     welcome = new Text(root, Text::s2ws(msg), c);
     welcome->name = "welcome";
-    welcome->position = vec3(-welcome->getSize().x*0.5f, welcome->getSize().y*0.5f - Game::getConfigurations().height*0.25f, 1.0f);
+    welcome->position = vec3(-welcome->getSize().x*0.5f, welcome->getSize().y*0.5f + Game::getConfigurations().height*0.25f, 1.0f);
     // node
     node1 = new Node(root);
     node1->name = "node1";
@@ -60,7 +60,7 @@ void TestScene::update(float dt)
     logo->rotation.z = -t*3.14f*0.3f;
     //root->rotation.z = -t*3.14f*0.1f;
     t += dt;
-
+	welcome->opacity = 0.5f + 0.5f*sin(t*3.14f);
     GLFWwindow* window = Game::getWindow();
 
     static int statusR = GLFW_RELEASE;

@@ -48,6 +48,9 @@ Game::Game(GameConfig config)
         glfwSwapInterval(1);
     }
 
+	// 编译内建的着色器
+	Shader::buildBuiltinShaders();
+
     currentScene = NULL;
     nextScene = NULL;
 

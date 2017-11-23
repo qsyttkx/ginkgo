@@ -13,4 +13,3 @@ int main()
 	delete(test);
 	return 0;
 }
-

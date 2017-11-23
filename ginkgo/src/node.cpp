@@ -21,7 +21,9 @@ Node::Node(Node* parent)
     scaling = vec3(1.0f);
     rotation = vec4(0.0f);
     lastTime = (float)glfwGetTime();
-    shouldSort = false;
+    shouldSort = true;
+	isEnabled = true;
+	opacity = 1.0f;
 }
 
 Node::~Node()
@@ -104,6 +106,11 @@ void Node::removedFromParent()
     }
 }
 
+float Node::getGlobalOpacity()
+{
+	return this->globalOpacity;
+}
+
 mat4 Node::getTransform()
 {
     return this->transform;
@@ -150,6 +157,10 @@ void Node::renderHeader()
     update(time - lastTime);
     lastTime = time;
 
+	// 合成Opacity
+	parentsOpacity = parent ? parent->getGlobalOpacity() : 1.0f;
+	globalOpacity = parentsOpacity * opacity;
+
     // 更新transform
     mat4 translationM = translate(mat4(), position);
     // 欧拉角形式的旋转，我们按x->y->z的顺序来旋转吧
@@ -167,7 +178,9 @@ void Node::renderHeader()
     Shader::basicDiffuse.use();
     // 设置model矩阵
     mat4 model = globalTransform;
-    Shader::basicDiffuse.setMat4("model", model);
+	Shader::basicDiffuse.setMat4("model", model);
+	// 设置透明度
+	Shader::basicDiffuse.setFloat("node_opacity", globalOpacity);
     // 给children按z值排序
     children.sort(cmp);
 }
@@ -177,6 +190,8 @@ void Node::renderChildren()
     // 遍历渲染子节点
     for (auto iter = children.begin(); iter != children.end(); iter++)
     {
+		// 如果此子节点不可见则不渲染它
+		if ((*iter)->isEnabled = false)continue;
         (*iter)->renderHeader();
         (*iter)->render();
         (*iter)->renderChildren();

@@ -10,9 +10,9 @@ namespace ginkgo
     class DLL Shader
     {
     public:
-        /// <summary>实例化内建着色器</summary>
-        /// <param name="name">内建着色器的名字</param>
-        Shader(std::string name);
+		/// <summary>空的着色器，由于几个内建的着色器是静态变量，但是编译需要等到初始化完毕所以先调用这个空的构建函数</summary>
+		Shader() {}
+		/// <summary>实例化内建着色器</summary>
         /// <param name="vsPath">顶点着色程序文件的路径</param>
         /// <param name="fsPath">片段着色程序文件的路径</param>
         Shader(const char* vsPath, const char* fsPath);
@@ -50,10 +50,15 @@ namespace ginkgo
         void setVec4(const char* name, glm::vec4 value) const;
         /// <summary>获取着色器的ID</summary>
         unsigned int getID();
+		/// <summary>编译内建着色器</summary>
+		static void buildBuiltinShaders();
         /// 以下是一些内建的基本着色器
         /// <summary>基础着色器，只有一个纹理贴图，没有光照</summary>
         static Shader basicDiffuse;
     private:
+		/// <summary>实例化内建着色器</summary>
+		/// <param name="name">内建着色器的名字</param>
+		Shader(std::string name);
         /// <summary>着色器程序在opengl中的id</summary>
         unsigned int id;
         /// <summary>读取代码文件内容</summary>
@@ -81,11 +86,12 @@ namespace ginkgo
         "#version 330 core\n"
         "out vec4 FragColor;\n"
         "in  vec2 TexCoords;\n"
+        "uniform float node_opacity;\n"
         "// 接受一个漫反射贴图\n"
         "uniform sampler2D texture_diffuse1;\n"
         "void main()\n"
         "{\n"
-        "    FragColor = texture(texture_diffuse1, TexCoords);\n"
+		"    FragColor = texture(texture_diffuse1, TexCoords)*vec4(1,1,1,node_opacity);\n"
         "    //FragColor = vec4(1,0,0,1);\n"
         "}";
 }

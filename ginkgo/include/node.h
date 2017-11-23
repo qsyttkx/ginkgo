@@ -38,15 +38,26 @@ namespace ginkgo
 		void removeAllChildren(bool releaseChildren = false);
         /// <summary>从父节点中移除本节点，这个操作不会释放本节点的内存</summary>
 		void removedFromParent();
-        /// <summary>节点名字</summary>
+		/// <summary>节点名字</summary>
 		std::string name;
+		/// <summary>节点是启用，默认为是</summary>
+		bool isEnabled;
+		/// <summary>是否应当手动排序，默认为是。
+		/// 当为是时，在渲染该节点之前会将其与兄弟节点按离视角位置远近进行排序，越远的越先渲染。
+		/// 如果这个节点具有透明的贴图时我们会期望使用手动排序，否则由于深度测试的原因可能会丢弃
+		/// 一些片段。但是这样会一定程度上影响性能。</summary>
+		bool shouldSort;
+		/// <summary>节点的透明度，默认为1.0f不透明</summary>
+		float opacity;
         /// <summary>位置属性（局部坐标系）</summary>
 		glm::vec3 position;
         /// <summary>旋转属性（欧拉角表示，XYZ顺序，局部坐标系）</summary>
 		glm::vec3 rotation;
         /// <summary>缩放属性（局部坐标系）</summary>
 		glm::vec3 scaling;
-        /// <summary>获取变换矩阵（局部坐标系）</summary>
+		/// <summary>获取合成的opacity</summary>
+		float getGlobalOpacity();
+		/// <summary>获取变换矩阵（局部坐标系）</summary>
 		glm::mat4 getTransform();
         /// <summary>获取位置（世界坐标系）</summary>
 		glm::vec3 globalPosition();
@@ -69,11 +80,6 @@ namespace ginkgo
         /// <summary>逐帧调度器，可以在这个函数中实现许多的功能</summary>
         /// <param name="dt">为此帧与上一帧之间的时间间隔(单位：秒)</param>
 		virtual void update(float dt) {}
-        /// <summary>是否应当手动排序，默认为否。
-		/// 当为是时，在渲染该节点之前会将其与兄弟节点按离视角位置远近进行排序，越远的越先渲染。
-		/// 如果这个节点具有透明的贴图时我们会期望使用手动排序，否则由于深度测试的原因可能会丢弃
-		/// 一些片段。</summary>
-		bool shouldSort;
         /// <summary>重写的小于运算符</summary>
 		bool operator<(const Node& n) const;
 	protected:
@@ -84,6 +90,10 @@ namespace ginkgo
         /// <summary>父节点</summary>
 		Node* parent;
 	private:
+		/// <summary>父级opacity</summary>
+		float parentsOpacity;
+		/// <summary>最终合成的opacity</summary>
+		float globalOpacity;
         /// <summary>变换矩阵</summary>
         glm::mat4 transform;
         /// <summary>父节点的全局变换矩阵(相对世界坐标系而言这个节点所在的坐标系)</summary>

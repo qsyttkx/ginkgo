@@ -8,7 +8,7 @@
 using namespace std;
 using namespace ginkgo;
 
-Shader Shader::basicDiffuse("basicDiffuse");
+Shader Shader::basicDiffuse;
 
 Shader::Shader(const char* vsPath, const char* fsPath)
 {
@@ -128,6 +128,11 @@ void Shader::setVec3(const char* name, glm::vec3 value) const
 void Shader::setVec4(const char* name, glm::vec4 value) const
 {
     glUniform4f(glGetUniformLocation(id, name), value.x, value.y, value.z, value.w);
+}
+
+void Shader::buildBuiltinShaders()
+{
+	basicDiffuse = Shader("basicDiffuse");
 }
 
 Shader::Shader(string name)
