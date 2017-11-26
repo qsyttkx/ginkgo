@@ -18,9 +18,9 @@
 1. ○ 基本变换
 1. ○ 精灵(2D)
 1. ○ TrueType文本标签
+1. ○ 逐帧动画
 1. . 着色器
 1. . 模型
-1. . 逐帧动画
 1. . 骨骼动画
 1. x 声音
 1. x 事件管理
@@ -29,7 +29,7 @@
 
 ## Examples
 
-![](https://qsyttkx.github.io/ginkgo_animation_test.gif)
+<img src="https://qsyttkx.github.io/ginkgo_animation_test.gif" width="720"></img>
 
 ![](https://qsyttkx.github.io/ginkgo_vs.png)
 
