@@ -29,6 +29,8 @@
 
 ## Examples
 
+![](https://qsyttkx.github.io/ginkgo_animation_test.gif)
+
 ![](https://qsyttkx.github.io/ginkgo_vs.png)
 
 ![](https://qsyttkx.github.io/ginkgo_test.png)
