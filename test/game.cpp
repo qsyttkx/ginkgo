@@ -10,7 +10,6 @@ string TestScene::msg;
 TestGame::TestGame(GameConfig c) :Game(c)
 {
     TestScene* scene = new TestScene();
-    //TestScene2* scene = new TestScene2();
     this->replaceScene(scene);
 }
 
@@ -21,22 +20,32 @@ TestScene::TestScene() :Scene()
     root = new Node(this);
     root->position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
     backgroundColor = vec3(1.0f);
-    TextConfig c(24, vec4(0.2f, 0.2f, 0.2f, 1), "res/方正书宋简体.ttf", 0.0f, 2.0f, 4.0f);
-    //welcome = new Text(root, Text::s2ws(msg), c);
-    welcome = new Text(root, L"", c);
-    welcome->name = "welcome";
-    welcome->position = vec3(-welcome->getSize().x*0.5f, welcome->getSize().y*0.5f + Game::getConfigurations().height*0.25f, 1.0f);
-    // node
-    node1 = new Node(root);
-    node1->name = "node1";
-    node1->position = vec3(0.0f, Game::getConfigurations().height*0.16f, 0.0f);
-    node1->shouldSort = true;
-    //node1->scaling.x = 2.0f;
-    // sprite
-    logoImg = Texture("res/logo.png");
-    logo = new Sprite2D(node1, logoImg);
-    logo->name = "logo";
-    logo->scaling = vec3(0.8f);
+
+    // 舞台背景
+    stageImg = Texture("res/stage/stage_static.png");
+    Sprite* stage = new Sprite(root, stageImg);
+
+    // 标题
+    TextConfig config;
+    config.color = vec4(1.0f, 0.2f, 0.0f, 0.8f);
+    config.font = "res/Ginkgo775.ttf";
+    auto title = new Text(this, Text::s2ws(msg),config);
+    title->position.y = Game::getConfigurations().height - 40.0f;
+    title->position.x = 40.0f;
+
+    // 火舞
+    // 载入纹理资源
+    char buff[64];
+    for (int i = 0; i < 16; i++)
+    {
+        sprintf_s(buff, "res/shiranui/shiranui%02d.png", i);
+        shiranui_idle[i] = Texture(buff);
+    }
+    // 生成精灵
+    for (int i = 0; i < 4; i++)
+        generateShiranui(vec3((i - 1.5f)*120.0f, -100, 0), (3 - i) * 2);
+    for (int i = 0; i < 4; i++)
+        generateShiranui(vec3((i - 1.5f)*150.0f, -150, 0), (3 - i) * 2);
 
     // pointer
     // 隐藏鼠标
@@ -44,34 +53,27 @@ TestScene::TestScene() :Scene()
     pointer = new Node(this);
     pointer->position = vec3(0, 0, 1000);//设为1000为保证鼠标在最上方
     pointerImg = Texture("res/pointer.png");
-    auto pointerSprite = new Sprite2D(pointer, pointerImg);
+    auto pointerSprite = new Sprite(pointer, pointerImg);
     pointerSprite->position = vec3(13.0f, -12.0f, 0.0f);
     t = 0;
 }
 
 TestScene::~TestScene()
 {
-    logoImg.release();
+    stageImg.release();
     pointerImg.release();
+    for (int i = 0; i < 16; i++)
+    {
+        shiranui_idle[i].release();
+    }
 }
 
 void TestScene::update(float dt)
 {
-    node1->position = vec3(0.0f, Game::getConfigurations().height*0.16f + 50.0f * sin(t*3.14f), 0.0f);
-    logo->rotation.z = -t*3.14f*0.3f;
-    //root->rotation.z = -t*3.14f*0.1f;
-    t += dt;
-    welcome->opacity = 0.5f + 0.5f*sin(t*3.14f);
+    Scene::update(dt);
+
     GLFWwindow* window = Game::getWindow();
 
-    static int statusR = GLFW_RELEASE;
-    // 按r切换场景，上升沿触发
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
-    {
-        TestScene2* scene2 = new TestScene2();
-        Game::replaceScene(scene2);
-    }
-    statusR = glfwGetKey(window, GLFW_KEY_R);
     // 按esc退出
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
@@ -94,82 +96,26 @@ void TestScene::update(float dt)
     glfwSetWindowTitle(Game::getWindow(), (Game::getConfigurations().title + " [FPS: " + fps + "]").c_str());
 }
 
-
-// 场景2
-
-TestScene2::TestScene2() :Scene()
+void TestScene::generateShiranui(vec3 position, unsigned int offset)
 {
-    name = "scene2";
-    // 把坐标原点移动到屏幕中心
-    position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
-    //backgroundColor = vec3(18, 121, 217) / 255.0f;
-    backgroundColor = vec3(0.1f);
-    logoImg = Texture("res/style-2.png");
-    logo = new Sprite2D(this, logoImg);
-    logo->name = "logo white";
-    logo->position.y = Game::getConfigurations().height*0.16f;
-
-    TextConfig c(24, vec4(1, 1, 1, 1), "res/方正书宋简体.ttf");
-    text = new Text(this, L"Ginkgo: Hello TrueType Font!", c);
-    text->name = "text";
-    text->position = vec3(-text->getSize().x*0.5f, text->getSize().y*0.5f - Game::getConfigurations().height*0.16f, 1.0f);
-    t = 0;
-    timer1 = 0;
-
-    glfwSetInputMode(Game::getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-}
-
-TestScene2::~TestScene2()
-{
-    logoImg.release();
-}
-
-void TestScene2::update(float dt)
-{
-    logo->scaling = vec3(1.0f)*(0.8f + 0.2f*max(0.0f, sin(t*3.14f * 3.0f)));
-    t += dt;
-
-    GLFWwindow* window = Game::getWindow();
-
-    // 刷新Text
-    //wstring content = L"Ginkgo: Hello TrueType Font!";
-    //static unsigned int count = 0;
-    //float space = 2.0f / 3.0f;
-    //timer1 += dt;
-
-    //if (timer1 > space)
-    //{
-    //    count += 1;
-    //    if (count > content.length())
-    //    {
-    //        count = 0;
-    //    }
-    //    wstring wstr = content.substr(0, count);
-    //    text->setText(wstr);
-    //    timer1 -= space;
-    //}
-
-    static int statusR = GLFW_RELEASE;
-    // 按r切换场景，上升沿触发
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_RELEASE && statusR == GLFW_PRESS)
+    Sprite* shiranui1 = new Sprite(root);
+    shiranui1->position = position;
+    //shiranui->scaling.x = -1.0f;//反转一下
+    // 载入动画
+    Animator* animator1 = new Animator(shiranui1);
+    Animation* idle1 = new Animation(animator1, "idle");
+    char buff[64];
+    for (int i = 0; i < 16; i++)
     {
-        TestScene* scene = new TestScene();
-        Game::replaceScene(scene);
+        sprintf_s(buff, "res/shiranui/shiranui%02d.png", i);
+        shiranui_idle[i] = Texture(buff);
+        idle1->pushbackFrameFromTexture(shiranui_idle[i]);
     }
-    statusR = glfwGetKey(window, GLFW_KEY_R);
-    // 按esc退出
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-    // 在标题上添加FPS
-    stringstream ss;
-    string fps;
-    ss << Game::getFPS();
-    ss >> fps;
-    glfwSetWindowTitle(Game::getWindow(), (Game::getConfigurations().title + " [FPS: " + fps + "]").c_str());
+    idle1->fps = 15.0f;
+    animator1->replaceAnimation("idle");
+    idle1->frameCount = offset;//稍微不同步一下
+    animator1->setActive(true);
 }
-
 
 GameConfig readConfiguration(const char* path)
 {
@@ -201,7 +147,7 @@ GameConfig readConfiguration(const char* path)
     if (d["hideConsole"].GetBool())
     {
         HWND hwnd;
-        hwnd = FindWindow("ConsoleWindowClass", NULL);//处理顶级窗口的类名和窗口名称匹配指定的字符串,不搜索子窗口。  
+        hwnd = FindWindow(L"ConsoleWindowClass", NULL);//处理顶级窗口的类名和窗口名称匹配指定的字符串,不搜索子窗口。  
         if (hwnd)
         {
             ShowWindow(hwnd, SW_HIDE);//设置指定窗口的显示状态  

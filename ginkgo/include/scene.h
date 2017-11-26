@@ -18,7 +18,7 @@ namespace ginkgo
         /// <summary>主摄像机</summary>
         Camera* mainCamera;
         /// <summary>渲染</summary>
-        virtual void render();
+        virtual void update(float dt);
         /// <summary>背景颜色（glClearColor）</summary>
         glm::vec3 backgroundColor;
     };

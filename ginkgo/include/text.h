@@ -63,7 +63,7 @@ namespace ginkgo
         /// <param name="filePath">字体文件路径</param>
 		static void releaseFont(const char* filePath);
         /// <summary>渲染</summary>
-		virtual void render();
+		virtual void update(float dt);
         /// <summary>宽，高，横偏移量，纵偏移量</summary>
         int width, height, xoff, yoff;
 	protected:

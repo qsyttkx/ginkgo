@@ -21,8 +21,10 @@ Scene::Scene()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void Scene::render()
+void Scene::update(float dt)
 {
+    Node::update(dt);
+
     renderHeader();
 
     mainCamera->updateCameraVectors();

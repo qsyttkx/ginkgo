@@ -135,7 +135,7 @@ void TTFCharacter::releaseFont(const char* filePath)
 }
 
 
-void TTFCharacter::render()
+void TTFCharacter::update(float dt)
 {
     glBindVertexArray(VAO);
     glActiveTexture(GL_TEXTURE0);

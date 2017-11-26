@@ -83,11 +83,13 @@ int Game::run()
     // 渲染循环
     while (!glfwWindowShouldClose(window))
     {
+        float time = (float)glfwGetTime();
         // 渲染场景
         if (currentScene)
         {
-            currentScene->render();
+            currentScene->update(time - lastTime);
         }
+        lastTime = time;
         // 交换缓冲区
         glfwSwapBuffers(window);
 		// glfw处理事件

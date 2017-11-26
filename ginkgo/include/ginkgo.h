@@ -10,8 +10,9 @@
 #include <macros.h>
 #include <scene.h>
 #include <gameconfig.h>
-#include <sprite2d.h>
+#include <sprite.h>
 #include <text.h>
+#include <animation.h>
 
 namespace ginkgo
 {
@@ -63,6 +64,8 @@ namespace ginkgo
 		void countFPS();
         /// <summary>帧率</summary>
 		static int FPS;
+        /// <summary>上一帧时间，用来计算两帧之间的时间间隔。</summary>
+        float lastTime;
 	};
 
 }

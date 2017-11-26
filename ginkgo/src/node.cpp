@@ -20,7 +20,6 @@ Node::Node(Node* parent)
     position = vec3(0.0f);
     scaling = vec3(1.0f);
     rotation = vec4(0.0f);
-    lastTime = (float)glfwGetTime();
     shouldSort = true;
 	isEnabled = true;
 	opacity = 1.0f;
@@ -66,7 +65,7 @@ list<Node*> Node::getChildren()
 
 void Node::removeChild(Node* n, bool releaseChildren)
 {
-    for (auto iter = children.begin(); iter != children.end(); iter++)
+    for (auto iter = children.begin(); iter != children.end(); ++iter)
     {
         if ((*iter) == n)
         {
@@ -141,9 +140,6 @@ vec3 Node::globalPosition()
 //    return vec3(0);
 //}
 
-void Node::render()
-{
-}
 
 bool cmp(const Node* a, const Node*b)
 {
@@ -152,11 +148,6 @@ bool cmp(const Node* a, const Node*b)
 
 void Node::renderHeader()
 {
-    // 调用调度器
-    float time = (float)glfwGetTime();
-    update(time - lastTime);
-    lastTime = time;
-
 	// 合成Opacity
 	parentsOpacity = parent ? parent->getGlobalOpacity() : 1.0f;
 	globalOpacity = parentsOpacity * opacity;
@@ -193,7 +184,7 @@ void Node::renderChildren()
 		// 如果此子节点不可见则不渲染它
 		if ((*iter)->isEnabled == false)continue;
         (*iter)->renderHeader();
-        (*iter)->render();
+        (*iter)->update(dt);
         (*iter)->renderChildren();
     }
 }
@@ -212,6 +203,11 @@ vec3 Node::getPositionOfRootCamera() const
     {
         return vec3(0);
     }
+}
+
+void Node::update(float dt)
+{
+    this->dt = dt;
 }
 
 bool Node::operator<(const Node& n) const

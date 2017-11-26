@@ -69,8 +69,6 @@ namespace ginkgo
 
         /// <summary>获取变换矩阵（世界坐标系）</summary>
         glm::mat4 getGlobalTransform();
-		/// <summary>渲染该节点，该方法会递归调用以渲染其下所有节点。着色器为默认的基本着色器（只直接渲染一个纹理）</summary>
-		virtual void render();
         /// <summary>渲染前的一些操作，如传递当前节点的模型矩阵，调用调度器，刷新transform等
         /// 在重写的Node类中，如果实例化出的节点是一个根节点，则需要手动在render()之前调用renderHeader()
         /// 以设置着色器和当前节点的模型矩阵</summary>
@@ -79,7 +77,7 @@ namespace ginkgo
 		virtual void renderChildren();
         /// <summary>逐帧调度器，可以在这个函数中实现许多的功能</summary>
         /// <param name="dt">为此帧与上一帧之间的时间间隔(单位：秒)</param>
-		virtual void update(float dt) {}
+        virtual void update(float dt);
         /// <summary>重写的小于运算符</summary>
 		bool operator<(const Node& n) const;
 	protected:
@@ -89,6 +87,8 @@ namespace ginkgo
 		void addChild(Node* c);
         /// <summary>父节点</summary>
 		Node* parent;
+        /// <summary>两帧之间隔</summary>
+        float dt;
 	private:
 		/// <summary>父级opacity</summary>
 		float parentsOpacity;
@@ -102,8 +102,6 @@ namespace ginkgo
         glm::mat4 globalTransform;
         /// <summary>子节点list</summary>
 		std::list<Node*> children;
-        /// <summary>上一帧时间，用来计算两帧之间的时间间隔。</summary>
-		float lastTime;
         /// <summary>获取摄像机位置，用于计算渲染顺序。</summary>
 		glm::vec3 getPositionOfRootCamera() const;
 	};

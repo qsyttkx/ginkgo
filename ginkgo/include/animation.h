@@ -4,49 +4,51 @@
 #include <list>
 #include <texture.h>
 #include <functional>
+#include <sprite.h>
 
 namespace ginkgo
 {
-    struct Animation;
+    class Animation;
 
-    // 动画控制器，讲道理应该是每个sprite有一个动画控制器
-    class DLL Animator {
+    // 动画控制器，讲道理应该每个sprite有一个动画控制器
+    class DLL Animator : public Node
+    {
     public:
         // 构造函数
-        Animator();
+        Animator(Sprite* parent);
+        // 更新动画状态
+        virtual void update(float dt);
+        // 渲染子节点
+        virtual void renderChildren();
+        // 替换当前动画
+        void replaceAnimation(Animation* anim);
+        // 替换当前动画
+        void replaceAnimation(std::string animName);
         // 激活、停止动画
         void setActive(bool isActive);
-        // 更新动画状态
-        void update(float dt);
-        // 替换当前动画
-        void replaceAnimation(Animation anim);
-    protected:
-        std::string currentAnimation;
-        std::map<std::string, Animation> animations;
+    private:
+        // 动画激活状态
         bool isActive;
     };
 
-    // 通用动画片段，意思就是不派生的话啥也做不了
-    struct DLL Animation {
-        Animation(std::string name);
-        std::string name;
-        virtual void update(float dt) {}
-        bool loop;
-        bool restoreTextureAtEnd;
-        std::list<std::function<void(float, Animator)>> calls;
-    };
-    
-    // 逐帧动画片段
-    class DLL AnimationFrameByFrame :public Animation
+    // 动画中的回调函数，float为本动画播放到当前的时间，Animatior为控制这个动画的控制器
+    typedef std::function<void(float, Animation)> AnimationCallback;
+
+    class DLL Animation : public Node
     {
     public:
-        AnimationFrameByFrame(std::string name);
-        // 逐帧动画的帧
-        class Frame
-        {
-            Texture img;
-            float delay;
-        };
-        std::list<Frame> frames;
+        Animation(Animator* parent, std::string name = "");
+        void setEnabled(bool enalbed);
+        virtual void update(float dt);
+        // 渲染子节点
+        virtual void renderChildren();
+        float TimeAtBegin;
+        float TimeOfAnimation;
+        float timeOfFrame;
+        float fps;
+        unsigned int frameCount;
+        std::list<AnimationCallback> calls;
+        AnimationCallback onAnimationEnded;
+        void pushbackFrameFromTexture(Texture texture);
     };
 }
