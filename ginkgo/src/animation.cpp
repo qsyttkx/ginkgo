@@ -73,7 +73,7 @@ void ginkgo::Animation::update(float dt)
     timeOfFrame += dt;
 
     float delay = 1.0f / fps;
-    if (timeOfFrame >= delay)
+    while(timeOfFrame >= delay)
     {
         timeOfFrame -= delay;
         ++frameCount;

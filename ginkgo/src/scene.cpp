@@ -10,7 +10,7 @@ using namespace glm;
 
 Scene::Scene()
 {
-    mainCamera = new Camera(this, vec3(0, 0, Game::getConfigurations().height / 0.414f));
+    mainCamera = new Camera(this, vec3(0, 0, 500.0f));
     // 设置背景色
     backgroundColor = vec3(0.0f);
 

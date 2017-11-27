@@ -17,21 +17,29 @@ TestGame::TestGame(GameConfig c) :Game(c)
 TestScene::TestScene() :Scene()
 {
     name = "scene";
+
+    GameConfig gc = Game::getConfigurations();
+    mainCamera->projectionMatrix = perspective(radians(45.0f), gc.width / (float)gc.height, 0.1f, 2000.0f);
+    mainCamera->position = vec3(-160.0f,50.0f,800.0f);
+    mainCamera->rotation = vec3(-15.0f,-70.0f,0.0f);
+
     root = new Node(this);
-    root->position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
+    //root->position = vec3(Game::getConfigurations().width*0.5f, Game::getConfigurations().height*0.5f, 0);
     backgroundColor = vec3(1.0f);
 
     // 舞台背景
     stageImg = Texture("res/stage/stage_static.png");
     Sprite* stage = new Sprite(root, stageImg);
+    //stage->opacity = 0.3f;
 
     // 标题
     TextConfig config;
     config.color = vec4(1.0f, 0.2f, 0.0f, 0.8f);
     config.font = "res/Ginkgo775.ttf";
-    auto title = new Text(this, Text::s2ws(msg),config);
-    title->position.y = Game::getConfigurations().height - 40.0f;
-    title->position.x = 40.0f;
+    auto title = new Text(root, Text::s2ws(msg),config);
+    //title->position.y = Game::getConfigurations().height - 40.0f;
+    //title->position.x = 40.0f;
+    title->position.z = 1.0f;
 
     // 火舞
     // 载入纹理资源
@@ -43,25 +51,14 @@ TestScene::TestScene() :Scene()
     }
     // 生成精灵
     for (int i = 0; i < 4; i++)
-        generateShiranui(vec3((i - 1.5f)*120.0f, -100, 0), (3 - i) * 2);
+        generateShiranui(vec3((i - 1.5f)*150.0f, -140, i*50), (3 - i) * 2);
     for (int i = 0; i < 4; i++)
-        generateShiranui(vec3((i - 1.5f)*150.0f, -150, 0), (3 - i) * 2);
-
-    // pointer
-    // 隐藏鼠标
-    glfwSetInputMode(Game::getWindow(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
-    pointer = new Node(this);
-    pointer->position = vec3(0, 0, 1000);//设为1000为保证鼠标在最上方
-    pointerImg = Texture("res/pointer.png");
-    auto pointerSprite = new Sprite(pointer, pointerImg);
-    pointerSprite->position = vec3(13.0f, -12.0f, 0.0f);
-    t = 0;
+        generateShiranui(vec3((i - 1.5f)*150.0f, -150, (i+4)*50), (3 - i) * 2);
 }
 
 TestScene::~TestScene()
 {
     stageImg.release();
-    pointerImg.release();
     for (int i = 0; i < 16; i++)
     {
         shiranui_idle[i].release();
@@ -80,14 +77,6 @@ void TestScene::update(float dt)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
-    // 设置鼠标位置
-    double x, y;
-    glfwGetCursorPos(Game::getWindow(), &x, &y);
-    auto config = Game::getConfigurations();
-    float px = float(x), py = (float)config.height - float(y);
-    pointer->position.x = 0 > px ? 0 : (config.width < px ? config.width : px);
-    pointer->position.y = 0 > py ? 0 : (config.height < py ? config.height : py);
-
     // 在标题上添加FPS
     stringstream ss;
     string fps;
@@ -100,15 +89,13 @@ void TestScene::generateShiranui(vec3 position, unsigned int offset)
 {
     Sprite* shiranui1 = new Sprite(root);
     shiranui1->position = position;
+    shiranui1->scaling = vec3(1.5f);
     //shiranui->scaling.x = -1.0f;//反转一下
     // 载入动画
     Animator* animator1 = new Animator(shiranui1);
     Animation* idle1 = new Animation(animator1, "idle");
-    char buff[64];
     for (int i = 0; i < 16; i++)
     {
-        sprintf_s(buff, "res/shiranui/shiranui%02d.png", i);
-        shiranui_idle[i] = Texture(buff);
         idle1->pushbackFrameFromTexture(shiranui_idle[i]);
     }
     idle1->fps = 15.0f;
