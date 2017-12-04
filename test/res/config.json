@@ -4,6 +4,5 @@
     "height": 720,
     "isFullScreen": false,
     "isVSyncEnabled": true,
-    "hideConsole":false,
-    "msg":"Ginkgo Animation Test"
+    "hideConsole":true
 }

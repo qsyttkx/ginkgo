@@ -10,9 +10,9 @@ using namespace glm;
 
 Scene::Scene()
 {
-    mainCamera = new Camera(this, vec3(0, 0, 500.0f));
-
     auto config = Game::getConfigurations();
+    // 配置摄像机
+    mainCamera = new Camera(this, vec3(0, 0, config.height * 1.2071f));
     uiCamera = new Camera(this, vec3(0,0, config.height / 0.414f));
     uiCamera->projectionMatrix = ortho(0.0f, (float)config.width, 0.0f, (float)config.height, 0.1f, config.height / 0.414f + 1000.0f);
 
