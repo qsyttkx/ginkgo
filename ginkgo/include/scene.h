@@ -14,12 +14,16 @@ namespace ginkgo
         /// <summary>构造一个场景</summary>
         Scene();
         /// <summary>析构场景</summary>
-        virtual ~Scene() {}
+        virtual ~Scene();
         /// <summary>主摄像机</summary>
         Camera* mainCamera;
+        /// <summary>UI摄像机</summary>
+        Camera* uiCamera;
         /// <summary>渲染</summary>
         virtual void update(float dt);
         /// <summary>背景颜色（glClearColor）</summary>
         glm::vec3 backgroundColor;
+        // UI节点
+        Node* ui;
     };
 }

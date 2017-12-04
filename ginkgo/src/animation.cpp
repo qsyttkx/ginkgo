@@ -4,7 +4,7 @@
 
 using namespace ginkgo;
 
-ginkgo::Animator::Animator(Sprite * parent):Node(parent)
+ginkgo::Animator::Animator(Sprite * parent) :Node(parent)
 {
     isActive = false;
 }
@@ -53,6 +53,7 @@ ginkgo::Animation::Animation(Animator* parent, std::string name) :Node(parent)
     TimeAtBegin = (float)glfwGetTime();
     timeOfFrame = TimeOfAnimation = 0.0f;
     frameCount = 0;
+    onAnimationEnded = [](float, Animation*) {};
 }
 
 void ginkgo::Animation::setEnabled(bool enalbed)
@@ -73,15 +74,23 @@ void ginkgo::Animation::update(float dt)
     timeOfFrame += dt;
 
     float delay = 1.0f / fps;
-    while(timeOfFrame >= delay)
+    while (timeOfFrame >= delay)
     {
         timeOfFrame -= delay;
         ++frameCount;
         if (frameCount >= getChildren().size())
         {
             frameCount = 0;
-            //TimeOfAnimation = 0;
+            // TimeOfAnimation = 0;
+            // 调用一次callback onAnimationEnded
+            onAnimationEnded(TimeOfAnimation, this);
         }
+    }
+
+    // 调用所有自定义的callback
+    for (auto iter = callbacks.begin(); iter != callbacks.end(); ++iter)
+    {
+        (*iter)(TimeOfAnimation, this);
     }
 }
 

@@ -228,6 +228,7 @@ void Text::updateCharacters()
     for (unsigned int i = 0; i < text.length(); i++)
     {
         TTFCharacter* c = new TTFCharacter(this, text[i], config.size, config.color, config.font);
+        c->name = text[i];
         c->position.x = x;
         c->position.y = y - (float)(c->yoff);
         characters.push_back(c);
