@@ -121,7 +121,7 @@ mat4 Node::getGlobalTransform()
 }
 
 
-vec3 Node::globalPosition()
+vec3 Node::globalPosition() const
 {
     vec4 gpos = globalTransform * vec4(0);
     return vec3(gpos.x, gpos.y, gpos.z);
@@ -191,13 +191,13 @@ void Node::renderChildren()
 
 vec3 Node::getPositionOfRootCamera() const
 {
-    if (((Scene*)this)->mainCamera)
-    {
-        return ((Scene*)this)->mainCamera->globalPosition();
-    }
-    else if (parent)
+    if (parent)
     {
         return parent->getPositionOfRootCamera();
+    }
+    else if (dynamic_cast<Scene*>((Node*)this))
+    {
+        return dynamic_cast<Scene*>((Node*)this)->mainCamera->globalPosition();
     }
     else
     {

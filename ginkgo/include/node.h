@@ -60,7 +60,7 @@ namespace ginkgo
 		/// <summary>获取变换矩阵（局部坐标系）</summary>
 		glm::mat4 getTransform();
         /// <summary>获取位置（世界坐标系）</summary>
-		glm::vec3 globalPosition();
+		glm::vec3 globalPosition() const;
         /// 这几个貌似有点问题我还没想好，所以先禁了。。。
         /// 获取旋转欧拉角
 		/// glm::vec3 globalRotation();

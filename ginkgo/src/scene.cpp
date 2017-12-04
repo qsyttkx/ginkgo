@@ -20,6 +20,7 @@ Scene::Scene()
     backgroundColor = vec3(0.0f);
 
     ui = new Node();
+    ui->name = "GINKGO_ui";
 
     // 启用一些OpenGL的功能
     glEnable(GL_BLEND);
