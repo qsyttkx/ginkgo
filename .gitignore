@@ -288,5 +288,7 @@ __pycache__/
 *.xsd.cs
 
 !ginkgo/lib/*
+!ginkgo/bin
+!ginkgo/bin/*
 
 .vscode/
