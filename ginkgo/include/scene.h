@@ -6,22 +6,22 @@
 
 namespace ginkgo
 {
-    /// <summary>场景</summary>
-    /// <para>一个游戏场景，也作为其场景内容的根节点</para>
+    //场景
+    //一个游戏场景，也作为其场景内容的根节点
     class DLL Scene :public Node
     {
     public:
-        /// <summary>构造一个场景</summary>
+        //构造一个场景
         Scene();
-        /// <summary>析构场景</summary>
+        //析构场景
         virtual ~Scene();
-        /// <summary>主摄像机</summary>
+        //主摄像机
         Camera* mainCamera;
-        /// <summary>UI摄像机</summary>
+        //UI摄像机
         Camera* uiCamera;
-        /// <summary>渲染</summary>
+        //渲染
         virtual void update(float dt);
-        /// <summary>背景颜色（glClearColor）</summary>
+        //背景颜色（glClearColor）
         glm::vec3 backgroundColor;
         // UI节点
         Node* ui;

@@ -23,6 +23,7 @@ Node::Node(Node* parent)
     shouldSort = true;
 	isEnabled = true;
 	opacity = 1.0f;
+    shader = NULL;
 }
 
 Node::~Node()
@@ -166,7 +167,13 @@ void Node::renderHeader()
     globalTransform = parentsGlobalTransform * transform;
 
     // 默认我们使用最简单的着色器，只有贴图没有光照
-    Shader::basicDiffuse.use();
+    if (shader == NULL)
+    {
+        Shader::basicDiffuse.use();
+    }
+    else {
+        shader->use();
+    }
     // 设置model矩阵
     mat4 model = globalTransform;
 	Shader::basicDiffuse.setMat4("model", model);

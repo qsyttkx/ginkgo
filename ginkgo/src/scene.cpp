@@ -51,10 +51,8 @@ void Scene::update(float dt)
     glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // 渲染场景
-    mat4 projection = mainCamera->projectionMatrix;
-    mat4 view = mainCamera->getViewMatrix();
-    shader.setMat4("projection", projection);
-    shader.setMat4("view", view);
+    shader.setMat4("projection", mainCamera->projectionMatrix);
+    shader.setMat4("view", mainCamera->getViewMatrix());
 
     renderChildren();
 

@@ -8,30 +8,30 @@
 
 namespace ginkgo
 {
-    /// <summary>2D精灵，继承自Node，其实就是矩形的模型而已</summary>
+    //2D精灵，继承自Node，其实就是矩形的模型而已
 	class DLL Sprite :public Node
 	{
 	public:
-        /// <summary>构建一个不带纹理的2D精灵</summary>
+        //构建一个不带纹理的2D精灵
         Sprite(Node* parent);
-        /// <summary>构建一个2D精灵</summary>
-        /// <param name="parent">父节点</param>
-        /// <param name="img">纹理</param>
+        //构建一个2D精灵
+        //父节点
+        //纹理
         Sprite(Node* parent, Texture img);
 
         void setTexture(Texture img);
-        /// <summary>析构</summary>
+        //析构
 		virtual ~Sprite();
-        /// <summary>调度器</summary>
+        //调度器
         virtual void update(float dt);
-        /// <summary>是否正在播放动画</summary>
+        //是否正在播放动画
         bool isPlayingAnimation;
 	private:
         bool hasTexture;
 
-        /// <summary>纹理</summary>
+        //纹理
 		Texture img;
-        /// <summary>顶点数组、缓冲对象</summary>
+        //顶点数组、缓冲对象
 		GLuint VAO, VBO;
 	};
 }

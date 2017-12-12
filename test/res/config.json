@@ -4,5 +4,5 @@
     "height": 720,
     "isFullScreen": false,
     "isVSyncEnabled": true,
-    "hideConsole":true
+    "hideConsole":false
 }

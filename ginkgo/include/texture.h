@@ -13,25 +13,25 @@ namespace ginkgo
 {
     struct DLL Texture
     {
-        /// <summary>贴图在OpenGL中的ID</summary>
+        //贴图在OpenGL中的ID
         GLuint id;
-        /// <summary>贴图类型（漫反射啊镜面反射啊啥的）</summary>
+        //贴图类型（漫反射啊镜面反射啊啥的）
         std::string type;
-        /// <summary>贴图文件路径（可以用来对比是不是重复加载了贴图）</summary>
+        //贴图文件路径（可以用来对比是不是重复加载了贴图）
         std::string path;
-        /// <summary>尺寸</summary>
+        //尺寸
         int width, height;
-        /// <summary>格式</summary>
+        //格式
         GLenum format;
-        /// <summary>空的贴图</summary>
+        //空的贴图
 		Texture();
-        /// <summary>加载一张贴图</summary>
-        /// <param name="path">图片资源路径</param>
+        //加载一张贴图
+        //图片资源路径
         Texture(std::string path);
-        /// <summary>用颜色生成一张贴图，颜色分量是float型的</summary>
-        /// <param name="color">颜色值，如红色vec4(1.0f,0.0f,0.0f,1.0f)</param>
+        //用颜色生成一张贴图，颜色分量是float型的
+        //颜色值，如红色vec4(1.0f,0.0f,0.0f,1.0f)
         Texture(glm::vec4 color);
-        /// <summary>从GPU中释放贴图资源</summary>
+        //从GPU中释放贴图资源
 		void release();
     };
 }

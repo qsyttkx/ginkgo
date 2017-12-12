@@ -6,64 +6,64 @@
 
 namespace ginkgo
 {
-    /// <summary>着色器</summary>
+    //着色器
     class DLL Shader
     {
     public:
-		/// <summary>空的着色器，由于几个内建的着色器是静态变量，但是编译需要等到初始化完毕所以先调用这个空的构建函数</summary>
+		//空的着色器，由于几个内建的着色器是静态变量，但是编译需要等到初始化完毕所以先调用这个空的构建函数
 		Shader() {}
-		/// <summary>实例化内建着色器</summary>
-        /// <param name="vsPath">顶点着色程序文件的路径</param>
-        /// <param name="fsPath">片段着色程序文件的路径</param>
+		//实例化内建着色器
+        //顶点着色程序文件的路径
+        //片段着色程序文件的路径
         Shader(const char* vsPath, const char* fsPath);
-        /// <summary>使用该着色器</summary>
+        //使用该着色器
         void use();
-        /// <summary>从GPU释放该着色器的资源</summary>
+        //从GPU释放该着色器的资源
         void release();
-        /// <summary>设置bool型(其实是int)uniform</summary>
-        /// <param name="name">uniform名</param>
-        /// <param name="value">uniform值</param>
+        //设置bool型(其实是int)uniform
+        //uniform名
+        //uniform值
         void setBool(const char* name, bool value) const;
-        /// <summary>设置int型uniform</summary>
-        /// <param name="name">uniform名</param>
-        /// <param name="value">uniform值</param>
+        //设置int型uniform
+        //uniform名
+        //uniform值
         void setInt(const char* name, int value) const;
-        /// <summary>设置float型uniform</summary>
-        /// <param name="name">uniform名</param>
-        /// <param name="value">uniform值</param>
+        //设置float型uniform
+        //uniform名
+        //uniform值
         void setFloat(const char* name, float value) const;
-        /// <summary>设置Mat4型uniform</summary>
-        /// <param name="name">uniform名</param>
-        /// <param name="value">uniform值</param>
+        //设置Mat4型uniform
+        //uniform名
+        //uniform值
         void setMat4(const char* name, glm::mat4 matrix) const;
-        /// <summary>设置vec2型uniform</summary>
-        /// <param name="name">uniform名</param>
-        /// <param name="value">uniform值</param>
+        //设置vec2型uniform
+        //uniform名
+        //uniform值
         void setVec2(const char* name, glm::vec2 value) const;
-        /// <summary>设置vec3型uniform</summary>
-        /// <param name="name">uniform名</param>
-        /// <param name="value">uniform值</param>
+        //设置vec3型uniform
+        //uniform名
+        //uniform值
         void setVec3(const char* name, glm::vec3 value) const;
-        /// <summary>设置vec4型uniform</summary>
-        /// <param name="name">uniform名</param>
-        /// <param name="value">uniform值</param>
+        //设置vec4型uniform
+        //uniform名
+        //uniform值
         void setVec4(const char* name, glm::vec4 value) const;
-        /// <summary>获取着色器的ID</summary>
+        //获取着色器的ID
         unsigned int getID();
-		/// <summary>编译内建着色器</summary>
+		//编译内建着色器
 		static void buildBuiltinShaders();
         /// 以下是一些内建的基本着色器
-        /// <summary>基础着色器，只有一个纹理贴图，没有光照</summary>
+        //基础着色器，只有一个纹理贴图，没有光照
         static Shader basicDiffuse;
     private:
-		/// <summary>实例化内建着色器</summary>
-		/// <param name="name">内建着色器的名字</param>
+		//实例化内建着色器
+		//内建着色器的名字
 		Shader(std::string name);
-        /// <summary>着色器程序在opengl中的id</summary>
+        //着色器程序在opengl中的id
         unsigned int id;
-        /// <summary>读取代码文件内容</summary>
+        //读取代码文件内容
         std::string readCode(const char* path);
-        /// <summary>编译着色器</summary>
+        //编译着色器
         unsigned int compileShader(const char* code, unsigned int shaderType);
     };
 

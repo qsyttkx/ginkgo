@@ -20,17 +20,28 @@ TestScene::TestScene() :Scene()
 
     backgroundColor = vec3(0.1f);
 
-    logoImg = Texture("res/style-2.png");
+    logoImg = Texture("res/yaya.png");
+
+    Shader* gray = new Shader("res/gray.vs", "res/gray.fs");
+    gray->use();
+    gray->setMat4("projection", mainCamera->projectionMatrix);
+    gray->setMat4("view", mainCamera->getViewMatrix());
+
     // logo
-    Sprite* logo = new Sprite(this, logoImg);
-    logo->position.y = gc.height * 0.125f;
+    Sprite* logo1 = new Sprite(this, logoImg);
+    logo1->position.x = -100.0f;
+    logo1->position.y = gc.height * 0.125f;
+    Sprite* logo2 = new Sprite(this, logoImg);
+    logo2->position.x = 100.0f;
+    logo2->position.y = gc.height * 0.125f;
+    logo2->shader = gray;
 
     // 标题
     TextConfig config;
     config.color = vec4(1.0f);
     config.font = "res/Ginkgo775.ttf";
     config.size = 48;
-    auto title = new Text(ui, L"Welcome to Ginkgo!", config);
+    auto title = new Text(ui, L"HELLO!", config);
     title->position.y = gc.height * 0.25f - title->getSize().y*0.5f;
     title->position.x = (gc.width - title->getSize().x)*0.5f;
     title->position.z = 1.0f;
