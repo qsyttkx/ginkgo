@@ -14,6 +14,7 @@ Scene* Game::currentScene = NULL;
 Scene* Game::nextScene = NULL;
 bool Game::releaseLastScene = true;
 int Game::FPS = 0;
+KeyState Game::keyStates[350] = { KeyState::release };
 
 Game::Game(GameConfig config)
 {
@@ -35,6 +36,10 @@ Game::Game(GameConfig config)
     }
     // 以此窗口为当前上下文
     glfwMakeContextCurrent(window);
+
+    // 监听键盘事件
+    glfwSetKeyCallback(window, keyeventCallback);
+
     // 初始化glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -48,8 +53,8 @@ Game::Game(GameConfig config)
         glfwSwapInterval(1);
     }
 
-	// 编译内建的着色器
-	Shader::buildBuiltinShaders();
+    // 编译内建的着色器
+    Shader::buildBuiltinShaders();
 
     currentScene = NULL;
     nextScene = NULL;
@@ -92,21 +97,22 @@ int Game::run()
         lastTime = time;
         // 交换缓冲区
         glfwSwapBuffers(window);
-		// glfw处理事件
-		glfwPollEvents();
-		
-		// 如果已经有下一个场景，则把下一个场景切换过来
-		if (nextScene)
-		{
-			if (releaseLastScene && currentScene)delete(currentScene);
-			currentScene = nextScene;
-			nextScene = NULL;
-			cout << "Scene[" << currentScene->name << "] is on stage." << endl;
-		}
+        // 检查键盘状态
+        checkKeyState();
+        // glfw处理事件
+        glfwPollEvents();
 
-		switchFullscreen();
+        // 如果已经有下一个场景，则把下一个场景切换过来
+        if (nextScene)
+        {
+            if (releaseLastScene && currentScene)delete(currentScene);
+            currentScene = nextScene;
+            nextScene = NULL;
+            cout << "Scene[" << currentScene->name << "] is on stage." << endl;
+        }
+        switchFullscreen();
 
-		countFPS();
+        countFPS();
     }
 
     return 0;
@@ -114,7 +120,7 @@ int Game::run()
 
 void Game::replaceScene(Scene* s, bool releaseLastScene)
 {
-	Game::releaseLastScene = releaseLastScene;
+    Game::releaseLastScene = releaseLastScene;
     nextScene = s;
 }
 
@@ -125,48 +131,72 @@ Scene* Game::getCurrentScene()
 
 void Game::switchFullscreen()
 {
-	// 可能的全屏切换，没写事件监听就先将就一下吧
     // 回车不分大小键盘，alt只监听左边的
-	if ((glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS|| glfwGetKey(window, GLFW_KEY_KP_ENTER) == GLFW_PRESS)
-        && glfwGetKey(window, GLFW_KEY_LEFT_ALT) == GLFW_PRESS)
-	{
-		if (!fullscreenSwitched)
-		{
-			config.isFullScreen = !config.isFullScreen;
+    bool enter = (getKey(GLFW_KEY_ENTER) == negedge || getKey(GLFW_KEY_KP_ENTER) == negedge);
+    bool alt = (getKey(GLFW_KEY_LEFT_ALT) == press || getKey(GLFW_KEY_LEFT_ALT) == negedge);
+    if (enter && alt)
+    {
+        config.isFullScreen = !config.isFullScreen;
 
-			glfwSetWindowMonitor(window,
-				config.isFullScreen ? glfwGetPrimaryMonitor() : NULL,
-				0, 0, config.width, config.height, 0);
-			// 如果是窗口化的化需要移动一下窗口，否则标题栏会看不见
-			if (config.isFullScreen == false)
-				glfwSetWindowPos(window, 100, 100);
-			fullscreenSwitched = true;
-		}
-	}
-	else {
-		fullscreenSwitched = false;
-	}
+        glfwSetWindowMonitor(window,
+            config.isFullScreen ? glfwGetPrimaryMonitor() : NULL,
+            0, 0, config.width, config.height, 0);
+        // 如果是窗口化的化需要移动一下窗口，否则标题栏会看不见
+        if (config.isFullScreen == false)
+            glfwSetWindowPos(window, 100, 100);
+    }
 }
 
 void Game::countFPS()
 {
-	static float t = 0;
-	static float lasttime = 0;
-	static int count = 0;
+    static float t = 0;
+    static float lasttime = 0;
+    static int count = 0;
 
-	count++;
-	float time = (float)glfwGetTime();
-	t += time - lasttime;
-	lasttime = time;
-	if (t > 1.0f)
-	{
-		t -= 1.0f;
-		FPS = count;
-		count = 0;
-	}
+    count++;
+    float time = (float)glfwGetTime();
+    t += time - lasttime;
+    lasttime = time;
+    if (t > 1.0f)
+    {
+        t -= 1.0f;
+        FPS = count;
+        count = 0;
+    }
+}
+
+void Game::keyeventCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
+    //printf("key: %d, scancode: %d, action: %d, mods: %d\n", key, scancode, action, mods);
+    if (key == GLFW_KEY_UNKNOWN)return;
+
+    if (action == GLFW_RELEASE)
+    {
+        keyStates[key] = posedge;
+    }
+    else if (action == GLFW_PRESS)
+    {
+        keyStates[key] = negedge;
+    }//忽略GLFW_REPEAT了
 }
 
 int Game::getFPS()
 {
-	return FPS;
+    return FPS;
+}
+
+KeyState Game::getKey(int key)
+{
+    KeyState s = keyStates[key];
+    return s;
+}
+
+void Game::checkKeyState()
+{
+    for (int i = 0; i < sizeof(keyStates) / sizeof(KeyState); ++i)
+    {
+        // 如果是边沿的那么这次是边沿的情况，接下来把它置为0或者1的形式
+        if (keyStates[i] == posedge)keyStates[i] = release;
+        else if (keyStates[i] == negedge)keyStates[i] = press;
+    }
 }

@@ -56,11 +56,11 @@ TestScene::~TestScene()
 void TestScene::update(float dt)
 {
     Scene::update(dt);
-
+    
     GLFWwindow* window = Game::getWindow();
 
     // 按esc退出
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if (Game::getKey(GLFW_KEY_ESCAPE) == posedge)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }

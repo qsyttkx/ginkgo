@@ -31,12 +31,6 @@
 
 <img src="https://qsyttkx.github.io/ginkgo_animation_test.gif" width="720"></img>
 
-![](https://qsyttkx.github.io/ginkgo_vs.png)
-
-![](https://qsyttkx.github.io/ginkgo_test.png)
-
-![](https://qsyttkx.github.io/ginkgo_test2.png)
-
 ## 附加信息
 
 目前用的第三方库有：stb, glm, rapidjson, glad, glfw3, assimp
