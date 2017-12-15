@@ -7,7 +7,9 @@ using namespace std;
 int main()
 {
     GameConfig c = readConfiguration("res/config.json");
-    TestGame test(c);
-    return test.run();
+    TestGame* test = new TestGame(c);
+    test->run();
+    delete(test);
+    return 0;
 }
 

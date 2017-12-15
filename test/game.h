@@ -13,6 +13,7 @@ public:
 	virtual ~TestScene();
 	virtual void update(float dt);
     Texture logoImg;
+    Shader* s;
 };
 
 class TestGame :public Game

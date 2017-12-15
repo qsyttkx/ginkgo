@@ -3,11 +3,10 @@
 #include <macros.h>
 #include <string>
 #include <iostream>
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <stb_image.h>
 #include <node.h>
+#include <glad/glad.h>
 
 namespace ginkgo
 {
@@ -31,6 +30,8 @@ namespace ginkgo
         //用颜色生成一张贴图，颜色分量是float型的
         //颜色值，如红色vec4(1.0f,0.0f,0.0f,1.0f)
         Texture(glm::vec4 color);
+        // 生成一个空的贴图，一般用于帧缓冲
+        Texture(int width, int height, GLenum fmt);
         //从GPU中释放贴图资源
 		void release();
     };

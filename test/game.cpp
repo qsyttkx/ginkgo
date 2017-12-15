@@ -15,37 +15,30 @@ TestGame::TestGame(GameConfig c) :Game(c)
 // 场景1
 TestScene::TestScene() :Scene()
 {
-    name = "scene";
-    GameConfig gc = Game::getConfigurations();
+    float width = (float)Game::getConfigurations().width;
+    float height = (float)Game::getConfigurations().height;
+    
+    TTFCharacter::loadFont("C:/Windows/Fonts/Dengb.ttf");
+    s = new Shader("res/effect.vs", "res/effect.fs");
+    root->shader = s;
 
-    backgroundColor = vec3(0.1f);
+    Layer* layer1 = new Layer(this);
+    layer1->position.z = 10;
 
-    logoImg = Texture("res/yaya.png");
+    logoImg = Texture("res/logo.png");
+    Sprite* logo = new Sprite(root, logoImg);
+    logo->position = vec3(width *0.5f-100, height*0.5f, 1.0f);
+    Sprite* bg = new Sprite(root, Texture("res/bg.png"));
+    bg->position = vec3(width *0.5f, height*0.5f, 0.0f);
 
-    Shader* gray = new Shader("res/gray.vs", "res/gray.fs");
-    gray->use();
-    gray->setMat4("projection", mainCamera->projectionMatrix);
-    gray->setMat4("view", mainCamera->getViewMatrix());
-
-    // logo
-    Sprite* logo1 = new Sprite(this, logoImg);
-    logo1->position.x = -100.0f;
-    logo1->position.y = gc.height * 0.125f;
-    Sprite* logo2 = new Sprite(this, logoImg);
-    logo2->position.x = 100.0f;
-    logo2->position.y = gc.height * 0.125f;
-    logo2->shader = gray;
-
-    // 标题
-    TextConfig config;
-    config.color = vec4(1.0f);
-    config.font = "res/Ginkgo775.ttf";
-    config.size = 48;
-    auto title = new Text(ui, L"HELLO!", config);
-    title->position.y = gc.height * 0.25f - title->getSize().y*0.5f;
-    title->position.x = (gc.width - title->getSize().x)*0.5f;
-    title->position.z = 1.0f;
-
+    TextConfig c;
+    c.font = "C:/Windows/Fonts/Dengb.ttf";
+    c.color = vec4(0.3f, 0.8f, 1.0f, 1);
+    c.size = 48;
+    Sprite* logo2 = new Sprite(layer1, logoImg);
+    logo2->position = vec3(width*0.5f, height*0.5f, 0.0f);
+    Text* txt = new Text(layer1, L"Framebuffer and shader test", c);
+    txt->position = vec3((width-txt->getSize().x)*0.5f, 100, 0);
 }
 
 TestScene::~TestScene()
@@ -56,7 +49,13 @@ TestScene::~TestScene()
 void TestScene::update(float dt)
 {
     Scene::update(dt);
-    
+
+    static float t = 0;
+    t += dt;
+
+    s->use();
+    s->setFloat("tm", t);
+        
     GLFWwindow* window = Game::getWindow();
 
     // 按esc退出

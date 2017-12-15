@@ -15,10 +15,11 @@ Camera::Camera(Node* parent, vec3 position, vec3 worldUp, float yaw, float pitch
 	this->rotation.x = pitch;
 	updateCameraVectors();
 
-	// 默认创建一个透视的投影阵
 	float width = (float)Game::getConfigurations().width;
 	float height = (float)Game::getConfigurations().height;
-	projectionMatrix = perspective(radians(45.0f), width / height, 0.1f, 5000.0f);
+    // 默认创建一个正交的投影阵
+	//projectionMatrix = perspective(radians(45.0f), width / height, 0.1f, 5000.0f);
+    projectionMatrix = ortho(0.0f, (float)width, 0.0f, (float)height, 0.1f, height / 0.414f + 1000.0f);
 }
 
 mat4 Camera::getViewMatrix()

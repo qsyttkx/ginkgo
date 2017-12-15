@@ -1,7 +1,7 @@
 ﻿#define EXPORT
+
 #include <macros.h>
 #include <scene.h>
-#include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <ginkgo.h>
 
@@ -10,59 +10,64 @@ using namespace glm;
 
 Scene::Scene()
 {
-    auto config = Game::getConfigurations();
-    // 配置摄像机
-    mainCamera = new Camera(this, vec3(0, 0, config.height * 1.2071f));
-    uiCamera = new Camera(this, vec3(0,0, config.height / 0.414f));
-    uiCamera->projectionMatrix = ortho(0.0f, (float)config.width, 0.0f, (float)config.height, 0.1f, config.height / 0.414f + 1000.0f);
-
     // 设置背景色
     backgroundColor = vec3(0.0f);
 
-    ui = new Node();
-    ui->name = "GINKGO_ui";
+    float width = (float)Game::getConfigurations().width;
+    float height = (float)Game::getConfigurations().height;
+    matProjection = ortho(0.0f, (float)width, 0.0f, (float)height, 0.1f, height / 0.414f + 1000.0f);
+    vec3 position(0, 0, height * 1.2071f);
+    vec3 center(0, 0, 0.0f);
+    vec3 up(0, 1, 0);
+    matView = glm::lookAt(position, center, up);
 
-    // 启用一些OpenGL的功能
-    glEnable(GL_BLEND);
-
-    // 设置默认的混合函数
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    // 设置默认层
+    root = new Layer(this, width, height);
 }
 
 Scene::~Scene()
 {
-    delete(ui);
 }
 
 void Scene::update(float dt)
 {
     Node::update(dt);
 
+    // 先执行层的渲染
+    auto children = getChildren();
+    for (auto iter = children.begin(); iter != children.end(); ++iter)
+    {
+        if (dynamic_cast<Layer*>(*iter))
+        {
+            dynamic_cast<Layer*>(*iter)->renderToTexture(dt);
+        }
+    }
+
+    // 拼合层
     renderHeader();
-
-    mainCamera->updateCameraVectors();
     glViewport(0, 0, Game::getConfigurations().width, Game::getConfigurations().height);
-
-    // 默认我们使用最简单的着色器，只有贴图没有光照
-    Shader shader = Shader::basicDiffuse;
-    //shader.use();
-
     // 清除缓冲区
-    glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, 0.0f);
+    glClearColor(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    // 渲染场景
-    shader.setMat4("projection", mainCamera->projectionMatrix);
-    shader.setMat4("view", mainCamera->getViewMatrix());
-
-    renderChildren();
-
-    // 渲染UI
-    glDisable(GL_DEPTH_TEST);
-    auto config = Game::getConfigurations();
-    shader.setMat4("projection", uiCamera->projectionMatrix);
-    shader.setMat4("view", uiCamera->getViewMatrix());
-    ui->renderHeader();
-    ui->update(dt);
-    ui->renderChildren();
-
+    // 遍历渲染子节点
+    for (auto iter = children.begin(); iter != children.end(); iter++)
+    {
+        // 如果此子节点不可见则不渲染它
+        if ((*iter)->isEnabled == false)continue;
+        auto layer = dynamic_cast<Layer*>(*iter);
+        if (layer)
+        {
+            layer->shader->use();
+            layer->shader->setMat4("projection", matProjection);
+            layer->shader->setMat4("view", matView);
+            layer->renderHeader();
+            layer->update(dt);
+        }
+        else 
+        {
+            (*iter)->renderHeader();
+            (*iter)->update(dt);
+            (*iter)->renderChildren();
+        }
+    }
 }

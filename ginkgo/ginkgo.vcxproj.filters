@@ -54,6 +54,9 @@
     <ClInclude Include="include\sprite.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\layer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ginkgo.cpp">
@@ -87,6 +90,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

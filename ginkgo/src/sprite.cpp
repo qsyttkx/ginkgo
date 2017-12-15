@@ -63,7 +63,7 @@ void Sprite::update(float dt)
         glBindVertexArray(VAO);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, img.id);
-        Shader::basicDiffuse.setInt("texture_diffuse1", 0);
+        shader->setInt("texture_diffuse1", 0);
         glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 }

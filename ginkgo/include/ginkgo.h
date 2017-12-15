@@ -13,6 +13,7 @@
 #include <sprite.h>
 #include <text.h>
 #include <animation.h>
+#include <layer.h>
 
 namespace ginkgo
 {

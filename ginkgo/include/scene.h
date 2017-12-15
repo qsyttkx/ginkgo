@@ -3,6 +3,7 @@
 #include <macros.h>
 #include <node.h>
 #include <camera.h>
+#include <layer.h>
 
 namespace ginkgo
 {
@@ -15,15 +16,12 @@ namespace ginkgo
         Scene();
         //析构场景
         virtual ~Scene();
-        //主摄像机
-        Camera* mainCamera;
-        //UI摄像机
-        Camera* uiCamera;
         //渲染
         virtual void update(float dt);
         //背景颜色（glClearColor）
         glm::vec3 backgroundColor;
-        // UI节点
-        Node* ui;
+        glm::mat4 matProjection;
+        glm::mat4 matView;
+        Layer* root;
     };
 }

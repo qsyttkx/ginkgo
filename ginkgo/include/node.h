@@ -68,7 +68,7 @@ namespace ginkgo
 		/// glm::vec3 globalScaling();
 
         //获取变换矩阵（世界坐标系）
-        glm::mat4 getGlobalTransform();
+        virtual glm::mat4 getGlobalTransform();
         //渲染前的一些操作，如传递当前节点的模型矩阵，调用调度器，刷新transform等
         /// 在重写的Node类中，如果实例化出的节点是一个根节点，则需要手动在render()之前调用renderHeader()
         /// 以设置着色器和当前节点的模型矩阵
@@ -91,7 +91,6 @@ namespace ginkgo
 		Node* parent;
         //两帧之间隔
         float dt;
-	private:
 		//父级opacity
 		float parentsOpacity;
 		//最终合成的opacity
