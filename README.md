@@ -27,7 +27,7 @@
 
 ## 近期展示
 
-![]("https://qsyttkx.github.io/ginkgo_framebuffer_test.gif")
+![](https://qsyttkx.github.io/ginkgo_framebuffer_test.gif)
 
 ## 附加信息
 
