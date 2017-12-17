@@ -31,7 +31,7 @@ namespace ginkgo
         bool isActive;
     };
 
-    // 动画中的回调函数，float为本动画播放到当前的时间，Animation*为当前播放的动画
+    // 动画中的回调函数，float为本动画播放到当前持续的时间，Animation*为当前播放的动画
     typedef std::function<void(float, Animation*)> AnimationCallback;
 
     class DLL Animation : public Node
@@ -47,7 +47,11 @@ namespace ginkgo
         float timeOfFrame;
         float fps;
         unsigned int frameCount;
-        std::list<AnimationCallback> callbacks;
+        // 动画在游戏每次更新画面时的回调函数。float为本动画播放到当前持续的时间，Animation*为当前播放的动画
+        AnimationCallback onUpdated;
+        // 动画本身每一帧更新时的回调函数。float为本动画播放到当前持续的时间，Animation*为当前播放的动画
+        AnimationCallback onFrameChanged;
+        // 动画在结束时的回调函数。float为本动画播放到当前持续的时间，Animation*为当前播放的动画
         AnimationCallback onAnimationEnded;
         void pushbackFrameFromTexture(Texture texture);
     };

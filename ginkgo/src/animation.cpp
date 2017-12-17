@@ -53,6 +53,8 @@ ginkgo::Animation::Animation(Animator* parent, std::string name) :Node(parent)
     TimeAtBegin = (float)glfwGetTime();
     timeOfFrame = TimeOfAnimation = 0.0f;
     frameCount = 0;
+    onUpdated = [](float, Animation*) {};
+    onFrameChanged = [](float, Animation*) {};
     onAnimationEnded = [](float, Animation*) {};
 }
 
@@ -85,13 +87,9 @@ void ginkgo::Animation::update(float dt)
             // 调用一次callback onAnimationEnded
             onAnimationEnded(TimeOfAnimation, this);
         }
+        onFrameChanged(TimeOfAnimation, this);
     }
-
-    // 调用所有自定义的callback
-    for (auto iter = callbacks.begin(); iter != callbacks.end(); ++iter)
-    {
-        (*iter)(TimeOfAnimation, this);
-    }
+    onUpdated(TimeOfAnimation, this);
 }
 
 void ginkgo::Animation::renderChildren()

@@ -106,12 +106,7 @@ void TTFCharacter::loadFont(const char* filePath)
     if (fopen_s(&fp, filePath, "rb"))
     {
         cout << "找不到字体文件[" << filePath << "]";
-#ifdef WIN32
-        cout << "，被替换为arialbd.ttf"<< endl;
-        fopen_s(&fp, "C:/Windows/Fonts/arialbd.ttf", "rb");
-#else
         return;
-#endif // WIN32
     };
     size_t bSize = fread(buffer, 1, 1 << 25, fp);
     fclose(fp);
