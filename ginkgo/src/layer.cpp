@@ -13,6 +13,8 @@ Layer::Layer(Node* parent, float width, float height) :Node(parent)
     if (width == 0)width = (float)Game::getConfigurations().width;
     if (height == 0)height = (float)Game::getConfigurations().height;
 
+    root = new Node(this);
+
     // 配置摄像机
     camera = new Camera(this, vec3(0, 0, height * 1.2071f));
     // 设置背景色
@@ -101,12 +103,6 @@ void Layer::update(float dt)
 void ginkgo::Layer::renderHeader()
 {
     Node::renderHeader();
-
-    // 启用一些OpenGL的功能
-    glEnable(GL_BLEND);
-    // 设置默认的混合函数
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 }
 
 glm::mat4 ginkgo::Layer::getGlobalTransform()

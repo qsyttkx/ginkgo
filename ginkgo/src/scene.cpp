@@ -22,7 +22,7 @@ Scene::Scene()
     matView = glm::lookAt(position, center, up);
 
     // 设置默认层
-    root = new Layer(this, width, height);
+    defaultLayer = new Layer(this, width, height);
 }
 
 Scene::~Scene()

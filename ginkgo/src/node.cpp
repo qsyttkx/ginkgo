@@ -24,6 +24,8 @@ Node::Node(Node* parent)
 	isEnabled = true;
 	opacity = 1.0f;
     shader = &(Shader::basicDiffuse);
+
+    setBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 Node::~Node()
@@ -174,6 +176,11 @@ void Node::renderHeader()
 	shader->setFloat("node_opacity", globalOpacity);
     // 给children按z值排序
     children.sort(cmp);
+
+    // 启用一些OpenGL的功能
+    glEnable(GL_BLEND);
+    // 设置默认的混合函数
+    glBlendFunc(blendfunc1,blendfunc2);
 }
 
 void Node::renderChildren()
@@ -240,4 +247,10 @@ bool Node::operator<(const Node& n) const
 }
 #endif // GINKGO_SORT_BY_Z_INDEX
 
+}
+
+void ginkgo::Node::setBlendFunc(unsigned int func1, unsigned int func2)
+{
+    blendfunc1 = func1;
+    blendfunc2 = func2;
 }
