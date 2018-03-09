@@ -29,6 +29,7 @@ namespace ginkgo
         Texture framebuffertexture;
         //顶点数组、缓冲对象
         GLuint VAO, VBO,framebuffer,renderbuffer;
+        Node* root;
     protected:
         // 为了避免同一个变换被重复用两次，我们这里对layer的子节点屏蔽layer的Transform
         virtual glm::mat4 getGlobalTransform();

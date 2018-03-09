@@ -82,6 +82,7 @@ namespace ginkgo
 		bool operator<(const Node& n) const;
         // 着色器程序，NULL则使用默认着色器
         Shader* shader;
+        void setBlendFunc(unsigned int func1, unsigned int func2);
 	protected:
 		//请勿使用此方法！
 		// 此方法只会影响到本节点的子节点集合，而不会修改子节点的父节点属性。
@@ -105,5 +106,6 @@ namespace ginkgo
 		std::list<Node*> children;
         //获取摄像机位置，用于计算渲染顺序。
 		glm::vec3 getPositionOfRootCamera() const;
+        unsigned int blendfunc1, blendfunc2;
 	};
 }

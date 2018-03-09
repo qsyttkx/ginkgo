@@ -20,15 +20,15 @@ TestScene::TestScene() :Scene()
     
     TTFCharacter::loadFont("C:/Windows/Fonts/Dengb.ttf");
     s = new Shader("res/effect.vs", "res/effect.fs");
-    root->shader = s;
+    defaultLayer->shader = s;
 
     Layer* layer1 = new Layer(this);
     layer1->position.z = 10;
 
     logoImg = Texture("res/logo.png");
-    Sprite* logo = new Sprite(root, logoImg);
+    Sprite* logo = new Sprite(defaultLayer, logoImg);
     logo->position = vec3(width *0.5f-100, height*0.5f, 1.0f);
-    Sprite* bg = new Sprite(root, Texture("res/bg.png"));
+    Sprite* bg = new Sprite(defaultLayer, Texture("res/bg.png"));
     bg->position = vec3(width *0.5f, height*0.5f, 0.0f);
 
     TextConfig c;

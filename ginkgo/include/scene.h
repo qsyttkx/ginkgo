@@ -22,6 +22,6 @@ namespace ginkgo
         glm::vec3 backgroundColor;
         glm::mat4 matProjection;
         glm::mat4 matView;
-        Layer* root;
+        Layer* defaultLayer;
     };
 }
