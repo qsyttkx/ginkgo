@@ -10,7 +10,7 @@ public:
   // 构建一个按钮，参数分别为正常、按下、悬停时显示的纹理索引
   Button(std::string normal, std::string pressed = "", std::string hover = "");
   ~Button();
-  MouseEventCallback onClick;
+  std::function<void(int key, int mods)> onClick;
   
   // 设置文本
   void setText(std::string text);

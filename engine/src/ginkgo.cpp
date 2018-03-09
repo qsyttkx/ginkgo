@@ -76,6 +76,10 @@ Game::Game()
 
     // 设置键盘事件回调
     glfwSetKeyCallback(window,key_callback);
+    // 设置鼠标事件回调
+    glfwSetMouseButtonCallback(window,mouse_button_callback);
+    glfwSetCursorPosCallback(window,mouse_move_callback);
+    glfwSetScrollCallback(window,mouse_scroll_callback);
 
     // 设置当前程序使用的本地化信息（为了Label能显示本地化的文字）
     setlocale(LC_ALL, "");
@@ -274,5 +278,36 @@ void Game::key_callback(GLFWwindow* window, int key, int scancode, int action, i
         // 如果是窗口化的化需要移动一下窗口，否则标题栏会看不见
         if (conf.fullscreen == false)
             glfwSetWindowPos(window, 100, 100);
+    }
+}
+
+
+void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    // cout<<"button :"<<button<<"action"<<action<<endl;
+    auto listeners = Game::getInstance()->mouseEventListeners;
+    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+    {
+        (*iter)->buttonCallback(button, action,mods);
+    }
+}
+
+void Game::mouse_move_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    // cout<<"button :"<<button<<"action"<<action<<endl;
+    auto listeners = Game::getInstance()->mouseEventListeners;
+    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+    {
+        (*iter)->moveCallback(glm::vec2(float(xpos), float(ypos)));
+    }
+}
+
+void Game::mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    // cout<<"button :"<<button<<"action"<<action<<endl;
+    auto listeners = Game::getInstance()->mouseEventListeners;
+    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+    {
+        (*iter)->scrollCallback(glm::vec2(float(xoffset), float(yoffset)));
     }
 }

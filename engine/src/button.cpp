@@ -18,9 +18,9 @@ Button::Button(string normal, string pressed, string hover) : Sprite(normal)
 
     isPressed = false;
 
-    onClick = [](vec2, unsigned int) {};
+    onClick = [](int, int) {};
     listener = new MouseEventListener();
-    listener->onMove = [=](vec2 pos, unsigned int btn) {
+    listener->moveCallback = [=](vec2 pos) {
         // 判断是否鼠标落在了按钮内
         if (checkMousePosition(pos))
         {
@@ -42,26 +42,30 @@ Button::Button(string normal, string pressed, string hover) : Sprite(normal)
         }
     };
 
-    listener->onPress = [=](vec2 pos, unsigned int btn) {
+    listener->buttonCallback = [=](int button, int action, int mods) {
         // 判断是否鼠标落在了按钮内
-        if (checkMousePosition(pos))
+        vec2 pos = Game::getInstance()->getMousePosition();
+        bool check = checkMousePosition(pos);
+        if(action == GLFW_PRESS && check)
         {
             // 设置按下纹理
             setTexture(texPressed);
             isPressed = true;
         }
-    };
-
-    listener->onRelease = [=](vec2 pos, unsigned int btn) {
-        // 判断是否鼠标落在了按钮内
-        if (checkMousePosition(pos) && isPressed)
+        else if(action == GLFW_RELEASE && check)
         {
             // 触发事件
-            onClick(pos, btn);
+            onClick(button, mods);
             // 设置悬停纹理
             setTexture(texHover);
+            isPressed = false;
         }
-        isPressed = false;
+        else if(action == GLFW_RELEASE && !check)
+        {
+            // 设置正常纹理
+            setTexture(texNormal);
+            isPressed = false;
+        }
     };
 
     // 添加监听器

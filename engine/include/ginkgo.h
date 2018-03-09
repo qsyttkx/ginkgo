@@ -55,6 +55,8 @@ public:
     static Game* getInstance();
     // 键盘事件监听器列表
     std::list<KeyboardEventListener*> keyboardEventListeners;
+    // 鼠标时间监听器列表
+    std::list<MouseEventListener*> mouseEventListeners;
 private:
     static Game* _instance;
 
@@ -84,4 +86,10 @@ private:
 
     // 键盘事件回调
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    // 鼠标按钮事件回调
+    static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+    // 鼠标移动事件回调
+    static void mouse_move_callback(GLFWwindow* window, double xpos, double ypos);
+    // 鼠标滚动事件回调
+    static void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 };

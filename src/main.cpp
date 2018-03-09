@@ -34,7 +34,7 @@ class SceneWelcome : public Scene
         addChild(btn1);
         btn1->setText("Start",FontStyle(20));
         btn1->name = "btn1";
-        btn1->onClick = [=](glm::vec2 pos, unsigned int btn) {
+        btn1->onClick = [=](int key, int mods) {
             start();
         };
         btn1->setPosition(100.0f,wSize.y - 50.0f,1);
@@ -43,7 +43,7 @@ class SceneWelcome : public Scene
         addChild(btn2);
         btn2->setText("Exit(Esc)",FontStyle(20));
         btn2->name = "btn2";
-        btn2->onClick = [=](glm::vec2 pos, unsigned int btn) {
+        btn2->onClick = [=](int key, int mods) {
             Game::getInstance()->end();
         };
         btn2->setPosition(100.0f,wSize.y - 80.0f,1);

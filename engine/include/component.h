@@ -15,32 +15,21 @@ class Component
     virtual void update();
 };
 
-// 鼠标事件回调函数
-typedef std::function<void(glm::vec2, unsigned int button)> MouseEventCallback;
-// 鼠标按钮
-enum
-{
-    btn_left = 1<<0,
-    btn_right = 1<<1,
-    btn_mid = 1<<2
-};
+// 鼠标按钮回调函数
+typedef std::function<void(int button, int action, int mods)> MouseButtonCallback;
+// 鼠标移动回调函数
+typedef std::function<void(glm::vec2 pos)> MouseMoveCallback;
+// 鼠标滚轮回调函数
+typedef std::function<void(glm::vec2 offset)> MouseScrollCallback;
 // 鼠标事件监听器
 class MouseEventListener : public Component
 {
   public:
     MouseEventListener();
     virtual ~MouseEventListener();
-    virtual void update();
-
-    // 当鼠标按下时
-    MouseEventCallback onPress;
-    // 当鼠标松开时
-    MouseEventCallback onRelease;
-    // 当鼠标移动时
-    MouseEventCallback onMove;
-  private:
-    glm::vec2 lastPos;
-    unsigned int lastBtn;
+    MouseButtonCallback buttonCallback;
+    MouseMoveCallback moveCallback;
+    MouseScrollCallback scrollCallback;
 };
 
 // 键盘事件回调函数
