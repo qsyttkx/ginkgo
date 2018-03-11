@@ -7,7 +7,7 @@ using namespace std;
 
 class SceneWelcome : public Scene
 {
-  public:
+public:
     Button *btn1,*btn2;
     Label* hint;
     Sprite* circle;
@@ -20,6 +20,10 @@ class SceneWelcome : public Scene
 
     Physics* phy;
     KeyboardEventListener *listener1;
+
+    bool show_demo_window;
+    bool show_another_window;
+    ImVec4 clear_color;
 
     SceneWelcome()
     {
@@ -50,7 +54,7 @@ class SceneWelcome : public Scene
         listener1 = new KeyboardEventListener();
         listener1->callback = [=](int key, int scancode, int action, int mods)
         {
-            printf("key: %d, scancode: %d, action: %d, mods: %d\n",key,scancode,action,mods);
+            // printf("key: %d, scancode: %d, action: %d, mods: %d\n",key,scancode,action,mods);
             fflush(stdout);
             if(key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
             {
@@ -125,6 +129,19 @@ class SceneWelcome : public Scene
         fixtureDef2.friction = 0.2f;
         fixtureDef2.restitution = 0.5f;
         block2Body->CreateFixture(&fixtureDef2);
+
+        show_demo_window = true;
+        show_another_window = false;
+        clear_color.x = 0.8f;
+        clear_color.y = 0.8f;
+        clear_color.z = 0.8f;
+        ImGuiIO& io = ImGui::GetIO();
+        io.Fonts->AddFontFromFileTTF("res/BerkshireSwash-Regular.ttf", 18);
+        ImGui::StyleColorsLight();
+        ImGuiStyle* style = &ImGui::GetStyle();
+        ImVec4* colors = style->Colors;
+        colors[ImGuiCol_WindowBg] = ImVec4(0.94f, 0.94f, 0.94f, 0.80f);
+        style->WindowBorderSize = 1;
     }
 
     virtual ~SceneWelcome()
@@ -168,12 +185,43 @@ class SceneWelcome : public Scene
             block2->setPosition(position.x*10.0f,position.y*10.0f);
             block2->setRotation(angle*180.0f/3.1415926f);
         }
+
+        // 1. Show a simple window.
+        // Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets automatically appears in a window called "Debug".
+        {
+            static float f = 0.0f;
+            ImGui::Text("Hello, world!");                           // Some text (you can use a format string too)
+            ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float as a slider from 0.0f to 1.0f
+            ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats as a color
+            if (ImGui::Button("Demo Window"))                       // Use buttons to toggle our bools. We could use Checkbox() as well.
+                show_demo_window ^= 1;
+            if (ImGui::Button("Another Window"))
+                show_another_window ^= 1;
+            ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        }
+
+        // 2. Show another simple window. In most cases you will use an explicit Begin/End pair to name the window.
+        if (show_another_window)
+        {
+            ImGui::Begin("Another Window", &show_another_window);
+            ImGui::Text("Hello from another window!");
+            ImGui::End();
+        }
+
+        // 3. Show the ImGui demo window. Most of the sample code is in ImGui::ShowDemoWindow().
+        if (show_demo_window)
+        {
+            ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiCond_FirstUseEver); // Normally user code doesn't need/want to call this because positions are saved in .ini file anyway. Here we just want to make the demo initial state a bit more friendly!
+            ImGui::ShowDemoWindow(&show_demo_window);
+        }
+
+        setBackgroundColor(glm::vec4(clear_color.x, clear_color.y, clear_color.z, clear_color.w));
     }
 };
 
 class MyGame : public Game
 {
-  public:
+public:
     MyGame() : Game()
     {
         setTitle("Hello my game engine");

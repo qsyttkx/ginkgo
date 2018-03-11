@@ -16,6 +16,11 @@ void Component::update()
 {
 }
 
+void Component::updateLater()
+{
+
+}
+
 // 鼠标事件监听器
 MouseEventListener::MouseEventListener()
 {

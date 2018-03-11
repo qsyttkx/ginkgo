@@ -15,11 +15,10 @@ Game::Game()
 {
     if (_instance != nullptr)
         return;
-
     //游戏启动时先读取配置文件
     readConfiguration();
-
     // 初始化glfw, 使用OpenGL 3.x版本，core profile
+    glfwSetErrorCallback(error_callback);
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -29,7 +28,6 @@ Game::Game()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 #endif
     glfwWindowHint(GLFW_SAMPLES, 4);// 多重采样数
-
     GLFWmonitor *monitor = config.fullscreen ? glfwGetPrimaryMonitor() : NULL;
     window = glfwCreateWindow(config.width, config.height, DEFAULT_WINDOW_TITLE, monitor, NULL);
     if (window == NULL)
@@ -40,7 +38,6 @@ Game::Game()
     }
     // 以此窗口为当前上下文
     glfwMakeContextCurrent(window);
-
     // 初始化glad
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -48,31 +45,30 @@ Game::Game()
         glfwTerminate();
         return;
     }
-
     // 根据配置开启垂直同步
     if (config.vsync)
     {
         glfwSwapInterval(1);
     }
-
     // 启用多重采样
     glEnable(GL_MULTISAMPLE);
-
     // 编译内建着色器
     Shader::buildBuiltinShaders();
-
     // 初始化纹理管理器
     resManager = new ResourceManager();
-
     // 初始化精灵的顶点坐标数据
     Sprite::generateVertices();
-
     currentScene = nullptr;
     nextScene = nullptr;
     time = lastTime = deltaTime = 0.0f;
-
     // 赋此实例为全局对象
     _instance = this;
+    // 初始化ImGUI
+    // Setup ImGui binding
+    ImGui_ImplGlfwGL3_Init(window, false);
+    // Setup style
+    ImGui::StyleColorsClassic();
+    //ImGui::StyleColorsDark();
 
     // 设置键盘事件回调
     glfwSetKeyCallback(window,key_callback);
@@ -80,6 +76,8 @@ Game::Game()
     glfwSetMouseButtonCallback(window,mouse_button_callback);
     glfwSetCursorPosCallback(window,mouse_move_callback);
     glfwSetScrollCallback(window,mouse_scroll_callback);
+    // 设置SetCharCallback
+    glfwSetCharCallback(window, ImGui_ImplGlfwGL3_CharCallback);
 
     // 设置当前程序使用的本地化信息（为了Label能显示本地化的文字）
     setlocale(LC_ALL, "");
@@ -97,6 +95,8 @@ Game::~Game()
 
     delete (resManager);
     Sprite::deleteVertices();
+
+    ImGui_ImplGlfwGL3_Shutdown();
 
     glfwTerminate();
     _instance = nullptr;
@@ -256,8 +256,16 @@ Game *Game::getInstance()
     return _instance;
 }
 
+void Game::error_callback(int error, const char* description)
+{
+    cerr<<"Error "<<error<<", : "<<description<<endl;
+}
+
 void Game::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+    // ImGui
+    ImGui_ImplGlfwGL3_KeyCallback(window,key,scancode,action,mods);
+
     // cout<<"key :"<<key<<"action"<<action<<endl;
     auto listeners = Game::getInstance()->keyboardEventListeners;
     for(auto iter = listeners.begin();iter!=listeners.end();++iter)
@@ -284,6 +292,9 @@ void Game::key_callback(GLFWwindow* window, int key, int scancode, int action, i
 
 void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
+    // ImGui
+    ImGui_ImplGlfwGL3_MouseButtonCallback(window,button,action,mods);
+
     // cout<<"button :"<<button<<"action"<<action<<endl;
     auto listeners = Game::getInstance()->mouseEventListeners;
     for(auto iter = listeners.begin();iter!=listeners.end();++iter)
@@ -304,6 +315,9 @@ void Game::mouse_move_callback(GLFWwindow* window, double xpos, double ypos)
 
 void Game::mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    // ImGui
+    ImGui_ImplGlfwGL3_ScrollCallback(window,xoffset,yoffset);
+
     // cout<<"button :"<<button<<"action"<<action<<endl;
     auto listeners = Game::getInstance()->mouseEventListeners;
     for(auto iter = listeners.begin();iter!=listeners.end();++iter)

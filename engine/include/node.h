@@ -67,7 +67,7 @@ class Node
     virtual void update();
 
     // 遍历节点
-    void traverse();
+    virtual void traverse();
 
     //重写的小于运算符，用于在list中排序以决定渲染顺序
     bool operator<(const Node &n) const;

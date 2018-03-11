@@ -33,6 +33,6 @@
 
 ## 附加信息
 
-目前用的第三方库有：stb, glm, rapidjson, glad, glfw3, Box2D
+目前用的第三方库有：stb, glm, rapidjson, glad, glfw3, Box2D, ImGui
 
 其它的暂时貌似应该没了……

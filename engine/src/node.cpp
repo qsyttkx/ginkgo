@@ -307,6 +307,12 @@ void Node::traverse()
             continue;
         (*iter)->traverse();
     }
+
+    // 调用所有组件
+    for (auto iter = components.begin(); iter != components.end(); ++iter)
+    {
+        (*iter).second->updateLater();
+    }
 }
 
 // 更新Transform等属性

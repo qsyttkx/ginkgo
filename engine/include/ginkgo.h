@@ -9,6 +9,8 @@
 // 包含第三方库的头文件
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+#include <imgui.h>                  // 引入imgui
+#include <imgui_impl_glfw_gl3.h>    // 适配imgui用于glfw的接口
 
 #include <node.h>
 #include <scene.h>
@@ -84,6 +86,8 @@ private:
     // 资源管理
     ResourceManager* resManager;
 
+    // glfw发生错误时的回调
+    static void error_callback(int error, const char* description);
     // 键盘事件回调
     static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
     // 鼠标按钮事件回调

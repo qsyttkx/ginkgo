@@ -10,10 +10,14 @@ add_definitions(-std=c++11)
 aux_source_directory("src" SRC_LIST)
 
 # 设置引擎头文件目录
-INCLUDE_DIRECTORIES("engine/include" "engine/external/include")
+INCLUDE_DIRECTORIES("engine/include"
+    "engine/external/include"
+    "engine/external/include/imgui"
+    "engine/external/include/stb")
 
 # 设置引擎源文件
-aux_source_directory("engine/src" ENGINE_SRC_LIST)
+aux_source_directory("engine/src"  ENGINE_SRC_LIST)
+aux_source_directory("engine/external/src" ENGINE_EXTERNAL_SRC_LIST)
 
 # 设置库目录
 if(WIN32 AND NOT MINGW)
@@ -32,4 +36,4 @@ endif()
 
 
 # 可执行文件
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${ENGINE_SRC_LIST})
+add_executable(${PROJECT_NAME} ${SRC_LIST} ${ENGINE_EXTERNAL_SRC_LIST} ${ENGINE_SRC_LIST})
