@@ -83,7 +83,7 @@ public:
         // box2d
 
         // Creating a world
-        phy = new Physics(glm::vec2(0.0f,-10.0f));
+        phy = new Physics(glm::vec2(0.0f,-100.0f));
         addComponent("physics",phy);
         world = phy->getWorld();
         phy->running = false;
@@ -113,7 +113,7 @@ public:
         fixtureDef.friction = 0.2f;
         fixtureDef.restitution = 0.5f;
         circleBody->CreateFixture(&fixtureDef);
-        circleBody->SetLinearVelocity(b2Vec2(12.0f,10.0f));
+        circleBody->SetLinearVelocity(b2Vec2(35.0f,35.0f));
 
         // Creating another DynamicBody
         b2BodyDef boxbodyDef;
