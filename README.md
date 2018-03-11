@@ -17,11 +17,11 @@
 1. o 内存自动管理
 1. o 基本变换
 1. o 精灵(2D)
-1. o TrueType文本标签
+1. o UI (imgui + 基于Node类简单的UI)
 1. o 着色器
 1. o 事件管理
+1. o 物理引擎
 1. . 碰撞检测
-1. . 物理引擎
 1. x 逐帧动画
 1. x 模型
 1. x 骨骼动画
@@ -30,6 +30,7 @@
 ## 近期展示
 
 ![](https://qsyttkx.github.io/ginkgo2_phy_test.gif)
+![](qsyttkx.github.io/ginkgo2_imgui.png)
 
 ## 附加信息
 
