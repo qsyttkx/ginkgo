@@ -30,7 +30,7 @@
 ## 近期展示
 
 ![](https://qsyttkx.github.io/ginkgo2_phy_test.gif)
-![](qsyttkx.github.io/ginkgo2_imgui.png)
+![](https://qsyttkx.github.io/ginkgo2_imgui.png)
 
 ## 附加信息
 
