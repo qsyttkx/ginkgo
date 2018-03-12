@@ -162,10 +162,13 @@ wstring Label::s2ws(const string &s)
 {
     const char *utf8_chars = s.c_str();
     const int wchars_buf_len = s.size() + 1;
-    wchar_t *wchars = new wchar_t[wchars_buf_len];
+    ImWchar *imwchars = new ImWchar[wchars_buf_len];
     // ImGui中将char*转换为wchar型unicode编码的函数
-    ImTextStrFromUtf8((ImWchar*)wchars, wchars_buf_len, utf8_chars, NULL, NULL);
+    ImTextStrFromUtf8(imwchars, wchars_buf_len, utf8_chars, NULL, NULL);
+    wchar_t *wchars = new wchar_t[wchars_buf_len];
+    for(unsigned int i = 0; i < wchars_buf_len; ++i)wchars[i] = imwchars[i]; // 之所以这么转一道手，是因为64位机wchar_t是4字节，而32位是2字节
     wstring result = wstring(wchars);
     delete[] wchars;
+    delete[] imwchars;
     return result;
 }

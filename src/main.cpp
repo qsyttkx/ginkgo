@@ -17,5 +17,7 @@ public:
 
 int main()
 {
+    printf("size of wchar_t: %ld\n",sizeof(wchar_t));
+    printf("size of unsigned short: %ld\n",sizeof(unsigned short));
     return MyGame().run();
 }
