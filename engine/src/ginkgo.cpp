@@ -79,10 +79,6 @@ Game::Game()
     // 设置SetCharCallback
     glfwSetCharCallback(window, ImGui_ImplGlfwGL3_CharCallback);
 
-    // 设置当前程序使用的本地化信息（为了Label能显示本地化的文字）
-    setlocale(LC_ALL, "");
-    // cout<<setlocale(LC_ALL, NULL)<<endl;
-
     cout << "Initialization complete." << endl;
 }
 
@@ -266,13 +262,6 @@ void Game::key_callback(GLFWwindow* window, int key, int scancode, int action, i
     // ImGui
     ImGui_ImplGlfwGL3_KeyCallback(window,key,scancode,action,mods);
 
-    // cout<<"key :"<<key<<"action"<<action<<endl;
-    auto listeners = Game::getInstance()->keyboardEventListeners;
-    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
-    {
-        (*iter)->callback(key, scancode, action,mods);
-    }
-
     // 切换全屏
     if((key == GLFW_KEY_ENTER || key == GLFW_KEY_KP_ENTER) && action == GLFW_PRESS && mods == GLFW_MOD_ALT)
     {
@@ -287,6 +276,17 @@ void Game::key_callback(GLFWwindow* window, int key, int scancode, int action, i
         if (conf.fullscreen == false)
             glfwSetWindowPos(window, 100, 100);
     }
+
+    // cout<<"key :"<<key<<"action"<<action<<endl;
+    if(Game::getInstance()->currentScene)
+    {
+        auto &listeners = Game::getInstance()->currentScene->keyboardEventListeners;
+        for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+        {
+            if((*iter)->callback(key, scancode, action,mods))break;
+        }
+    }
+
 }
 
 
@@ -296,20 +296,26 @@ void Game::mouse_button_callback(GLFWwindow* window, int button, int action, int
     ImGui_ImplGlfwGL3_MouseButtonCallback(window,button,action,mods);
 
     // cout<<"button :"<<button<<"action"<<action<<endl;
-    auto listeners = Game::getInstance()->mouseEventListeners;
-    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+    if(Game::getInstance()->currentScene)
     {
-        (*iter)->buttonCallback(button, action,mods);
+        auto &listeners = Game::getInstance()->currentScene->mouseEventListeners;
+        for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+        {
+            if((*iter)->buttonCallback(button, action,mods))break;
+        }
     }
 }
 
 void Game::mouse_move_callback(GLFWwindow* window, double xpos, double ypos)
 {
     // cout<<"button :"<<button<<"action"<<action<<endl;
-    auto listeners = Game::getInstance()->mouseEventListeners;
-    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+    if(Game::getInstance()->currentScene)
     {
-        (*iter)->moveCallback(glm::vec2(float(xpos), float(ypos)));
+        auto &listeners = Game::getInstance()->currentScene->mouseEventListeners;
+        for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+        {
+            if((*iter)->moveCallback(glm::vec2(float(xpos), float(ypos))))break;
+        }
     }
 }
 
@@ -319,9 +325,12 @@ void Game::mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoff
     ImGui_ImplGlfwGL3_ScrollCallback(window,xoffset,yoffset);
 
     // cout<<"button :"<<button<<"action"<<action<<endl;
-    auto listeners = Game::getInstance()->mouseEventListeners;
-    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+    if(Game::getInstance()->currentScene)
     {
-        (*iter)->scrollCallback(glm::vec2(float(xoffset), float(yoffset)));
+        auto &listeners = Game::getInstance()->currentScene->mouseEventListeners;
+        for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+        {
+            if((*iter)->scrollCallback(glm::vec2(float(xoffset), float(yoffset))))break;
+        }
     }
 }

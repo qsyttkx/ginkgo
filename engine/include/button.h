@@ -4,11 +4,13 @@
 #include <label.h>
 #include <functional>
 
+class Scene;
+
 class Button : public Sprite
 {
 public:
   // 构建一个按钮，参数分别为正常、按下、悬停时显示的纹理索引
-  Button(std::string normal, std::string pressed = "", std::string hover = "");
+  Button(Scene* scene, std::string normal, std::string pressed = "", std::string hover = "");
   ~Button();
   std::function<void(int key, int mods)> onClick;
   
@@ -19,6 +21,7 @@ public:
   // 获取文本
   std::string getText();
 
+  virtual void update();
 private:
   // 三种状态时的纹理
   Texture texNormal, texPressed, texHover;
@@ -27,4 +30,5 @@ private:
   bool checkMousePosition(glm::vec2 pos);
   bool isPressed;
   Label* label;
+  Scene* scene;
 };

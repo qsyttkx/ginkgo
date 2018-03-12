@@ -1,13 +1,15 @@
 #include <label.h>
 #include <cstring>
-#include <clocale>
-#include <cstdlib>
+#include <imgui.h>
+#include <imgui_internal.h>
 
 using namespace glm;
 using namespace std;
 
 CharacterTTF::CharacterTTF(wchar_t charcode, float fontSize, vec4 color, string font) : Sprite()
 {
+    // 一般出现标签的地方字都很多，就不输出释放的信息了
+    showReleaseInfo = false;
     // **取得这个字符的纹理
 
     // 获取这个字体
@@ -156,28 +158,14 @@ vec2 Label::getContainSize()
     return containSize;
 }
 
-string Label::ws2s(const wstring &ws)
-{
-    const wchar_t *_Source = ws.c_str();
-    size_t _Dsize = 2 * ws.size() + 1;
-    char *_Dest = new char[_Dsize];
-    memset(_Dest, 0, _Dsize);
-    wcstombs(_Dest, _Source, _Dsize);
-    string result = _Dest;
-    delete[] _Dest;
-
-    return result;
-}
-
 wstring Label::s2ws(const string &s)
 {
-    const char *_Source = s.c_str();
-    size_t _Dsize = s.size() + 1;
-    wchar_t *_Dest = new wchar_t[_Dsize];
-    wmemset(_Dest, 0, _Dsize);
-    mbstowcs(_Dest, _Source, _Dsize);
-    wstring result = _Dest;
-    delete[] _Dest;
-
+    const char *utf8_chars = s.c_str();
+    const int wchars_buf_len = s.size() + 1;
+    wchar_t *wchars = new wchar_t[wchars_buf_len];
+    // ImGui中将char*转换为wchar型unicode编码的函数
+    ImTextStrFromUtf8((ImWchar*)wchars, wchars_buf_len, utf8_chars, NULL, NULL);
+    wstring result = wstring(wchars);
+    delete[] wchars;
     return result;
 }

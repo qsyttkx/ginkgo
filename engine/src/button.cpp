@@ -4,8 +4,9 @@
 using namespace std;
 using namespace glm;
 
-Button::Button(string normal, string pressed, string hover) : Sprite(normal)
+Button::Button(Scene* scene, string normal, string pressed, string hover) : Sprite(normal)
 {
+    this->scene = scene;
     // 如果其他几个纹理没有设置则将就正常的用
     if (pressed == "")
         pressed = normal;
@@ -19,7 +20,7 @@ Button::Button(string normal, string pressed, string hover) : Sprite(normal)
     isPressed = false;
 
     onClick = [](int, int) {};
-    listener = new MouseEventListener();
+    listener = new MouseEventListener(scene);
     listener->moveCallback = [=](vec2 pos) {
         // 判断是否鼠标落在了按钮内
         if (checkMousePosition(pos))
@@ -34,11 +35,13 @@ Button::Button(string normal, string pressed, string hover) : Sprite(normal)
                 // 设置悬停纹理
                 setTexture(texHover);
             }
+            return true;
         }
         else
         {
             // 设置正常纹理
             setTexture(texNormal);
+            return false;
         }
     };
 
@@ -51,6 +54,7 @@ Button::Button(string normal, string pressed, string hover) : Sprite(normal)
             // 设置按下纹理
             setTexture(texPressed);
             isPressed = true;
+            return true;
         }
         else if(action == GLFW_RELEASE && check)
         {
@@ -59,12 +63,14 @@ Button::Button(string normal, string pressed, string hover) : Sprite(normal)
             // 设置悬停纹理
             setTexture(texHover);
             isPressed = false;
+            return true;
         }
         else if(action == GLFW_RELEASE && !check)
         {
             // 设置正常纹理
             setTexture(texNormal);
             isPressed = false;
+            return false;
         }
     };
 
@@ -81,21 +87,24 @@ void Button::setText(std::string text)
     label->setText(text);
     // 居中对齐
     float xoff = -label->getContainSize().x * 0.5f;
-    label->setPosition(xoff,0);
+    float yoff = -label->getContainSize().y * 0.15f;
+    label->setPosition(xoff,yoff);
 }
 void Button::setText(std::string text, FontStyle style)
 {
     label->setText(text, style);
     // 居中对齐
     float xoff = -label->getContainSize().x * 0.5f;
-    label->setPosition(xoff,0);
+    float yoff = -label->getContainSize().y * 0.15f;
+    label->setPosition(xoff,yoff);
 }
 void Button::setFontStyle(FontStyle style)
 {
     label->setFontStyle(style);
     // 居中对齐
     float xoff = -label->getContainSize().x * 0.5f;
-    label->setPosition(xoff,0);
+    float yoff = -label->getContainSize().y * 0.15f;
+    label->setPosition(xoff,yoff);
 }
 // 获取文本
 string Button::getText()
@@ -106,6 +115,24 @@ string Button::getText()
 Button::~Button()
 {
     delete (listener);
+}
+
+void Button::update()
+{
+    Sprite::update();
+    // 将绑定的监听器放到最顶上，这样可以使得监听器的层次与按钮在场景上的层次一直（为了处理多个按钮叠加的情况）
+    // 先从原来的位置去掉
+    auto &listeners = scene->mouseEventListeners;
+    for(auto iter = listeners.begin();iter!=listeners.end();++iter)
+    {
+        if(*(iter)==listener)
+        {
+            listeners.erase(iter);
+            break;
+        }
+    }
+    // 然后再加到顶上
+    scene->mouseEventListeners.push_front(listener);
 }
 
 bool Button::checkMousePosition(vec2 pos)

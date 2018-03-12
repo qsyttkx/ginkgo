@@ -55,10 +55,6 @@ public:
     float getDeltaTime();
     // 获取全局唯一的游戏实体
     static Game* getInstance();
-    // 键盘事件监听器列表
-    std::list<KeyboardEventListener*> keyboardEventListeners;
-    // 鼠标时间监听器列表
-    std::list<MouseEventListener*> mouseEventListeners;
 private:
     static Game* _instance;
 

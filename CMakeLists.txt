@@ -28,6 +28,7 @@ elseif(WIN32 AND MINGW)
     message("MINGW 配置")
     LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/engine/external/lib/mingw530/${CMAKE_BUILD_TYPE})
     LINK_LIBRARIES(glfw3dll Box2D)
+
 elseif(UNIX AND NOT ANDROID)
     message("UNIX 配置")
     LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/engine/external/lib/gcc540/${CMAKE_BUILD_TYPE})
@@ -36,4 +37,5 @@ endif()
 
 
 # 可执行文件
-add_executable(${PROJECT_NAME} ${SRC_LIST} ${ENGINE_EXTERNAL_SRC_LIST} ${ENGINE_SRC_LIST})
+# 如果你想在Windows下看到控制台以便显示调试信息，可以在以下一行中去掉WIN32这项
+add_executable(${PROJECT_NAME} WIN32 ${SRC_LIST} ${ENGINE_EXTERNAL_SRC_LIST} ${ENGINE_SRC_LIST})

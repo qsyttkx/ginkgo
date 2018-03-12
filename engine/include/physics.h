@@ -4,12 +4,12 @@
 #include <component.h>
 #include <glm/glm.hpp>
 
-class Physics :public Component
+class PhysicsWorld :public Component
 {
 public:
-    Physics();
-    Physics(glm::vec2 gravity);
-    virtual ~Physics();
+    PhysicsWorld();
+    PhysicsWorld(glm::vec2 gravity);
+    virtual ~PhysicsWorld();
     virtual void update();
     void setStepInterval(float interval);
     b2World* getWorld();
@@ -21,3 +21,4 @@ private:
     int32 positionIterations;
     float fixtime;// 防止box2D迭代出现问题
 };
+

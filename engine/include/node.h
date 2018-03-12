@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <component.h>
+#include <shader.h>
 
 class Node
 {
@@ -35,7 +36,7 @@ class Node
     glm::vec2 getScale2();
     glm::vec3 getScale3();
     void setRotation(glm::vec3 rot);
-    void setRotation(float angle);
+    void setRotation(float rad);
     void setRotation(float x, float y, float z);
     float getRotation();
     glm::vec3 getRotation3();
@@ -68,6 +69,9 @@ class Node
 
     // 遍历节点
     virtual void traverse();
+
+    Shader& getShader();
+    void setShader(Shader& shader);
 
     //重写的小于运算符，用于在list中排序以决定渲染顺序
     bool operator<(const Node &n) const;
@@ -102,4 +106,9 @@ class Node
     void _setParent(Node *p);
     // 组件集
     std::map<std::string, Component*> components;
+
+    // 所用的着色器
+    Shader shader;
+    // 是否打印释放信息
+    bool showReleaseInfo;
 };

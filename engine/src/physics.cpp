@@ -3,11 +3,11 @@
 
 using namespace glm;
 
-Physics::Physics():Physics(vec2(0.0f,-10.0f))
+PhysicsWorld::PhysicsWorld():PhysicsWorld(vec2(0.0f,-10.0f))
 {
 }
 
-Physics::Physics(vec2 gravity)
+PhysicsWorld::PhysicsWorld(vec2 gravity)
 {
     b2Vec2 g(gravity.x,gravity.y);
     world = new b2World(g);
@@ -19,12 +19,12 @@ Physics::Physics(vec2 gravity)
 }
 
 
-Physics::~Physics()
+PhysicsWorld::~PhysicsWorld()
 {
     delete(world);
 }
 
-void Physics::update()
+void PhysicsWorld::update()
 {
     if(!running)return;
 
@@ -38,12 +38,12 @@ void Physics::update()
     }
 }
 
-void Physics::setStepInterval(float interval)
+void PhysicsWorld::setStepInterval(float interval)
 {
     this->interval = interval;
 }
 
-b2World* Physics::getWorld()
+b2World* PhysicsWorld::getWorld()
 {
     return world;
 }

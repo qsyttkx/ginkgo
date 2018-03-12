@@ -30,9 +30,7 @@ public:
   std::string getText();
   // 获取文本框的尺寸
   glm::vec2 getContainSize();
-  //宽字符串->字符串(非线程安全)
-  static std::string ws2s(const std::wstring &ws);
-  //字符串->宽字符串(非线程安全)
+  //字符串->宽字符串
   static std::wstring s2ws(const std::string &s);
 protected:
   std::string text;

@@ -4,7 +4,6 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <resource.h>
-#include <shader.h>
 
 class Sprite : public Node
 {
@@ -29,8 +28,6 @@ class Sprite : public Node
 
     // 取得纹理大小
     glm::vec2 getTextureSize();
-
-    Shader shader;
 
     // 初始化精灵的顶点坐标数据，所有的精灵、图片，都是使用这6个顶点数据，
     // 然后用不同的Model矩阵来拉伸适配。这样可能可以节省一些顶点缓存资源？

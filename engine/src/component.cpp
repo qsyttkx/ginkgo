@@ -22,20 +22,21 @@ void Component::updateLater()
 }
 
 // 鼠标事件监听器
-MouseEventListener::MouseEventListener()
+MouseEventListener::MouseEventListener(Scene *scene)
 {
-    buttonCallback = [](int key, int action, int mods){};
-    moveCallback = [](vec2 pos){};
-    scrollCallback = [](vec2 offset){};
+    this->scene = scene;
+    buttonCallback = [](int key, int action, int mods){return false;};
+    moveCallback = [](vec2 pos){return false;};
+    scrollCallback = [](vec2 offset){return false;};
     // 在鼠标事件监听列表中注册本监听器
-    Game::getInstance()->mouseEventListeners.push_back(this);
+    scene->mouseEventListeners.push_back(this);
     cout << "MouseEventistener [0x" << hex << this << "] signed in." << endl;
 }
 
 MouseEventListener::~MouseEventListener()
 {
     // 从键盘监听列表中注销本监听器
-    auto listeners = Game::getInstance()->mouseEventListeners;
+    auto &listeners = scene->mouseEventListeners;
     for(auto iter = listeners.begin();iter!=listeners.end();++iter)
     {
         if(*(iter)==this)
@@ -47,18 +48,18 @@ MouseEventListener::~MouseEventListener()
     }
 }
 
-KeyboardEventListener::KeyboardEventListener()
+KeyboardEventListener::KeyboardEventListener(Scene *scene)
 {
-    callback = [](int key, int scancode, int action, int mods){};
+    callback = [](int key, int scancode, int action, int mods){return false;};
     // 在键盘事件监听列表中注册本监听器
-    Game::getInstance()->keyboardEventListeners.push_back(this);
+    scene->keyboardEventListeners.push_back(this);
     cout << "KeyBoardEventistener [0x" << hex << this << "] signed in." << endl;
 }
 
 KeyboardEventListener::~KeyboardEventListener()
 {
     // 从键盘监听列表中注销本监听器
-    auto listeners = Game::getInstance()->keyboardEventListeners;
+    auto &listeners = scene->keyboardEventListeners;
     for(auto iter = listeners.begin();iter!=listeners.end();++iter)
     {
         if(*(iter)==this)

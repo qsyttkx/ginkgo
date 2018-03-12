@@ -16,6 +16,7 @@ Node::Node()
     rotation = vec3(0.0f);
     opacity = 1.0f;
     isEnabled = true;
+    showReleaseInfo = true;
 }
 
 Node::~Node()
@@ -24,10 +25,14 @@ Node::~Node()
     removeAllChildren(true);
     // 从父节点中移除
     removedFromParent();
-    if (name.length() == 0)
-        cout << "[0x" << hex << this << "] has been released." << endl;
-    else
-        cout << "[" << name << "] has been released." << endl;
+
+    if(showReleaseInfo)
+    {
+        if (name.length() == 0)
+            cout << "[0x" << hex << this << "] has been released." << endl;
+        else
+            cout << "[" << name << "] has been released." << endl;
+    }
 }
 
 void Node::setPosition(glm::vec2 pos)
@@ -126,9 +131,9 @@ void Node::setRotation(glm::vec3 rot)
     rotation.z = rot.z;
 }
 
-void Node::setRotation(float angle)
+void Node::setRotation(float rad)
 {
-    rotation.z = glm::radians(angle);
+    rotation.z = rad;
 }
 
 void Node::setRotation(float x, float y, float z)
@@ -140,7 +145,7 @@ void Node::setRotation(float x, float y, float z)
 
 float Node::getRotation()
 {
-    return glm::degrees(rotation.z);
+    return rotation.z;
 }
 
 glm::vec3 Node::getRotation3()
@@ -313,6 +318,20 @@ void Node::traverse()
     {
         (*iter).second->updateLater();
     }
+}
+
+Shader& Node::getShader()
+{
+    if(shader.getID()!=0)
+        return shader;
+    else if (getParent()!=nullptr)
+        return getParent()->getShader();
+    else return Shader::basicDiffuse;
+}
+
+void Node::setShader(Shader& shader)
+{
+    this->shader = shader;
 }
 
 // 更新Transform等属性

@@ -20,6 +20,7 @@ ResourceManager::~ResourceManager()
 {
     // 清除所有纹理
     releaseAllTextures();
+    releaseAllFontsTTF();
 }
 
 ResourceManager *ResourceManager::getInstance()

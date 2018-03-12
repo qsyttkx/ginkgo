@@ -35,8 +35,8 @@ void Sprite::update()
         return;
     }
 
-    // 选用着色器，若未指定则使用默认的着色器
-    Shader &shader = this->shader.getID() == 0 ? Shader::basicDiffuse : this->shader;
+    // 选用着色器，若未指定则使用父节点的着色器
+    Shader &shader = getShader();
     shader.use();
 
     // 启用混合（达到半透明、叠加等效果）

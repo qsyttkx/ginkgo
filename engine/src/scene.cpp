@@ -19,6 +19,8 @@ Scene::Scene()
 Scene::~Scene()
 {
     delete(imGuiRenderer);
+    mouseEventListeners.clear();
+    keyboardEventListeners.clear();
 }
 
 void Scene::update()

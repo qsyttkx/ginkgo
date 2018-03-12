@@ -10,6 +10,8 @@ public:
     //空的着色器，由于几个内建的着色器是静态变量，但是编译需要等到初始化完毕所以先调用这个空的构建函数
     Shader() {id=0;}
     //实例化内建着色器
+    //内建着色器的名字
+    Shader(std::string name);
     //顶点着色程序文件的路径
     //片段着色程序文件的路径
     Shader(const char* vsPath, const char* fsPath);
@@ -39,9 +41,6 @@ public:
     //基础着色器，只有一个纹理贴图，没有光照
     static Shader basicDiffuse;
 private:
-    //实例化内建着色器
-    //内建着色器的名字
-    Shader(std::string name);
     //着色器程序在opengl中的id
     unsigned int id;
     //读取代码文件内容
