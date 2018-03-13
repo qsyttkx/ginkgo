@@ -252,7 +252,7 @@ void Node::addComponent(std::string key, Component* comp)
         cerr<<"Failed to add component, the key is conflict!"<<endl;
         return;
     }
-
+    comp->host = this;
     components.insert(make_pair(key,comp));
 }
 

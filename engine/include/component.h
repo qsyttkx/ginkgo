@@ -16,6 +16,7 @@ class Component
     virtual void update();
     // 逐帧调度器，在绑定节点遍历为后后序
     virtual void updateLater();
+    Node* host;
 };
 
 // 鼠标按钮回调函数

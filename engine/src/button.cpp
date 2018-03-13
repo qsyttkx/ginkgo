@@ -22,6 +22,7 @@ Button::Button(Scene* scene, string normal, string pressed, string hover) : Spri
     onClick = [](int, int) {};
     listener = new MouseEventListener(scene);
     listener->moveCallback = [=](vec2 pos) {
+        if(!this->isEnabled)return false;// 如果鼠标处于非enabled的状态就不监听事件
         // 判断是否鼠标落在了按钮内
         if (checkMousePosition(pos))
         {
@@ -46,6 +47,7 @@ Button::Button(Scene* scene, string normal, string pressed, string hover) : Spri
     };
 
     listener->buttonCallback = [=](int button, int action, int mods) {
+        if(!this->isEnabled)return false;// 如果鼠标处于非enabled的状态就不监听事件
         // 判断是否鼠标落在了按钮内
         vec2 pos = Game::getInstance()->getMousePosition();
         bool check = checkMousePosition(pos);
