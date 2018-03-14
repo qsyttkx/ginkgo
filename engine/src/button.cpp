@@ -1,5 +1,6 @@
 #include <button.h>
 #include <ginkgo.h>
+#include <glm/gtc/matrix_transform.hpp>
 
 using namespace std;
 using namespace glm;
@@ -142,11 +143,28 @@ bool Button::checkMousePosition(vec2 pos)
     // 屏幕坐标系（鼠标）和世界坐标系的y轴是相反的
     pos.y = Game::getInstance()->getWindowSize().y - pos.y;
 
+    Shader* shader = getShader();
+    // 获取视图投影矩阵
+    mat4 matProjectAndView = shader->projection * shader->view;
+    vec2 wSize = Game::getInstance()->getWindowSize();
     // 计算按钮矩形四个顶点的位置
-    vec4 leftup = globalTransform * model * vec4(-0.5f, 0.5f, 0.0f, 1.0f);
-    vec4 leftdown = globalTransform * model * vec4(-0.5f, -0.5f, 0.0f, 1.0f);
-    vec4 rightup = globalTransform * model * vec4(0.5f, 0.5f, 0.0f, 1.0f);
-    vec4 rightdown = globalTransform * model * vec4(0.5f, -0.5f, 0.0f, 1.0f);
+    vec4 leftup4 = matProjectAndView * globalTransform * model * vec4(-0.5f, 0.5f, 0.0f, 1.0f);
+    vec4 leftdown4 = matProjectAndView * globalTransform * model * vec4(-0.5f, -0.5f, 0.0f, 1.0f);
+    vec4 rightup4 = matProjectAndView * globalTransform * model * vec4(0.5f, 0.5f, 0.0f, 1.0f);
+    vec4 rightdown4 = matProjectAndView * globalTransform * model * vec4(0.5f, -0.5f, 0.0f, 1.0f);
+    vec2 leftup = vec2(leftup4.x,leftup4.y)/leftup4.w;
+    vec2 leftdown = vec2(leftdown4.x,leftdown4.y)/leftdown4.w;
+    vec2 rightup = vec2(rightup4.x,rightup4.y)/rightup4.w;
+    vec2 rightdown = vec2(rightdown4.x,rightdown4.y)/rightdown4.w;
+    // 匹配到屏幕坐标(否则是长宽正负1的)
+    leftup.x = (leftup.x + 1.0f)*wSize.x*0.5f;
+    leftup.y = (leftup.y + 1.0f)*wSize.y*0.5f;
+    leftdown.x = (leftdown.x + 1.0f)*wSize.x*0.5f;
+    leftdown.y = (leftdown.y + 1.0f)*wSize.y*0.5f;
+    rightup.x = (rightup.x + 1.0f)*wSize.x*0.5f;
+    rightup.y = (rightup.y + 1.0f)*wSize.y*0.5f;
+    rightdown.x = (rightdown.x + 1.0f)*wSize.x*0.5f;
+    rightdown.y = (rightdown.y + 1.0f)*wSize.y*0.5f;
 
     // 计算是否落点到矩形内
     // 是否在上下两边之间

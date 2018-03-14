@@ -35,6 +35,9 @@ public:
     void setVec4(const char* name, glm::vec4 value) const;
     //获取着色器的ID
     unsigned int getID();
+    // 储存使用这个着色器的相机的Projection和view矩阵,(在获取物体屏幕坐标时可以用到)
+    glm::mat4 projection;
+    glm::mat4 view;
     //编译内建着色器
     static void buildBuiltinShaders();
     /// 以下是一些内建的基本着色器

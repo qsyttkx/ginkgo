@@ -2,7 +2,7 @@
 #pragma once
 
 // 默认的配置文件路径
-#define DEFAULT_CONFIG_FILE_PATH "res/config.json"
+#define DEFAULT_CONFIG_FILE_PATH "config.json"
 // 默认窗口标题
 #define DEFAULT_WINDOW_TITLE "Ginkgo"
 
@@ -19,6 +19,7 @@
 #include <button.h>
 #include <label.h>
 #include <physics.h>
+#include <animation.h>
 
 struct Configuration
 {

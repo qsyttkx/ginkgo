@@ -36,8 +36,8 @@ void Sprite::update()
     }
 
     // 选用着色器，若未指定则使用父节点的着色器
-    Shader &shader = getShader();
-    shader.use();
+    Shader *shader = getShader();
+    shader->use();
 
     // 启用混合（达到半透明、叠加等效果）
     glEnable(GL_BLEND);
@@ -47,11 +47,11 @@ void Sprite::update()
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture.id);
     // 设置纹理
-    shader.setInt("texture_diffuse1", 0);
+    shader->setInt("texture_diffuse1", 0);
     // 设置model矩阵
-    shader.setMat4("model", globalTransform * model);
+    shader->setMat4("model", globalTransform * model);
     // 设置透明度
-    shader.setFloat("node_opacity", globalOpacity);
+    shader->setFloat("node_opacity", globalOpacity);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindTexture(GL_TEXTURE_2D, 0); 
 }
@@ -83,6 +83,11 @@ void Sprite::setTexture(Texture texture)
 {
     this->texture = texture;
     updateModelMatrix();
+}
+
+Texture Sprite::getTexture()
+{
+    return texture;
 }
 
 vec2 Sprite::getTextureSize()

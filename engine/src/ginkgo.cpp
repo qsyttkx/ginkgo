@@ -48,7 +48,17 @@ Game::Game()
     // 根据配置开启垂直同步
     if (config.vsync)
     {
+#ifdef _WIN32
+    // Turn on vertical screen sync under Windows.
+    // (I.e. it uses the WGL_EXT_swap_control extension)
+    typedef BOOL (WINAPI *PFNWGLSWAPINTERVALEXTPROC)(int interval);
+    PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
+    wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
+    if(wglSwapIntervalEXT)
+        wglSwapIntervalEXT(1);
+#else
         glfwSwapInterval(1);
+#endif
     }
     // 启用多重采样
     glEnable(GL_MULTISAMPLE);
@@ -217,7 +227,7 @@ void Game::createConfiguration()
     config.width = 1280;
     config.height = 720;
     config.fullscreen = false;
-    config.vsync = false;
+    config.vsync = true;
     doc.SetObject();
     doc.AddMember("width", (int)config.width, doc.GetAllocator());
     doc.AddMember("height", (int)config.height, doc.GetAllocator());

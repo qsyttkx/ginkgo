@@ -70,11 +70,13 @@ class Node
     // 遍历节点
     virtual void traverse();
 
-    Shader& getShader();
-    void setShader(Shader& shader);
+    Shader* getShader();
+    void setShader(Shader* shader);
 
     //重写的小于运算符，用于在list中排序以决定渲染顺序
     bool operator<(const Node &n) const;
+    // 是否打印释放信息
+    bool showReleaseInfo;
   protected:
     // Transform属性
     glm::vec3 position;
@@ -106,9 +108,7 @@ class Node
     void _setParent(Node *p);
     // 组件集
     std::map<std::string, Component*> components;
-
+private:
     // 所用的着色器
-    Shader shader;
-    // 是否打印释放信息
-    bool showReleaseInfo;
+    Shader *shader;
 };

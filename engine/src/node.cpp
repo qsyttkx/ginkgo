@@ -17,6 +17,7 @@ Node::Node()
     opacity = 1.0f;
     isEnabled = true;
     showReleaseInfo = true;
+    shader = nullptr;
 }
 
 Node::~Node()
@@ -320,16 +321,16 @@ void Node::traverse()
     }
 }
 
-Shader& Node::getShader()
+Shader* Node::getShader()
 {
-    if(shader.getID()!=0)
+    if(shader && shader->getID()!=0)
         return shader;
     else if (getParent()!=nullptr)
         return getParent()->getShader();
-    else return Shader::basicDiffuse;
+    else return &Shader::basicDiffuse;
 }
 
-void Node::setShader(Shader& shader)
+void Node::setShader(Shader* shader)
 {
     this->shader = shader;
 }

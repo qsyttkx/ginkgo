@@ -3,6 +3,7 @@
 #include <iostream>
 #include "test01.h"
 #include "test02.h"
+#include "test03.h"
 
 using namespace glm;
 using namespace std;
@@ -102,11 +103,12 @@ public:
         ImGui::SetWindowSize(ImVec2(width, height));
         ImGui::SetWindowPos(ImVec2((wSize.x - width) * 0.5f, (wSize.y - height) * 0.5f));
         ImGui::Text("单击任意选项查看测试：");
-        if(ImGui::Button("01. Graphical User Interface Test (ImGui)",ImVec2(500,30)))
+        if(ImGui::Button("01. Graphical User Interface (ImGui)",ImVec2(500,30)))
             Game::getInstance()->replaceScene(new Test01(this),false);
-        if(ImGui::Button("02. Graphical User Interface Test (Node based)",ImVec2(500,30)))
+        if(ImGui::Button("02. Graphical User Interface (builtin)",ImVec2(500,30)))
             Game::getInstance()->replaceScene(new Test02(this),false);
-        if(ImGui::Button("03. empty",ImVec2(500,30)));
+        if(ImGui::Button("03. Sprite Animation",ImVec2(500,30)))
+            Game::getInstance()->replaceScene(new Test03(this),false);
         if(ImGui::Button("04. empty",ImVec2(500,30)));
         if(ImGui::Button("05. empty",ImVec2(500,30)));
         if(ImGui::Button("06. empty",ImVec2(500,30)));

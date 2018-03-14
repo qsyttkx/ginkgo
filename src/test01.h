@@ -10,6 +10,13 @@ class SceneWelcome;
 class Test01 : public Scene
 {
 public:
+    Test01(Scene* menu);
+    virtual ~Test01()
+    {
+    }
+
+    virtual void update();
+private:
     // 菜单场景
     Scene* menuScene;
     // 返回按钮
@@ -21,12 +28,4 @@ public:
     bool show_demo_window;
     bool show_another_window;
     vec4 clear_color;
-
-    Test01(Scene* menu);
-
-    virtual ~Test01()
-    {
-    }
-
-    virtual void update();
 };

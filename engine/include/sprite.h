@@ -23,11 +23,13 @@ class Sprite : public Node
     // 设置纹理
     void setTexture(std::string textureKey);
     void setTexture(Texture texture);
+    // 获取纹理
+    Texture getTexture();
+    // 取得纹理大小
+    glm::vec2 getTextureSize();
     // 设置混合函数
     void setBlendFunc(unsigned int func1, unsigned int func2);
 
-    // 取得纹理大小
-    glm::vec2 getTextureSize();
 
     // 初始化精灵的顶点坐标数据，所有的精灵、图片，都是使用这6个顶点数据，
     // 然后用不同的Model矩阵来拉伸适配。这样可能可以节省一些顶点缓存资源？

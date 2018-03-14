@@ -22,7 +22,7 @@ Test01::Test01(Scene* menu)
     // 为节点设置位置的z值可以影响渲染次序，z值越高的越先渲染
     btn_back->setPosition(wSize.x - 75.0f, 50.0f, 1);
     // 初始化标题标签
-    title = new Label("01. Ginkgo Graphical User Interface Test (ImGui)", FontStyle(32));
+    title = new Label("01. Ginkgo Graphical User Interface (ImGui)", FontStyle(32));
     addChild(title);
     title->setPosition((wSize.x - title->getContainSize().x) / 2, wSize.y - 50.0f, 1.0f);
 

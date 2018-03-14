@@ -34,7 +34,7 @@ void Scene::update()
     glViewport(0, 0, display_w, display_h);
     glClear(GL_COLOR_BUFFER_BIT);
     defaultCamera->updateCameraVectors();
-    defaultCamera->setProjectionAndView(Shader::basicDiffuse);
+    defaultCamera->setProjectionAndView(&Shader::basicDiffuse);
 }
 
 void Scene::setBackgroundColor(vec4 bg)

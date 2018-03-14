@@ -44,9 +44,11 @@ void Camera::updateCameraVectors()
     up = glm::normalize(glm::cross(right, this->front));
 }
 
-void Camera::setProjectionAndView(Shader &shader)
+void Camera::setProjectionAndView(Shader *shader)
 {
-    shader.use();
-    shader.setMat4("projection", projectionMatrix);
-    shader.setMat4("view", getViewMatrix());
+    shader->projection = projectionMatrix;
+    shader->view = getViewMatrix();
+    shader->use();
+    shader->setMat4("projection", shader->projection);
+    shader->setMat4("view", shader->view);
 }

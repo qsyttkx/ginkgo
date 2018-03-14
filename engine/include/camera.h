@@ -30,7 +30,7 @@ class Camera : public Node
     void updateCameraVectors();
 
     // 给着色器设置投影矩阵和视图矩阵
-    void setProjectionAndView(Shader& shader);
+    void setProjectionAndView(Shader* shader);
   protected:
     // 摄像机的正方向
     glm::vec3 front;
