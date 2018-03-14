@@ -21,4 +21,11 @@ public:
     Animator();
     virtual ~Animator();
     virtual void update();
+    // 播放一个动画
+    void play(Animation animation);
+private:
+    // 当前播放到的帧
+    int currentFrameIndex;
+    // 动画开始播放时的时间
+    float startTime;
 };
