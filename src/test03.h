@@ -1,6 +1,7 @@
 #pragma once
 #include <ginkgo.h>
 #include <iostream>
+#include "test.h"
 
 using namespace glm;
 using namespace std;
@@ -22,22 +23,15 @@ public:
     float lastKeyDTime;
 };
 
-class Test03 : public Scene
+class Test03 : public Test
 {
 public:
 
-    Test03(Scene* menu);
+    Test03(Scene* menu, string titleString);
 
     virtual ~Test03();
-private:
-    // 菜单场景
-    Scene* menuScene;
-    // 返回按钮
-    Button *btn_back;
-    // 标题标签
-    Label *title;
     virtual void update();
-    void loadResource();
+private:
     Node* root;
     K *k;
 };

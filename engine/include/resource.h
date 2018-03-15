@@ -56,7 +56,7 @@ public:
   virtual ~ResourceManager();
   static ResourceManager *getInstance();
   // 将一张纹理载入内(显)存中
-  int loadTexture(std::string key, std::string filepath);
+  int loadTexture(std::string key, std::string filepath, bool linearOrNearest = true);
   // 释放所有纹理
   void releaseAllTextures();
   // 释放一张纹理

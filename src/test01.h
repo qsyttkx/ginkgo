@@ -1,30 +1,23 @@
 #pragma once
 #include <ginkgo.h>
 #include <iostream>
+#include "test.h"
 
 using namespace glm;
 using namespace std;
 
 class SceneWelcome;
 
-class Test01 : public Scene
+class Test01 : public Test
 {
 public:
-    Test01(Scene* menu);
+    Test01(Scene* menu, string titleString);
     virtual ~Test01()
     {
     }
 
     virtual void update();
 private:
-    // 菜单场景
-    Scene* menuScene;
-    // 返回按钮
-    Button *btn_back;
-    // 标题标签
-    Label *title;
-
-
     bool show_demo_window;
     bool show_another_window;
     vec4 clear_color;

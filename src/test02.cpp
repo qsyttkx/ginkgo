@@ -3,35 +3,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <sstream>
 
-Test02::Test02(Scene* menu)
+Test02::Test02(Scene* menu, string titleString):Test(menu,titleString)
 {
     name = "Test02";
-    menuScene = menu;
-    // 设置白色背景
-    setBackgroundColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    // 获取游戏窗口的尺寸(画面的尺寸，不包含标题栏和边框)
     glm::vec2 wSize = Game::getInstance()->getWindowSize();
-    // 初始化按钮
-    btn_back = new Button(this, "btn_normal", "btn_pressed", "btn_hover");
-    addChild(btn_back);
-    btn_back->setText("返回", FontStyle(18));
-    btn_back->onClick = [=](int key, int mods) {
-        // 设置回白色背景
-        setBackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        // 返回菜单
-        Game::getInstance()->replaceScene(menu);
-    };
-    // 为节点设置位置的z值可以影响渲染次序，z值越高的越先渲染
-    btn_back->setPosition(wSize.x - 75.0f, 50.0f, 1);
-    // 初始化标题标签
-    title = new Label("02. Graphical User Interface (builtin)", FontStyle(32));
-    addChild(title);
-    title->setPosition((wSize.x - title->getContainSize().x) / 2, wSize.y - 50.0f, 1.0f);
-
-    auto manager = ResourceManager::getInstance();
-    manager->loadTexture("btn1_normal", "res/btn1_normal.png");
-    manager->loadTexture("btn1_pressed", "res/btn1_pressed.png");
-
     // 我们新建一个相机，产生一个透视的效果
     camera1 = new Camera();
     addChild(camera1);
@@ -68,7 +43,7 @@ void Test02::setLabels()
 
     auto hint = new Label("There are some labels:");
     addChild(hint);
-    hint->setPosition(300,550);
+    hint->setPosition(wSize.x * 0.3f - hint->getContainSize().x/2,wSize.y*0.8f);
 
     labelsRoot = new Node();
     addChild(labelsRoot);
@@ -92,7 +67,7 @@ void Test02::setButtons()
     glm::vec2 wSize = Game::getInstance()->getWindowSize();
     Label* hint = new Label("There are some buttons:");
     addChild(hint);
-    hint->setPosition(850,550);
+    hint->setPosition(wSize.x * 0.7f - hint->getContainSize().x/2,wSize.y*0.8f);
 
     buttonsRoot = new Node();
     addChild(buttonsRoot);

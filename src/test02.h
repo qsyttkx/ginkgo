@@ -1,33 +1,25 @@
 #pragma once
 #include <ginkgo.h>
 #include <iostream>
+#include "test.h"
 
 using namespace glm;
 using namespace std;
 
 class SceneWelcome;
 
-class Test02 : public Scene
+class Test02 : public Test
 {
 public:
-    Test02(Scene* menu);
+    Test02(Scene* menu, string titleString);
 
     virtual ~Test02()
     {
         shader1.release();
-        ResourceManager::getInstance()->releaseTexture("btn1_normal");
-        ResourceManager::getInstance()->releaseTexture("btn1_pressed");
     }
 
     virtual void update();
 private:
-    // 菜单场景
-    Scene* menuScene;
-    // 返回按钮
-    Button *btn_back;
-    // 标题标签
-    Label *title;
-
     Camera* camera1;
     Shader shader1;
     Label* labels[6];

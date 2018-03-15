@@ -10,8 +10,8 @@ public:
     MyGame() : Game()
     {
         setTitle("Ginkgo2 Test");
-        SceneWelcome *welcome = new SceneWelcome();
-        replaceScene(welcome);
+        SceneLoading *loading = new SceneLoading();
+        replaceScene(loading);
     }
 };
 

@@ -21,8 +21,6 @@ public:
     SceneWelcome()
     {
         name = "SceneWelcome";
-        // 预先载入资源
-        loadResource();
         // 设置白色背景
         setBackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
         // 获取游戏窗口的尺寸(画面的尺寸，不包含标题栏和边框)
@@ -51,12 +49,14 @@ public:
 
     virtual ~SceneWelcome()
     {
+        // 释放资源
+        auto manager = ResourceManager::getInstance();
+        manager->releaseAllFontsTTF();
+        manager->releaseAllTextures();
     }
 
     void setupImGui()
     {
-        ImGuiIO &io = ImGui::GetIO();
-        io.Fonts->AddFontFromFileTTF("res/SourceHanSansSC-Bold.ttf", 16,NULL,io.Fonts->GetGlyphRangesChinese());
         // 使用light主题
         ImGui::StyleColorsLight();
         ImGuiStyle *style = &ImGui::GetStyle();
@@ -80,16 +80,6 @@ public:
         style->ItemSpacing = ImVec2(20.0f, 20.0f);
     }
 
-    void loadResource()
-    {
-        auto manager = ResourceManager::getInstance();
-        manager->loadTexture("btn_normal", "res/btn_normal.png");
-        manager->loadTexture("btn_pressed", "res/btn_pressed.png");
-        manager->loadTexture("btn_hover", "res/btn_hover.png");
-        manager->loadTexture("logo", "res/logo.png");
-        manager->loadFontTTF("default", "res/SourceHanSansSC-Bold.ttf");
-    }
-
     void showMenu()
     {
         glm::vec2 wSize = Game::getInstance()->getWindowSize();
@@ -104,11 +94,11 @@ public:
         ImGui::SetWindowPos(ImVec2((wSize.x - width) * 0.5f, (wSize.y - height) * 0.5f));
         ImGui::Text("单击任意选项查看测试：");
         if(ImGui::Button("01. Graphical User Interface (ImGui)",ImVec2(500,30)))
-            Game::getInstance()->replaceScene(new Test01(this),false);
+            Game::getInstance()->replaceScene(new Test01(this, "01. Graphical User Interface (ImGui)"),false);
         if(ImGui::Button("02. Graphical User Interface (builtin)",ImVec2(500,30)))
-            Game::getInstance()->replaceScene(new Test02(this),false);
+            Game::getInstance()->replaceScene(new Test02(this, "02. Graphical User Interface (builtin)"),false);
         if(ImGui::Button("03. Sprite Animation",ImVec2(500,30)))
-            Game::getInstance()->replaceScene(new Test03(this),false);
+            Game::getInstance()->replaceScene(new Test03(this, "03. Sprite Animation"),false);
         if(ImGui::Button("04. empty",ImVec2(500,30)));
         if(ImGui::Button("05. empty",ImVec2(500,30)));
         if(ImGui::Button("06. empty",ImVec2(500,30)));
@@ -125,5 +115,128 @@ public:
         showMenu();
         // 缓缓旋转logo
         logo->setRotation(-Game::getInstance()->getTime()*0.314159f);
+    }
+};
+
+
+class SceneLoading : public Scene
+{
+public:
+    Sprite* logo;
+    Label* hint;
+    bool loadComplete;
+    SceneLoading()
+    {
+        ResourceManager::getInstance()->loadTexture("ginkgo_logo_1","res/ginkgo_logo_1.png");
+
+        // 设置黑色背景
+        setBackgroundColor(glm::vec4(0.1f,0.1f,0.1f,0.0f));
+        // 获取游戏窗口的尺寸(画面的尺寸，不包含标题栏和边框)
+        glm::vec2 wSize = Game::getInstance()->getWindowSize();
+        logo = new Sprite("ginkgo_logo_1");
+        addChild(logo);
+        logo->setPosition(wSize.x * 0.5f, wSize.y * 0.66f);
+        loadComplete = false;
+        // 载入字体先
+        ImGuiIO &io = ImGui::GetIO();// ImGui use another ttf file
+        io.Fonts->AddFontFromFileTTF("res/SourceHanSansSC-Bold.ttf", 16,NULL,io.Fonts->GetGlyphRangesChinese());
+        ResourceManager::getInstance()->loadFontTTF("default", "res/SourceHanSansSC-Bold.ttf");
+        FontStyle style;
+        style.color = vec4(1.0f,1.0f,1.0f,1.0f);
+        hint = new Label("Loading...00%",style);
+        addChild(hint);
+        hint->setPosition((wSize.x - hint->getContainSize().x) * 0.5f, wSize.y * 0.33f);
+    }
+    virtual ~SceneLoading()
+    {
+
+    }
+    virtual void update()
+    {
+        Scene::update();
+
+        static int step = 1;
+        static float bg = 0.0f;
+        if(!loadComplete)
+        {
+            char hintstr[20];
+            sprintf(hintstr, "Loading...%02d%%",(step-1)*100/11);
+            hint->setText(hintstr);
+            loadResource(step++);
+        }
+        else
+        {
+            bg+=1.0f*Game::getInstance()->getDeltaTime();
+            setOpacity(1.0f - bg);
+            if(bg>=1.0f)
+            {
+                setBackgroundColor(vec4(1.0f,1.0f,1.0f,1.0f));
+                Game::getInstance()->replaceScene(new SceneWelcome());
+            }
+        }
+    }
+
+    void loadResource(int step)
+    {
+        Sleep(100);// 给点延时感觉好像资源好多的样子
+        // 这个做法就很愚蠢了，但是鉴于还没有做异步这块，先将就吧。。
+        auto manager = ResourceManager::getInstance();
+        char path[64];
+        switch (step) {
+        case 1:
+            // welcome
+            manager->loadTexture("btn_normal", "res/btn_normal.png");
+            break;
+        case 2:
+            manager->loadTexture("btn_pressed", "res/btn_pressed.png");
+            break;
+        case 3:
+            manager->loadTexture("btn_hover", "res/btn_hover.png");
+            break;
+        case 4:
+            manager->loadTexture("logo", "res/logo.png");
+            break;
+        case 5:
+            // Test02
+            manager->loadTexture("btn1_normal", "res/btn1_normal.png");
+            break;
+        case 6:
+            manager->loadTexture("btn1_pressed", "res/btn1_pressed.png");
+            break;
+        case 7:
+            // Test03
+            for(int i = 0;i<20;i++)
+            {
+                sprintf(path,"res/k/idle%04d.png",i);
+                manager->loadTexture(path,path,false);
+            }
+            break;
+        case 8:
+            for(int i = 20;i<40;i++)
+            {
+                sprintf(path,"res/k/idle%04d.png",i);
+                manager->loadTexture(path,path,false);
+            }
+        case 9:
+            for(int i = 0;i<12;i++)
+            {
+                sprintf(path,"res/k/walk%04d.png",i);
+                manager->loadTexture(path,path,false);
+            }
+            break;
+        case 10:
+            for(int i = 0;i<8;i++)
+            {
+                sprintf(path,"res/k/run%04d.png",i);
+                manager->loadTexture(path,path,false);
+            }
+        case 11:
+            manager->loadTexture("wasd","res/wasd.png",false);
+            break;
+        default:
+            this->loadComplete = true;
+            cout << "Resources loaded completed!"<<endl;
+            break;
+        }
     }
 };

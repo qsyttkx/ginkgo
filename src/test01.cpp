@@ -1,30 +1,9 @@
 #include "test01.h"
 #include "welcome.h"
 
-Test01::Test01(Scene* menu)
+Test01::Test01(Scene* menu, string titleString):Test(menu, titleString)
 {
     name = "Test01";
-    menuScene = menu;
-    // 设置白色背景
-    setBackgroundColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    // 获取游戏窗口的尺寸(画面的尺寸，不包含标题栏和边框)
-    glm::vec2 wSize = Game::getInstance()->getWindowSize();
-    // 初始化按钮
-    btn_back = new Button(this, "btn_normal", "btn_pressed", "btn_hover");
-    addChild(btn_back);
-    btn_back->setText("返回", FontStyle(18));
-    btn_back->onClick = [=](int key, int mods) {
-        // 设置回白色背景
-        setBackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        // 返回菜单
-        Game::getInstance()->replaceScene(menu);
-    };
-    // 为节点设置位置的z值可以影响渲染次序，z值越高的越先渲染
-    btn_back->setPosition(wSize.x - 75.0f, 50.0f, 1);
-    // 初始化标题标签
-    title = new Label("01. Ginkgo Graphical User Interface (ImGui)", FontStyle(32));
-    addChild(title);
-    title->setPosition((wSize.x - title->getContainSize().x) / 2, wSize.y - 50.0f, 1.0f);
 
     show_demo_window = true;
     show_another_window = false;

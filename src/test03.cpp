@@ -1,36 +1,12 @@
 #include "test03.h"
 #include "welcome.h"
 
-Test03::Test03(Scene* menu)
+Test03::Test03(Scene* menu, string titleString):Test(menu,titleString)
 {
     name = "Test03";
-    menuScene = menu;
-    // 设置白色背景
-    setBackgroundColor(vec4(1.0f, 1.0f, 1.0f, 1.0f));
-    // 获取游戏窗口的尺寸(画面的尺寸，不包含标题栏和边框)
-    glm::vec2 wSize = Game::getInstance()->getWindowSize();
-    // 初始化按钮
-    btn_back = new Button(this, "btn_normal", "btn_pressed", "btn_hover");
-    addChild(btn_back);
-    btn_back->setText("返回", FontStyle(18));
-    btn_back->onClick = [=](int key, int mods) {
-        // 设置回白色背景
-        setBackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
-        // 返回菜单
-        Game::getInstance()->replaceScene(menu);
-    };
-    // 为节点设置位置的z值可以影响渲染次序，z值越高的越先渲染
-    btn_back->setPosition(wSize.x - 75.0f, 50.0f, 1);
-    // 初始化标题标签
-    title = new Label("03. Sprite Animation", FontStyle(32));
-    addChild(title);
-    title->setPosition((wSize.x - title->getContainSize().x) / 2, wSize.y - 50.0f, 1.0f);
-
-    loadResource();
-
     Sprite* wasd = new Sprite("wasd");
     addChild(wasd);
-    wasd->setPosition(300,50);
+    wasd->setPosition(300,75);
 
     root = new Node();
     root->setScale(3.0f);
@@ -43,50 +19,6 @@ Test03::Test03(Scene* menu)
 
 Test03::~Test03()
 {
-    char path[64];
-    auto manager = ResourceManager::getInstance();
-    for(int i = 0;i<40;i++)
-    {
-        sprintf(path,"res/k/idle%04d.png",i);
-        manager->releaseTexture(path);
-    }
-    for(int i = 0;i<12;i++)
-    {
-        sprintf(path,"res/k/walk%04d.png",i);
-        manager->releaseTexture(path);
-    }
-
-    for(int i = 0;i<8;i++)
-    {
-        sprintf(path,"res/k/run%04d.png",i);
-        manager->releaseTexture(path);
-    }
-    manager->releaseTexture("wasd");
-}
-
-void Test03::loadResource()
-{
-    char path[64];
-    auto manager = ResourceManager::getInstance();
-    for(int i = 0;i<40;i++)
-    {
-        sprintf(path,"res/k/idle%04d.png",i);
-        manager->loadTexture(path,path);
-    }
-
-    for(int i = 0;i<12;i++)
-    {
-        sprintf(path,"res/k/walk%04d.png",i);
-        manager->loadTexture(path,path);
-    }
-
-    for(int i = 0;i<8;i++)
-    {
-        sprintf(path,"res/k/run%04d.png",i);
-        manager->loadTexture(path,path);
-    }
-
-    manager->loadTexture("wasd","res/wasd.png");
 }
 
 void Test03::update()
@@ -130,6 +62,10 @@ K::K()
     addComponent("animator",&animator);
     animator.play(&idle);
     direction = 1;
+
+    float t = Game::getInstance()->getTime();
+    lastKeyATime=t-1.0f;
+    lastKeyDTime=t-1.0f;
 }
 
 K::~K()
@@ -140,14 +76,12 @@ K::~K()
 void K::update()
 {
     Sprite::update();
+    vec2 wSize = Game::getInstance()->getWindowSize();
     setScale(float(direction)*2.0f-1.0f,1.0f);
     int keyA = glfwGetKey(Game::getInstance()->getGLFWwindow(),GLFW_KEY_A);
     int keyD = glfwGetKey(Game::getInstance()->getGLFWwindow(),GLFW_KEY_D);
     float t = Game::getInstance()->getTime();
-    if(lastKeyATime==0)lastKeyATime=t;
-    if(lastKeyDTime==0)lastKeyDTime=t;
 
-    cout<<keyA<<keyD<<endl;
     // 当正在idle且按下A时，播放向左走的动画
     if(animator.currentAnimation == &idle && keyA)
     {
@@ -181,7 +115,7 @@ void K::update()
         vec2 pos = getPosition();
         pos.x+=(direction*2.0f-1.0f)*60.0f*Game::getInstance()->getDeltaTime();
         if(pos.x<40.0f)pos.x=40.0f;
-        else if(pos.x>1200.0f/3.0f)pos.x=1200.0f/3.0f;
+        else if(pos.x>(wSize.x - 80.0f)/3.0f)pos.x=(wSize.x - 80.0f)/3.0f;
         setPosition(pos);
 
         if(keyA && !keyD)
@@ -202,9 +136,9 @@ void K::update()
     if(animator.currentAnimation == &run)
     {
         vec2 pos = getPosition();
-        pos.x+=(direction*2.0f-1.0f)*200.0f*Game::getInstance()->getDeltaTime();
+        pos.x+=(direction*2.0f-1.0f)*250.0f*Game::getInstance()->getDeltaTime();
         if(pos.x<40.0f)pos.x=40.0f;
-        else if(pos.x>1200.0f/3.0f)pos.x=1200.0f/3.0f;
+        else if(pos.x>(wSize.x - 80.0f)/3.0f)pos.x=(wSize.x - 80.0f)/3.0f;
         setPosition(pos);
 
         if(keyA && !keyD)

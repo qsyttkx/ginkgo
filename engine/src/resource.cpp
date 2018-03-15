@@ -28,7 +28,7 @@ ResourceManager *ResourceManager::getInstance()
     return _instance;
 }
 
-int ResourceManager::loadTexture(std::string key, string path)
+int ResourceManager::loadTexture(std::string key, string path, bool linearOrNearest)
 {
     // 先检查key是否有重复
     if (textures.find(key) != textures.end())
@@ -57,10 +57,16 @@ int ResourceManager::loadTexture(std::string key, string path)
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        if(linearOrNearest)
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        }
+        else
+        {
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        }
 
         // glBindTexture(GL_TEXTURE_2D, 0);
 
@@ -143,11 +149,10 @@ void ResourceManager::releaseAllFontsTTF()
 {
     for (auto iter = fontsTTF.begin(); iter != fontsTTF.end(); ++iter)
     {
-        stbtt_fontinfo t = (*iter).second;
         cout << "TrueType Font [" << (*iter).first << "] has been released." << endl;
-        free((*iter).second.data);      
+        free((*iter).second.data);
     }
-    textures.clear();
+    fontsTTF.clear();
 }
 
 void ResourceManager::releaseFontTTF(string key)
