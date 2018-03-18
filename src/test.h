@@ -40,7 +40,7 @@ public:
 
     virtual void update()
     {
-
+        Scene::update();
     }
 
 private:

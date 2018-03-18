@@ -5,6 +5,8 @@
 #define DEFAULT_CONFIG_FILE_PATH "config.json"
 // 默认窗口标题
 #define DEFAULT_WINDOW_TITLE "Ginkgo"
+// 默认的物理世界与屏幕坐标比例尺 1:1000，即游戏中1000单位的距离(在默认相机中也就相当于1000像素)代表1米
+#define DEFAULT_MEASURING_SCALE 0.001f
 
 // 包含第三方库的头文件
 #include <glad/glad.h>

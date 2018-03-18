@@ -4,6 +4,7 @@
 #include "test01.h"
 #include "test02.h"
 #include "test03.h"
+#include "test04.h"
 
 using namespace glm;
 using namespace std;
@@ -99,7 +100,8 @@ public:
             Game::getInstance()->replaceScene(new Test02(this, "02. Graphical User Interface (builtin)"),false);
         if(ImGui::Button("03. Sprite Animation",ImVec2(500,30)))
             Game::getInstance()->replaceScene(new Test03(this, "03. Sprite Animation"),false);
-        if(ImGui::Button("04. empty",ImVec2(500,30)));
+        if(ImGui::Button("04. Physics (Box2D)",ImVec2(500,30)))
+            Game::getInstance()->replaceScene(new Test04(this, "04. Physics (Box2D)"),false);
         if(ImGui::Button("05. empty",ImVec2(500,30)));
         if(ImGui::Button("06. empty",ImVec2(500,30)));
         if(ImGui::Button("07. empty",ImVec2(500,30)));
@@ -124,13 +126,16 @@ class SceneLoading : public Scene
 public:
     Sprite* logo;
     Label* hint;
-    bool loadComplete;
+    bool loadComplete;// 加载完成
+    bool confirmed;// 用户确认
+    KeyboardEventListener *kblistener;
+    MouseEventListener *mlistener;
     SceneLoading()
     {
         ResourceManager::getInstance()->loadTexture("ginkgo_logo_1","res/ginkgo_logo_1.png");
 
         // 设置黑色背景
-        setBackgroundColor(glm::vec4(0.1f,0.1f,0.1f,0.0f));
+        setBackgroundColor(glm::vec4(0.1f));
         // 获取游戏窗口的尺寸(画面的尺寸，不包含标题栏和边框)
         glm::vec2 wSize = Game::getInstance()->getWindowSize();
         logo = new Sprite("ginkgo_logo_1");
@@ -146,6 +151,28 @@ public:
         hint = new Label("Loading...00%",style);
         addChild(hint);
         hint->setPosition((wSize.x - hint->getContainSize().x) * 0.5f, wSize.y * 0.33f);
+
+        confirmed = false;
+        kblistener = new KeyboardEventListener(this);
+        kblistener->callback = [=](int key, int scancode, int action, int mods)
+        {
+            if(action == GLFW_PRESS)
+            {
+                this->confirmed = true;
+                this->hint->setText("");
+            }
+            return false;
+        };
+        mlistener = new MouseEventListener(this);
+        mlistener->buttonCallback = [=](int button, int action, int mods)
+        {
+            if(action == GLFW_PRESS)
+            {
+                this->confirmed = true;
+                this->hint->setText("");
+            }
+            return false;
+        };
     }
     virtual ~SceneLoading()
     {
@@ -156,7 +183,7 @@ public:
         Scene::update();
 
         static int step = 1;
-        static float bg = 0.0f;
+        static float bg = 0.1f;
         if(!loadComplete)
         {
             char hintstr[20];
@@ -164,21 +191,21 @@ public:
             hint->setText(hintstr);
             loadResource(step++);
         }
-        else
+        else if(confirmed)
         {
-            bg+=1.0f*Game::getInstance()->getDeltaTime();
+            bg+=2.0f*Game::getInstance()->getDeltaTime();
+            setBackgroundColor(vec4(bg));
             setOpacity(1.0f - bg);
             if(bg>=1.0f)
             {
-                setBackgroundColor(vec4(1.0f,1.0f,1.0f,1.0f));
                 Game::getInstance()->replaceScene(new SceneWelcome());
             }
         }
+        hint->setOpacity(0.5f+0.5f*sin(Game::getInstance()->getTime()*3.14159f));
     }
 
     void loadResource(int step)
     {
-        Sleep(100);// 给点延时感觉好像资源好多的样子
         // 这个做法就很愚蠢了，但是鉴于还没有做异步这块，先将就吧。。
         auto manager = ResourceManager::getInstance();
         char path[64];
@@ -217,6 +244,7 @@ public:
                 sprintf(path,"res/k/idle%04d.png",i);
                 manager->loadTexture(path,path,false);
             }
+            break;
         case 9:
             for(int i = 0;i<12;i++)
             {
@@ -230,11 +258,16 @@ public:
                 sprintf(path,"res/k/run%04d.png",i);
                 manager->loadTexture(path,path,false);
             }
+            break;
         case 11:
             manager->loadTexture("wasd","res/wasd.png",false);
+            manager->loadTexture("edge","res/edge.png",false);
             break;
         default:
             this->loadComplete = true;
+            this->hint->setText("Press any key");
+            addComponent("kblistener",kblistener);
+            addComponent("mlistener",mlistener);
             cout << "Resources loaded completed!"<<endl;
             break;
         }
