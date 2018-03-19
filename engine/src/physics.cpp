@@ -47,3 +47,21 @@ b2World* PhysicsWorld::getWorld()
 {
     return world;
 }
+
+BodySynchronizer::BodySynchronizer(b2Body *body)
+{
+    this->body = body;
+}
+
+BodySynchronizer::~BodySynchronizer()
+{
+
+}
+
+void BodySynchronizer::update()
+{
+    b2Vec2 position = body->GetPosition();
+    float angle = body->GetAngle();
+    host->setPosition(position.x/DEFAULT_MEASURING_SCALE, position.y/DEFAULT_MEASURING_SCALE);
+    host->setRotation(angle);
+}

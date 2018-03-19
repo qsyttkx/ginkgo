@@ -270,14 +270,36 @@ Component* Node::getComponent(string key)
     }
 }
 
-void Node::removeComponent(string key)
+void Node::removeComponent(string key,bool release)
 {
-    if(components.find(key)==components.end())
+    auto iter = components.find(key);
+    if(iter==components.end())
     {
         cerr<<"Failed to remove component, can't find it!"<<endl;
         return;
     }
+    if(release)
+    {
+        Component* comp = (*iter).second;
+        delete(comp);
+    }
     components.erase(key);
+}
+
+void Node::removeAllComponents(bool release)
+{
+    if(release)
+    {
+        for(auto iter = components.begin();iter!=components.end();)
+        {
+            Component* comp = (*iter).second;
+            iter = components.erase(iter);
+            delete(comp);
+        }
+    }else
+    {
+        components.clear();
+    }
 }
 
 void Node::update()

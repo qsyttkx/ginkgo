@@ -22,3 +22,12 @@ private:
     float fixtime;// 防止box2D迭代出现问题
 };
 
+class BodySynchronizer : public Component
+{
+public:
+    BodySynchronizer(b2Body* body);
+    virtual ~BodySynchronizer();
+    virtual void update();
+private:
+    b2Body* body;
+};

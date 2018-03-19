@@ -62,7 +62,9 @@ class Node
     // 获取一个组件
     Component* getComponent(std::string key);
     // 移除一个组件
-    void removeComponent(std::string key);
+    void removeComponent(std::string key, bool release = false);
+    // 清空组件
+    void removeAllComponents(bool release = false);
 
     // 逐帧调度器
     virtual void update();

@@ -176,7 +176,6 @@ public:
     }
     virtual ~SceneLoading()
     {
-
     }
     virtual void update()
     {
@@ -262,6 +261,7 @@ public:
         case 11:
             manager->loadTexture("wasd","res/wasd.png",false);
             manager->loadTexture("edge","res/edge.png",false);
+            manager->loadTexture("ball", "res/ball.png");
             break;
         default:
             this->loadComplete = true;
