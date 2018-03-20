@@ -186,7 +186,7 @@ public:
         if(!loadComplete)
         {
             char hintstr[20];
-            sprintf(hintstr, "Loading...%02d%%",(step-1)*100/11);
+            sprintf(hintstr, "Loading...%02d%%",(step-1)*100/4);
             hint->setText(hintstr);
             loadResource(step++);
         }
@@ -212,56 +212,39 @@ public:
         case 1:
             // welcome
             manager->loadTexture("btn_normal", "res/btn_normal.png");
-            break;
-        case 2:
             manager->loadTexture("btn_pressed", "res/btn_pressed.png");
-            break;
-        case 3:
             manager->loadTexture("btn_hover", "res/btn_hover.png");
-            break;
-        case 4:
             manager->loadTexture("logo", "res/logo.png");
             break;
-        case 5:
+        case 2:
             // Test02
             manager->loadTexture("btn1_normal", "res/btn1_normal.png");
-            break;
-        case 6:
             manager->loadTexture("btn1_pressed", "res/btn1_pressed.png");
             break;
-        case 7:
+        case 3:
             // Test03
-            for(int i = 0;i<20;i++)
+            for(int i = 0;i<40;i++)
             {
                 sprintf(path,"res/k/idle%04d.png",i);
                 manager->loadTexture(path,path,false);
             }
-            break;
-        case 8:
-            for(int i = 20;i<40;i++)
-            {
-                sprintf(path,"res/k/idle%04d.png",i);
-                manager->loadTexture(path,path,false);
-            }
-            break;
-        case 9:
             for(int i = 0;i<12;i++)
             {
                 sprintf(path,"res/k/walk%04d.png",i);
                 manager->loadTexture(path,path,false);
             }
-            break;
-        case 10:
             for(int i = 0;i<8;i++)
             {
                 sprintf(path,"res/k/run%04d.png",i);
                 manager->loadTexture(path,path,false);
             }
-            break;
-        case 11:
             manager->loadTexture("wasd","res/wasd.png",false);
-            manager->loadTexture("edge","res/edge.png",false);
+            break;
+        case 4:
+            // Test04
+            manager->loadTexture("edge","res/edge.png");
             manager->loadTexture("ball", "res/ball.png");
+            manager->loadTexture("block", "res/block.png");
             break;
         default:
             this->loadComplete = true;
