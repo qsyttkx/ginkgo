@@ -28,7 +28,7 @@ struct Configuration
     unsigned int height;
     unsigned int width;
     bool fullscreen;
-    bool vsync;
+    unsigned int vsync;
 };
 
 class Game

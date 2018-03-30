@@ -56,22 +56,25 @@ Test04::Test04(Scene* menu, string titleString):Test(menu,titleString)
     hint->setPosition(50,wSize.y*0.8f,1);
 
     MouseEventListener* mlistener = new MouseEventListener(this);
-    mlistener->moveCallback = [=](vec2 pos)
-    {
-        lastMousePos = mousePos;
-        pos.y = wSize.y - pos.y;
-        mousePos = pos;
-        return false;
-    };
     mlistener->buttonCallback = [=](int button, int action, int mods)
     {
-        if(action==GLFW_PRESS && button == 0)
+        if(action==GLFW_PRESS)
         {
-            setupABall(mousePos,(mousePos-lastMousePos)*100.0f);
+            lastMousePos = Game::getInstance()->getMousePosition();
+            lastMousePos.y = wSize.y - lastMousePos.y;
         }
-        else if(action==GLFW_PRESS && button == 1)
+
+        if(action==GLFW_RELEASE && button == 0)
         {
-            setupABlock(mousePos,(mousePos-lastMousePos)*100.0f);
+            mousePos = Game::getInstance()->getMousePosition();
+            mousePos.y = wSize.y - mousePos.y;
+            setupABall(mousePos,(mousePos-lastMousePos)*2.0f);
+        }
+        else if(action==GLFW_RELEASE && button == 1)
+        {
+            mousePos = Game::getInstance()->getMousePosition();
+            mousePos.y = wSize.y - mousePos.y;
+            setupABlock(mousePos,(mousePos-lastMousePos)*2.0f);
         }
         return false;
     };
@@ -115,17 +118,19 @@ void Test04::setupABall(vec2 pos, vec2 v)
 void Test04::setupABlock(vec2 pos, vec2 v)
 {
     float s = float(rand()%10)/10.0f+0.5f;
+    float a = float(rand()%360)/360.0f*2.0f*3.14159f;
 
     b2BodyDef bodyDef;
     bodyDef.type = b2_dynamicBody;
     bodyDef.position.Set(pos.x*DEFAULT_MEASURING_SCALE,pos.y*DEFAULT_MEASURING_SCALE);
+    bodyDef.angle = a;
     bodyDef.linearVelocity.Set(v.x*DEFAULT_MEASURING_SCALE,v.y*DEFAULT_MEASURING_SCALE);
     b2Body* body = phy->getWorld()->CreateBody(&bodyDef);
     b2PolygonShape box;
     box.SetAsBox(s*25.0f * DEFAULT_MEASURING_SCALE,s*25.0f * DEFAULT_MEASURING_SCALE);
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &box;
-    fixtureDef.density = 1.0f;
+    fixtureDef.density = 10.0f;
     fixtureDef.friction = 0.3f;
     fixtureDef.restitution = 0.1f;
     body->CreateFixture(&fixtureDef);

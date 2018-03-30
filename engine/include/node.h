@@ -49,10 +49,14 @@ class Node
     Node *getParent();
     // 添加子节点
     void addChild(Node *n);
+    // 在update()中若要添加节点请用此方法
+    void addChild_later(Node *n);
     // 获取子节点集合
     std::list<Node *> getChildren();
     // 移除指定节点，参数2为true时会释放该节点的内存
     void removeChild(Node *n, bool release = false);
+    // 在update()中若要移除节点请用此方法(会释放内存)
+    void removeChild_later(Node *n);
     // 移除所有节点，参数为true时会释放所有节点的内存
     void removeAllChildren(bool release = false);
     // 从父节点中移除本节点
@@ -113,4 +117,6 @@ class Node
 private:
     // 所用的着色器
     Shader *shader;
+    std::list<Node *> children_for_add;
+    std::list<Node *> children_for_remove;
 };

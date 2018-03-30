@@ -5,6 +5,7 @@
 #include "test02.h"
 #include "test03.h"
 #include "test04.h"
+#include "test05.h"
 
 using namespace glm;
 using namespace std;
@@ -102,7 +103,8 @@ public:
             Game::getInstance()->replaceScene(new Test03(this, "03. Sprite Animation"),false);
         if(ImGui::Button("04. Physics (Box2D)",ImVec2(500,30)))
             Game::getInstance()->replaceScene(new Test04(this, "04. Physics (Box2D)"),false);
-        if(ImGui::Button("05. empty",ImVec2(500,30)));
+        if(ImGui::Button("05. Audio",ImVec2(500,30)))
+            Game::getInstance()->replaceScene(new Test05(this, "05. Audio"), false);
         if(ImGui::Button("06. empty",ImVec2(500,30)));
         if(ImGui::Button("07. empty",ImVec2(500,30)));
         if(ImGui::Button("08. empty",ImVec2(500,30)));
@@ -186,7 +188,7 @@ public:
         if(!loadComplete)
         {
             char hintstr[20];
-            sprintf(hintstr, "Loading...%02d%%",(step-1)*100/4);
+            sprintf(hintstr, "Loading...%02d%%",(step-1)*100/5);
             hint->setText(hintstr);
             loadResource(step++);
         }
@@ -245,6 +247,11 @@ public:
             manager->loadTexture("edge","res/edge.png");
             manager->loadTexture("ball", "res/ball.png");
             manager->loadTexture("block", "res/block.png");
+            break;
+        case 5:
+            // Test05
+            manager->loadMusic("res/music.mp3","res/music.mp3");
+            manager->loadTexture("tap","res/tap.png");
             break;
         default:
             this->loadComplete = true;

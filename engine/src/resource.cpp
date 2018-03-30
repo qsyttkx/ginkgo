@@ -1,5 +1,10 @@
 #include <cstdio>
 #include <resource.h>
+#include <ginkgo.h>
+
+#ifdef WIN32
+#include <mmsystem.h>
+#endif
 
 using namespace std;
 
@@ -184,4 +189,174 @@ stbtt_fontinfo ResourceManager::getFontTTF(string key)
     {
         return (*iter).second;
     }
+}
+
+int ResourceManager::loadMusic(string key, string filepath)
+{
+    Music m(filepath);
+    music.insert(make_pair(key,m));
+    return 0;
+}
+
+Music ResourceManager::getMusic(string key)
+{
+    return music[key];
+}
+
+void ResourceManager::releaseMusic(string key)
+{
+    music[key].release();
+    music.erase(music.find(key));
+}
+
+void ResourceManager::releaseAllMusic()
+{
+    for(auto iter = music.begin();iter!=music.end();++iter)
+    {
+        (*iter).second.release();
+    }
+    music.clear();
+}
+
+Music::Music():Music("")
+{
+
+}
+
+Music::Music(string filepath)
+{
+    if(filepath.empty())return;
+    this->filepath = filepath;
+#ifdef WIN32
+    string cmd;
+    cmd.append("open ").append(filepath);
+    mciSendString(cmd.c_str(),NULL,0,0);
+#endif
+}
+
+void Music::release()
+{
+    if(filepath.empty())return;
+#ifdef WIN32
+    string cmd;
+    cmd.append("close ").append(filepath);
+    mciSendString(cmd.c_str(),NULL,0,0);
+#endif
+}
+
+void Music::play(bool repeat)
+{
+    if(filepath.empty())return;
+#ifdef WIN32
+    string cmd;
+    cmd.append("play ").append(filepath);
+    if(repeat)cmd.append(" repeat");
+    mciSendString(cmd.c_str(),NULL,0,0);
+#endif
+}
+
+void Music::pause()
+{
+    if(filepath.empty())return;
+#ifdef WIN32
+    string cmd;
+    cmd.append("pause ").append(filepath);
+    mciSendString(cmd.c_str(),NULL,0,0);
+#endif
+}
+
+void Music::resume()
+{
+    if(filepath.empty())return;
+#ifdef WIN32
+    string cmd;
+    cmd.append("resume ").append(filepath);
+    mciSendString(cmd.c_str(),NULL,0,0);
+#endif
+}
+
+void Music::stop()
+{
+    if(filepath.empty())return;
+#ifdef WIN32
+    string cmd;
+    cmd.append("stop ").append(filepath);
+    mciSendString(cmd.c_str(),NULL,0,0);
+    // stop时回到起点
+    cmd = string("seek ").append(filepath).append(" to start");
+    mciSendString(cmd.c_str(),NULL,0,0);
+#endif
+}
+
+void Music::setVolume(int v)
+{
+    if(filepath.empty())return;
+#ifdef WIN32
+    char cmd[256];
+    sprintf(cmd, "setaudio %s volume to %d",filepath.c_str(), v);
+    mciSendString(cmd,NULL,0,0);
+#endif
+}
+
+string Music::getFilePath()
+{
+    return filepath;
+}
+
+string Music::getStatus()
+{
+    if(filepath.empty())return "";
+    char buff[256];
+#ifdef WIN32
+    string cmd;
+    cmd.append("status ").append(filepath).append(" mode");
+    mciSendString(cmd.c_str(),buff,256,0);
+#endif
+    return string(buff);
+}
+
+
+int Music::soundsVolume = 256;
+list<string> Music::sounds;
+
+void Music::playSound(string filepath)
+{
+    static int count = 0;
+#ifdef WIN32
+    char buff[256];
+    sprintf(buff,"%s_%d",filepath.c_str(),count++);
+    string alias(buff);
+    string cmd = string("open ");
+    cmd.append(filepath).append(" alias ").append(alias);
+    mciSendString(cmd.c_str(),NULL,0,0);
+    cmd = string("play ");
+    cmd.append(alias);
+    mciSendString(cmd.c_str(),NULL,0,0);
+    sprintf(buff, "setaudio %s volume to %d",alias.c_str(), soundsVolume);
+    cmd = string(buff);
+    mciSendString(cmd.c_str(),NULL,0,0);
+    // 加入list，以便在检查到为stopped时释放
+    sounds.push_back(alias);
+#endif
+}
+
+void Music::checkSounds()
+{
+    char buff[256];
+#ifdef WIN32
+    string cmd;
+    for(auto iter = sounds.begin();iter!=sounds.end();++iter)
+    {
+        cmd = string("status ");
+        cmd.append(*iter).append(" mode");
+        mciSendString(cmd.c_str(),buff,256,0);
+        if(string(buff)=="stopped")
+        {
+            cmd = string("close ");
+            cmd.append(*iter);
+            mciSendString(cmd.c_str(),NULL,0,0);
+            iter=sounds.erase(iter);
+        }
+    }
+#endif
 }

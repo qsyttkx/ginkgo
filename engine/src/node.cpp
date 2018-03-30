@@ -195,6 +195,19 @@ void Node::addChild(Node *n)
     }
 }
 
+void Node::addChild_later(Node *n)
+{
+    if (n)
+    {
+        children_for_add.push_back(n);
+        n->_setParent(this);
+    }
+    else
+    {
+        cerr << "Error: Tring to add a NULL Node." << endl;
+    }
+}
+
 // 获取子节点集合
 std::list<Node *> Node::getChildren()
 {
@@ -215,6 +228,14 @@ void Node::removeChild(Node *n, bool release)
             }
             break;
         }
+    }
+}
+
+void Node::removeChild_later(Node *n)
+{
+    if (n)
+    {
+        children_for_remove.push_back(n);
     }
 }
 
@@ -341,6 +362,20 @@ void Node::traverse()
     {
         (*iter).second->updateLater();
     }
+
+    // 增删节点
+    for(auto iter = children_for_add.begin();iter!=children_for_add.end();++iter)
+    {
+        children.push_back(*iter);
+    }
+    for(auto iter = children_for_remove.begin();iter!=children_for_remove.end();++iter)
+    {
+        Node* n = *iter;
+        delete(n);
+        removeChild(*iter);
+    }
+    children_for_add.clear();
+    children_for_remove.clear();
 }
 
 Shader* Node::getShader()

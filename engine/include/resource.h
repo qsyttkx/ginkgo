@@ -7,6 +7,7 @@
 #include <stb/stb_truetype.h>
 #include <glad/glad.h>
 #include <map>
+#include <list>
 
 struct Texture
 {
@@ -49,6 +50,32 @@ struct FontStyle
   }
 };
 
+// 音乐类
+class Music
+{
+public:
+    Music();
+    Music(std::string filepath);
+    void release();
+    void play(bool repeat = true);
+    void pause();
+    void resume();
+    void stop();
+    std::string getStatus();
+    std::string getFilePath();
+    void setVolume(int v);// 按mci的阶数
+    // 播放音效，与一般音乐不同，音效的播放方式使用playSound()方法
+    static void playSound(std::string filepath);
+    // 音效音量
+    static int soundsVolume;
+    // 检查音效状态
+    static void checkSounds();
+private:
+    std::string filepath;//音乐文件路径
+    // 音效集合
+    static std::list<std::string> sounds;
+};
+
 class ResourceManager
 {
 public:
@@ -71,11 +98,20 @@ public:
   void releaseFontTTF(std::string key);
   // 获得一个TTF字体
   stbtt_fontinfo getFontTTF(std::string key);
+  // 加载一段音乐
+  int loadMusic(std::string key, std::string filepath);
+  Music getMusic(std::string key);
+  void releaseMusic(std::string key);
+  void releaseAllMusic();
+
 private:
   // 载入的纹理记录
   std::map<std::string, Texture> textures;
   // 载入的TTF字体记录
   std::map<std::string, stbtt_fontinfo> fontsTTF;
+  // 载入的音乐记录
+  std::map<std::string, Music> music;
 
   static ResourceManager *_instance;
 };
+

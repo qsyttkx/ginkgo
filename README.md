@@ -22,18 +22,26 @@
 1. o 事件管理
 1. o 逐帧动画
 1. o 物理引擎
-1. . 碰撞检测
+1. . 声音
 1. x 模型
 1. x 骨骼动画
-1. x 声音
 
-## 近期展示
+## 展示
 
-![](https://qsyttkx.github.io/ginkgo2_phy_test.gif)
-![](https://qsyttkx.github.io/ginkgo2_imgui.png)
+![ginkgo2(1)](https://qsyttkx.github.io/ginkgo2_1.jpg)
+
+![ginkgo2(1)](https://qsyttkx.github.io/ginkgo2_2.jpg)
+
+![ginkgo2(1)](https://qsyttkx.github.io/ginkgo2_3.jpg)
+
+![ginkgo2(1)](https://qsyttkx.github.io/ginkgo2_4.jpg)
+
+## 现存的问题
+
+1. CPU占用率貌似很高啊，就这么点画面这么点任务，占用率都赶上撸啊撸了。。。
+2. 音频这块儿还不太好使（仅支持Windows平台且可能造成卡顿）
+3. 还有好多有待发现...
 
 ## 附加信息
 
-目前用的第三方库有：stb, glm, rapidjson, glad, glfw3, Box2D, ImGui
-
-其它的暂时貌似应该没了……
+目前用的第三方开源库有：stb, glm, rapidjson, glad, glfw3, Box2D, ImGui等等

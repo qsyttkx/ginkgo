@@ -21,8 +21,6 @@ public:
         addChild(btn_back);
         btn_back->setText("返回", FontStyle(18));
         btn_back->onClick = [=](int key, int mods) {
-            // 设置回白色背景
-            setBackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
             // 返回菜单
             Game::getInstance()->replaceScene(menu);
         };
@@ -36,6 +34,8 @@ public:
 
     virtual ~Test()
     {
+        // 设置回白色背景
+        setBackgroundColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     }
 
     virtual void update()

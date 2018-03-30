@@ -55,9 +55,9 @@ Game::Game()
     PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
     wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
     if(wglSwapIntervalEXT)
-        wglSwapIntervalEXT(1);
+        wglSwapIntervalEXT(config.vsync);
 #else
-        glfwSwapInterval(1);
+        glfwSwapInterval(config.vsync);
 #endif
     }
     // 启用多重采样
@@ -189,6 +189,9 @@ void Game::pollEvents()
         nextScene = NULL;
         cout << "Scene [" << currentScene->name << "] is on stage." << endl;
     }
+
+    // 检查音效
+    Music::checkSounds();
 }
 
 void Game::readConfiguration()
@@ -217,7 +220,7 @@ void Game::readConfiguration()
     config.width = doc.HasMember("width") && doc["width"].IsInt() ? doc["width"].GetInt() : 1280;
     config.height = doc.HasMember("height") && doc["height"].IsInt() ? doc["height"].GetInt() : 720;
     config.fullscreen = doc.HasMember("fullscreen") && doc["fullscreen"].IsBool() ? doc["fullscreen"].GetBool() : false;
-    config.vsync = doc.HasMember("vsync") && doc["vsync"].IsBool() ? doc["vsync"].GetBool() : false;
+    config.vsync = doc.HasMember("vsync") && doc["vsync"].IsInt() ? doc["vsync"].GetInt() : 1;
 }
 
 void Game::createConfiguration()
@@ -227,7 +230,7 @@ void Game::createConfiguration()
     config.width = 1280;
     config.height = 720;
     config.fullscreen = false;
-    config.vsync = true;
+    config.vsync = 1;
     doc.SetObject();
     doc.AddMember("width", (int)config.width, doc.GetAllocator());
     doc.AddMember("height", (int)config.height, doc.GetAllocator());

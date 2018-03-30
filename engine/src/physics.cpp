@@ -12,7 +12,7 @@ PhysicsWorld::PhysicsWorld(vec2 gravity)
     b2Vec2 g(gravity.x,gravity.y);
     world = new b2World(g);
     fixtime = 0.0f;
-    interval = 1.0f/120.0f;// 默认设置迭代速度为120次每秒
+    interval = 1.0f/60.0f;// 默认设置迭代速度为60次每秒
     velocityIterations = 6;
     positionIterations = 2;
     running = true;

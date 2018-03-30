@@ -21,13 +21,13 @@ aux_source_directory("engine/external/src" ENGINE_EXTERNAL_SRC_LIST)
 
 # 设置库目录
 if(WIN32 AND NOT MINGW)
-    message("WIN32 配置还未完成")
+    message("WIN32 配置")
     LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/engine/external/lib/msvc140/${CMAKE_BUILD_TYPE})
-    LINK_LIBRARIES(opengl32 glfw3 Box2D)
+    LINK_LIBRARIES(opengl32 glfw3 Box2D winmm)
 elseif(WIN32 AND MINGW)
     message("MINGW 配置")
     LINK_DIRECTORIES(${CMAKE_SOURCE_DIR}/engine/external/lib/mingw530/${CMAKE_BUILD_TYPE})
-    LINK_LIBRARIES(opengl32 glfw3dll Box2D)
+    LINK_LIBRARIES(opengl32 glfw3dll Box2D winmm)
 
 elseif(UNIX AND NOT ANDROID)
     message("UNIX 配置")
