@@ -43,11 +43,11 @@ public:
         Scene::update();
     }
 
-private:
-    // 菜单场景
-    Scene* menuScene;
     // 返回按钮
     Button *btn_back;
     // 标题标签
     Label *title;
+private:
+    // 菜单场景
+    Scene* menuScene;
 };

@@ -36,7 +36,7 @@ void Test05::update()
     window_flags |= ImGuiWindowFlags_NoResize;
     window_flags |= ImGuiWindowFlags_NoCollapse;
     bool *p_open = NULL; // No close button
-    float width = 640, height = 240;
+    float width = 640, height = 250;
     ImGui::Begin("Music Controller", p_open, window_flags);
     ImGui::SetWindowSize(ImVec2(width, height));
     ImGui::SetWindowPos(ImVec2((wSize.x - width) * 0.5f, wSize.y * 0.3f - height * 0.5f));

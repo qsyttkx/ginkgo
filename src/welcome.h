@@ -6,6 +6,7 @@
 #include "test03.h"
 #include "test04.h"
 #include "test05.h"
+#include "test06.h"
 
 using namespace glm;
 using namespace std;
@@ -105,7 +106,8 @@ public:
             Game::getInstance()->replaceScene(new Test04(this, "04. Physics (Box2D)"),false);
         if(ImGui::Button("05. Audio",ImVec2(500,30)))
             Game::getInstance()->replaceScene(new Test05(this, "05. Audio"), false);
-        if(ImGui::Button("06. empty",ImVec2(500,30)));
+        if(ImGui::Button("06. Shader",ImVec2(500,30)))
+            Game::getInstance()->replaceScene(new Test06(this, "06. Shader"), false);
         if(ImGui::Button("07. empty",ImVec2(500,30)));
         if(ImGui::Button("08. empty",ImVec2(500,30)));
         if(ImGui::Button("09. empty",ImVec2(500,30)));
@@ -188,7 +190,7 @@ public:
         if(!loadComplete)
         {
             char hintstr[20];
-            sprintf(hintstr, "Loading...%02d%%",(step-1)*100/5);
+            sprintf(hintstr, "Loading...%02d%%",(step-1)*100/6);
             hint->setText(hintstr);
             loadResource(step++);
         }
@@ -252,6 +254,10 @@ public:
             // Test05
             manager->loadMusic("res/music.mp3","res/music.mp3");
             manager->loadTexture("tap","res/tap.png");
+            break;
+        case 6:
+            // Test06
+            manager->loadTexture("yaya","res/yaya.png");
             break;
         default:
             this->loadComplete = true;
