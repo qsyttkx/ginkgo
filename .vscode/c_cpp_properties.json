@@ -22,13 +22,16 @@
         {
             "name": "Win32",
             "includePath": [
-                "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/include",
-                "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/lib/gcc/mingw32/4.9.2/include",
-                "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/lib/gcc/mingw32/4.9.2/include/c++",
-                "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/lib/gcc/mingw32/4.9.2/include/c++/mingw32",
+                "C:/Qt/Qt5.9.1/Tools/mingw530_32/i686-w64-mingw32/include",
+                "C:/Qt/Qt5.9.1/Tools/mingw530_32/i686-w64-mingw32/include/c++",
+                "C:/Qt/Qt5.9.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/i686-w64-mingw32",
+                "C:/Qt/Qt5.9.1/Tools/mingw530_32/lib/gcc/i686-w64-mingw32/5.3.0/include",
+                "C:/Qt/Qt5.9.1/Tools/mingw530_32/i686-w64-mingw32/include/c++/tr1",
                 "${workspaceFolder}",
                 "${workspaceFolder}/engine/external/include",
-                "${workspaceFolder}/engine/include"
+                "${workspaceFolder}/engine/include",
+                "${workspaceFolder}/engine/external/include/stb",
+                "${workspaceFolder}/engine/external/include/imgui"
             ],
             "defines": [
                 "_DEBUG",
@@ -38,10 +41,6 @@
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
-                    "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/include",
-                    "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/lib/gcc/mingw32/4.9.2/include",
-                    "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/lib/gcc/mingw32/4.9.2/include/c++",
-                    "D:/Program Files (x86)/codeblocks-16.01mingw-nosetup/MinGW/lib/gcc/mingw32/4.9.2/include/c++/mingw32",
                     "${workspaceFolder}"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
