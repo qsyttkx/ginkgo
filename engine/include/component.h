@@ -14,7 +14,7 @@ class Component
     virtual ~Component();
     // 逐帧调度器，在绑定节点遍历时为前序
     virtual void update();
-    // 逐帧调度器，在绑定节点遍历为后后序
+    // 逐帧调度器，在绑定节点遍历时为后序
     virtual void updateLater();
     Node* host;
 };
